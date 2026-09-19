@@ -1,0 +1,126 @@
+{
+  "method": "GET",
+  "path": "/v2/pedidos/{id}",
+  "responses": {
+    "200": {
+      "cliente_id": 14,
+      "status": "2",
+      "condicao_pagamento": "à vista",
+      "forma_pagamento_id": 0,
+      "transportadora_id": 8,
+      "tipo_pedido_id": 99,
+      "nome_contato": "João da Silva [exemplo]",
+      "itens": [
+        {
+          "tipo_ipi": "P",
+          "quantidade": 10,
+          "preco_tabela": 2.21,
+          "tabela_preco_id": 0,
+          "ipi": 0,
+          "observacoes": "Favor enviar em fardos fechados, o cliente tem esse requisito.",
+          "st": 0,
+          "produto_id": 130,
+          "quantidade_grades": [],
+          "cotacao_moeda": 1,
+          "excluido": false,
+          "subtotal": 20.8,
+          "id": 242,
+          "preco_liquido": 2.08,
+          "descontos_do_vendedor": [
+            3
+          ],
+          "descontos_de_promocoes": [
+            {
+              "regra_id": 2,
+              "desconto": 2
+            }
+          ],
+          "descontos_de_politicas": [
+            {
+              "regra_id": 3,
+              "desconto": 1
+            }
+          ],
+          "desconto_de_cupom": 10
+        },
+        {
+          "tipo_ipi": "P",
+          "quantidade": 5,
+          "preco_tabela": 12.32,
+          "tabela_preco_id": 0,
+          "ipi": 0,
+          "observacoes": "",
+          "st": 0,
+          "produto_id": 136,
+          "quantidade_grades": [],
+          "cotacao_moeda": 1,
+          "excluido": false,
+          "subtotal": 55.45,
+          "id": 243,
+          "preco_liquido": 11.09,
+          "descontos_do_vendedor": [
+            10
+          ],
+          "descontos_de_promocoes": [],
+          "descontos_de_politicas": [],
+          "desconto_de_cupom": null
+        }
+      ],
+      "status_faturamento": "0",
+      "observacoes": "Envio após 1 dia útil.",
+      "numero": 1,
+      "transportadora_nome": "FOB",
+      "data_criacao": "2017-02-20 08:19:45",
+      "ultima_alteracao": "2017-02-20 09:19:20",
+      "extras": [
+        {
+          "valor_data": "2001-01-01",
+          "valor_lista": [],
+          "tipo": "2",
+          "nome": "Valor de frete",
+          "valor_texto": "",
+          "campo_extra_id": 1,
+          "valor": 15,
+          "valor_hora": "",
+          "valor_decimal": 15
+        },
+        {
+          "valor_data": "2001-01-01",
+          "valor_lista": [],
+          "tipo": "4",
+          "nome": "Tipo de Frete",
+          "valor_texto": "",
+          "campo_extra_id": 2,
+          "valor": [],
+          "valor_hora": "",
+          "valor_decimal": null
+        }
+      ],
+      "endereco_entrega": {
+        "id": 5,
+        "endereco": "Rolf Wiest",
+        "numero": "277",
+        "complemento": "Avenida",
+        "bairro": "Bom Retiro",
+        "cidade": "Joinville",
+        "estado": "SC",
+        "cep": "89223005"
+      },
+      "condicao_pagamento_id": 0,
+      "data_emissao": "2017-02-20",
+      "rastreamento": "BB000000000000BR",
+      "valor_frete": 0,
+      "total": 76.25,
+      "id": 77,
+      "criador_id": 16,
+      "status_b2b": 2,
+      "cupom_de_desconto": "NOVOCLIENTE",
+      "representada_id": 987
+    },
+    "401": "{\n\t\"Sem permissao para acessar recurso\"\n}",
+    "429": {
+      "limite_de_requisicoes": 1,
+      "tempo_ate_permitir_novamente": 5
+    }
+  }
+}

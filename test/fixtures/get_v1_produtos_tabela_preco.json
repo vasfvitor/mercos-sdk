@@ -1,0 +1,46 @@
+{
+  "method": "GET",
+  "path": "/v1/produtos_tabela_preco",
+  "responses": {
+    "200": [
+      {
+        "ultima_alteracao": "2018-07-12 14:53:39",
+        "preco": 1287.34,
+        "excluido": true,
+        "tabela_id": 199213,
+        "id": 80029033,
+        "produto_id": 67396357
+      },
+      {
+        "ultima_alteracao": "2018-07-12 14:53:39",
+        "preco": 910.12,
+        "excluido": false,
+        "tabela_id": 199221,
+        "id": 80029041,
+        "produto_id": 67396357
+      },
+      {
+        "ultima_alteracao": "2018-07-12 14:53:39",
+        "preco": 9384.34,
+        "excluido": false,
+        "tabela_id": 199229,
+        "id": 80029049,
+        "produto_id": 67396357
+      }
+    ],
+    "401": "{\n\tSem permissao para acessar recurso\n}",
+    "412": {
+      "mensagem": "Dados inválidos",
+      "erros": [
+        {
+          "campo": "divisao_id",
+          "mensagem": "Divisão inexistente."
+        }
+      ]
+    },
+    "429": {
+      "limite_de_requisicoes": 1,
+      "tempo_ate_permitir_novamente": 5
+    }
+  }
+}

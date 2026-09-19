@@ -1,0 +1,12 @@
+{
+  "method": "GET",
+  "path": "/v1/clientes",
+  "responses": {
+    "200": "[\n\t{\n    \"ultima_alteracao\": \"2023-06-28 15:10:11\",\n\t\t\"id\": 7318748,\n\t\t\"representadas_ids\": [987],\n\t\t\"razao_social\": \"Loja do Zé LTDA\",\n\t\t\"nome_fantasia\": \"Zé Store\",\n\t\t\"tipo\": \"J\",\n\t\t\"cnpj\": \"46487899000110\",\n\t\t\"inscricao_estadual\": \"ISENTO\",\n\t\t\"suframa\": \"\",\n\t\t\"rua\": \"Rua Abdon Batista\",\n\t\t\"numero\": \"121\",\n\t\t\"complemento\": \"sala 1402\",\n\t\t\"cep\": \"89201010\",\n\t\t\"bairro\": \"Centro\",\n\t\t\"cidade\": \"Joinville\",\n\t\t\"estado\": \"SC\",\n\t\t\"observacao\": \"Cliente com ótimo histórico de pagamentos.\",\n\t\t\"excluido\": true,\n\t\t\"bloqueado_b2b\": true,\n\t\t\"bloqueado\": false,\n\t\t\"tags\": [],\n\t\t\"limite_credito\": [],\n\t\t\"contatos\": [\n\t\t\t{\n\t\t\t\t\"id\": 3064357,\n\t\t\t\t\"nome\": \"Lucas da Silva\",\n\t\t\t\t\"cargo\": \"Gerente de Compras\",\n\t\t\t\t\"excluido\": false,\n\t\t\t\t\"telefones\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"id\": 24021707,\n\t\t\t\t\t\t\"numero\": \"(21) 1111-1234\",\n\t\t\t\t\t\t\"tipo\": \"T\"\n\t\t\t\t\t}\n\t\t\t\t],\n\t\t\t\t\"emails\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"id\": 13623835,\n\t\t\t\t\t\t\"email\": \"lucas@zestore.com.br\",\n\t\t\t\t\t\t\"tipo\": \"T\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t],\n\t\t\"nome_excecao_fiscal\": \"Isento\",\n\t\t\"criador_id\": 61534,\n\t\t\"emails\": [\n      {\n\t\t\t\t\"id\": 14104340,\n\t\t\t\t\"tipo\": \"T\",\n\t\t\t\t\"email\": \"jose@zestore.com.br\"\n\t\t\t}\n\t\t],\n\t\t\"extras\": [],\n\t\t\"enderecos_adicionais\": [\n\t\t\t{\n        \"id\": 4762589,\n\t\t\t\t\"ultima_alteracao\": \"2023-06-28 15:08:26\",\n\t\t\t\t\"cep\": \"89223005\",\n\t\t\t\t\"endereco\": \"Av. Rolf Wiest\",\n\t\t\t\t\"numero\": \"277\",\n\t\t\t\t\"complemento\": \"\",\n\t\t\t\t\"bairro\": \"Bom Retiro\",\n\t\t\t\t\"cidade\": \"Joinville\",\n\t\t\t\t\"estado\": \"SC\"\n\t\t\t\t\n\t\t\t}\n\t\t],\n\t\t\"telefones\": [\n\t\t\t{\n        \"id\": 24609065,\n\t\t\t\t\"tipo\": \"T\",\n\t\t\t\t\"numero\": \"(47) 9876-5432\"\n      }\n]\n",
+    "401": "{\n\tSem permissao para acessar recurso\n}",
+    "429": {
+      "limite_de_requisicoes": 1,
+      "tempo_ate_permitir_novamente": 5
+    }
+  }
+}

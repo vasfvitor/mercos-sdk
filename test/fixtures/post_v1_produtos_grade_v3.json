@@ -1,0 +1,55 @@
+{
+  "method": "POST",
+  "path": "/v1/produtos#grade-v3",
+  "request": {
+    "nome": "Produto Grade V3",
+    "preco_tabela": 150.5,
+    "preco_minimo": 147.5,
+    "codigo": "G002",
+    "comissao": null,
+    "ipi": 5,
+    "tipo_ipi": "P",
+    "st": null,
+    "moeda": "0",
+    "unidade": "Un",
+    "saldo_estoque": 150,
+    "observacoes": "",
+    "excluido": false,
+    "ativo": true,
+    "exibir_no_b2b": true,
+    "codigo_ncm": null,
+    "multiplo": null,
+    "peso_bruto": null,
+    "precos_especificos": true,
+    "produtos_grade": [
+      {
+        "codigo": "GV001",
+        "itens_variacoes_nomes": [
+          {
+            "cor": "Preto"
+          }
+        ],
+        "exibir_no_b2b": true,
+        "ativo": true,
+        "excluido": false,
+        "preco_tabela": 100
+      }
+    ]
+  },
+  "responses": {
+    "201": {
+      "id": 20325477,
+      "produtos_grade": [
+        {
+          "id": 20325478,
+          "codigo": "GV001"
+        }
+      ]
+    },
+    "401": "{\n\t\"Sem permissao para acessar recurso\"\n}",
+    "429": {
+      "limite_de_requisicoes": 1,
+      "tempo_ate_permitir_novamente": 5
+    }
+  }
+}

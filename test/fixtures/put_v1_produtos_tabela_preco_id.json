@@ -1,0 +1,27 @@
+{
+  "method": "PUT",
+  "path": "/v1/produtos_tabela_preco/{id}",
+  "request": {
+    "tabela_id": 23,
+    "produto_id": 123,
+    "preco": 100,
+    "representada_id": 987
+  },
+  "responses": {
+    "200": {},
+    "401": "{\n\t\"Sem permissao para acessar recurso\"\n}",
+    "412": {
+      "mensagem": "Dados inválidos",
+      "erros": [
+        {
+          "mensagem": "Este campo é obrigatório.",
+          "campo": "produto_id"
+        }
+      ]
+    },
+    "429": {
+      "limite_de_requisicoes": 1,
+      "tempo_ate_permitir_novamente": 5
+    }
+  }
+}

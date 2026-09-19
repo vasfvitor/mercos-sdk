@@ -1,0 +1,88 @@
+{
+  "method": "POST",
+  "path": "/v2/pedidos",
+  "request": {
+    "cliente_id": 7172892,
+    "data_criacao": "2024-10-31 16:00:00",
+    "data_emissao": "2024-10-31",
+    "contato_id": 12345,
+    "transportadora_id": 987,
+    "criador_id": 456,
+    "condicao_pagamento_id": 321,
+    "tipo_pedido_id": 12,
+    "forma_pagamento_id": 8,
+    "endereco_entrega_id": 654,
+    "rastreamento": "BR123456789BR",
+    "valor_frete": 25.5,
+    "observacoes": "Pedido de teste com produto simples.",
+    "extras": [
+      {
+        "id": 10,
+        "valor": "Entrega no período da manhã"
+      }
+    ],
+    "itens": [
+      {
+        "produto_id": 19176097,
+        "tabela_preco_id": null,
+        "quantidade": 20,
+        "preco_tabela": 48.6,
+        "preco_liquido": 45.2,
+        "tipo_ipi": "P",
+        "ipi": 5,
+        "st": 2.5,
+        "moeda": "0",
+        "cotacao_moeda": 1,
+        "descontos_do_vendedor": [
+          5
+        ],
+        "descontos_de_promocoes": [
+          {
+            "regra_id": 101,
+            "desconto": 3
+          }
+        ],
+        "descontos_de_politicas": [
+          {
+            "regra_id": 202,
+            "desconto": 2
+          }
+        ],
+        "excluido": false,
+        "observacoes": "Item de teste com produto simples."
+      }
+    ],
+    "representada_id": 987
+  },
+  "responses": {
+    "201": {
+      "id": 2079512,
+      "numero": 1105,
+      "itens": [
+        {
+          "id": 15220248
+        },
+        {
+          "id": 15220249
+        },
+        {
+          "id": 15220250
+        }
+      ]
+    },
+    "401": "{\n\t\"Sem permissao para acessar recurso\"\n}",
+    "412": {
+      "mensagem": "Ocorreram erros de validação",
+      "erros": [
+        [
+          "cliente_id",
+          "Atributo obrigatório não informado"
+        ]
+      ]
+    },
+    "429": {
+      "limite_de_requisicoes": 1,
+      "tempo_ate_permitir_novamente": 5
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "method": "GET",
+  "path": "/v1/condicoes_pagamento/{id}",
+  "responses": {
+    "200": {
+      "id": 1,
+      "nome": "a vista",
+      "valor_minimo": null,
+      "excluido": false,
+      "ultima_alteracao": "2017-02-20 15:58:35"
+    },
+    "401": "{\n\t\"Sem permissao para acessar recurso\"\n}",
+    "429": {
+      "limite_de_requisicoes": 1,
+      "tempo_ate_permitir_novamente": 5
+    }
+  }
+}

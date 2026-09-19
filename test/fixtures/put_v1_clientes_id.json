@@ -1,0 +1,25 @@
+{
+  "method": "PUT",
+  "path": "/v1/clientes/{id}",
+  "responses": {
+    "200": {},
+    "401": "{\n\tSem permissao para acessar recurso\n}",
+    "412": {
+      "mensagem": "Dados inválidos",
+      "erros": [
+        {
+          "campo": "razao_social",
+          "mensagem": "Este campo é obrigatório."
+        },
+        {
+          "campo": "tipo",
+          "mensagem": "Informe o tipo do cliente."
+        }
+      ]
+    },
+    "429": {
+      "limite_de_requisicoes": 1,
+      "tempo_ate_permitir_novamente": 5
+    }
+  }
+}

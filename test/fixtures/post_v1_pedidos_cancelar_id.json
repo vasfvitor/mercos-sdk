@@ -1,0 +1,15 @@
+{
+  "method": "POST",
+  "path": "/v1/pedidos/cancelar/{id}",
+  "responses": {
+    "200": {},
+    "401": "{\n\t\"Sem permissao para acessar recurso\"\n}",
+    "412": {
+      "mensagem": "Pedido 1 inexistente para conta 1234567"
+    },
+    "429": {
+      "limite_de_requisicoes": 1,
+      "tempo_ate_permitir_novamente": 5
+    }
+  }
+}

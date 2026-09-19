@@ -1,0 +1,28 @@
+{
+  "method": "PUT",
+  "path": "/v1/transportadoras/{id}",
+  "request": {
+    "nome": "Leva-Mais-Rápido",
+    "cidade": "Joinville",
+    "estado": "SC",
+    "informacoes_adicionais": "Esta transportadora custa mais caro, mas leva mais rápido!.",
+    "excluido": false
+  },
+  "responses": {
+    "200": {},
+    "401": "{\n\t\"Sem permissao para acessar recurso\"\n}",
+    "412": {
+      "mensagem": "Dados inválidos",
+      "erros": [
+        {
+          "mensagem": "Este campo é obrigatório.",
+          "campo": "nome"
+        }
+      ]
+    },
+    "429": {
+      "limite_de_requisicoes": 1,
+      "tempo_ate_permitir_novamente": 5
+    }
+  }
+}

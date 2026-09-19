@@ -1,0 +1,33 @@
+{
+  "method": "GET",
+  "path": "/v1/usuarios",
+  "responses": {
+    "200": [
+      {
+        "id": 10,
+        "nome": "Paulo da Silva",
+        "email": "paulo@silva.com.br",
+        "telefone": "(48) 9876-5432",
+        "acesso_bloqueado": false,
+        "administrador": true,
+        "excluido": false,
+        "ultima_alteracao": "2014-01-15 02:12:43"
+      },
+      {
+        "id": 11,
+        "nome": "João Moreira",
+        "email": "joao@moreira.com",
+        "telefone": "(47) 9988-5544",
+        "administrador": false,
+        "acesso_bloqueado": true,
+        "excluido": false,
+        "ultima_alteracao": "2014-01-15 03:50:03"
+      }
+    ],
+    "401": "{\n\t\"Sem permissao para acessar recurso\"\n}",
+    "429": {
+      "limite_de_requisicoes": 1,
+      "tempo_ate_permitir_novamente": 5
+    }
+  }
+}

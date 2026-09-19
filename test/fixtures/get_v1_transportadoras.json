@@ -1,0 +1,36 @@
+{
+  "method": "GET",
+  "path": "/v1/transportadoras",
+  "responses": {
+    "200": [
+      {
+        "telefones": [],
+        "nome": "Transporta Rápido",
+        "cidade": "Joinville",
+        "ultima_alteracao": "2018-07-27 10:49:13",
+        "informacoes_adicionais": "Comprador assume todos os riscos e custos com o transporte da mercadoria.",
+        "estado": "SC",
+        "id": 434824,
+        "excluido": true
+      },
+      {
+        "telefones": [
+          {
+            "numero": "47 3412-3456",
+            "tipo": "T",
+            "id": 8
+          }
+        ],
+        "nome": "Post Tran",
+        "cidade": "Joinville",
+        "ultima_alteracao": "2018-07-27 10:51:52",
+        "informacoes_adicionais": "Esta é a que tem o melhor custo-benefício.",
+        "estado": "SC",
+        "id": 437815,
+        "excluido": false
+      }
+    ],
+    "401": {},
+    "429": {}
+  }
+}

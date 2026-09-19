@@ -1,0 +1,21 @@
+{
+  "method": "PUT",
+  "path": "/v1/produtos/{id}",
+  "request": {
+    "nome": "PRODUTO SIMPLES ALTERADO",
+    "preco_tabela": 150,
+    "excluido": false,
+    "representada_id": 987
+  },
+  "responses": {
+    "200": {
+      "id": 20325471,
+      "produtos_grade": []
+    },
+    "401": "{\n\t\"Sem permissao para acessar recurso\"\n}",
+    "429": {
+      "limite_de_requisicoes": 1,
+      "tempo_ate_permitir_novamente": 5
+    }
+  }
+}

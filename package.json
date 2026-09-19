@@ -1,0 +1,54 @@
+{
+  "name": "mercos-sdk",
+  "version": "0.1.0",
+  "description": "SDK TypeScript não oficial para a API de integração do Mercos: fetch nativo, zero dependências, paginação e throttling tratados",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "README.en.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "keywords": [
+    "mercos",
+    "meuspedidos",
+    "sdk",
+    "api",
+    "pedidos",
+    "b2b"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@10.22.0",
+  "scripts": {
+    "test": "node --test \"test/*.test.ts\"",
+    "test:coverage": "node --test --experimental-test-coverage \"test/*.test.ts\"",
+    "check": "tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "build": "rm -rf dist && tsc -p tsconfig.build.json",
+    "verify": "pnpm lint && pnpm check && pnpm test",
+    "spec:fetch": "node scripts/fetch-spec.ts",
+    "spec:merge": "node scripts/merge-spec.ts",
+    "spec:types": "node scripts/gen-types.ts",
+    "spec:fixtures": "node scripts/extract-fixtures.ts",
+    "spec": "pnpm spec:fetch && pnpm spec:merge && pnpm spec:types && pnpm spec:fixtures",
+    "prepublishOnly": "pnpm verify && pnpm build"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2",
+    "@types/node": "^24",
+    "openapi-typescript": "^7",
+    "typescript": "^5.9"
+  }
+}

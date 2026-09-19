@@ -1,0 +1,44 @@
+{
+  "method": "POST",
+  "path": "/v1/produtos",
+  "request": {
+    "nome": "PRODUTO SIMPLES",
+    "comissao": 5,
+    "codigo": "S001",
+    "unidade": "UN",
+    "observacoes": "",
+    "codigo_ncm": "2828.90.11",
+    "preco_tabela": 150,
+    "preco_minimo": null,
+    "moeda": "0",
+    "saldo_estoque": null,
+    "ipi": null,
+    "tipo_ipi": "P",
+    "st": 0,
+    "ultima_alteracao": "2026-05-07 09:57:02",
+    "excluido": false,
+    "ativo": true,
+    "categoria_id": 233006,
+    "multiplo": null,
+    "peso_bruto": 5,
+    "largura": 10,
+    "altura": 15,
+    "comprimento": 10,
+    "peso_dimensoes_unitario": 1,
+    "exibir_no_b2b": 1,
+    "precos_especificos": false,
+    "produtos_grade": [],
+    "representada_id": 987
+  },
+  "responses": {
+    "201": {
+      "id": 20325471,
+      "produtos_grade": []
+    },
+    "401": "{\n\t\"Sem permissao para acessar recurso\"\n}",
+    "429": {
+      "limite_de_requisicoes": 1,
+      "tempo_ate_permitir_novamente": 5
+    }
+  }
+}

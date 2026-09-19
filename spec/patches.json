@@ -1,0 +1,43 @@
+{
+  "paths": {
+    "incluir-um-produto-grade-v3": "/v1/produtos",
+    "alterar-um-produto-grade-v3": "/v1/produtos/{id}",
+    "incluir-um-pedido-com-produtos-de-grade-2": "/v2/pedidos",
+    "incluir-um-pedido-com-produtos-de-grade-1-1": "/v2/pedidos/{id}",
+    "obter-uma-rede": "/v1/redes/{id}"
+  },
+  "variants": {
+    "incluir-um-produto-grade-v3": "grade-v3",
+    "alterar-um-produto-grade-v3": "grade-v3",
+    "incluir-um-pedido-com-produtos-de-grade-2": "grade",
+    "incluir-um-pedido-com-produtos-de-grade-1-1": "grade",
+    "excluir-eventos-em-lote-1": "atualizar-em-lote",
+    "excluir-eventos-em-lote": "excluir-em-lote",
+    "obter-atendimentos-1-1-1": "atualizar-em-lote",
+    "excluir-atendimentos-em-lote": "excluir-em-lote",
+    "incluir-um-produto-grade-v2": "grade-v2",
+    "incluir-um-produto-grade-v2-1": "grade-v2"
+  },
+  "set": [
+    {
+      "pointer": "/paths/~1v2~1pedidos/post/requestBody/content/application~1json/schema/properties/itens/items/properties/preco_tabela/type",
+      "value": "number",
+      "motivo": "A documentação declara string, mas o exemplo oficial da mesma página envia número (48.6)."
+    },
+    {
+      "pointer": "/paths/~1v2~1pedidos#grade/post/requestBody/content/application~1json/schema/properties/itens/items/properties/preco_tabela/type",
+      "value": "number",
+      "motivo": "A documentação declara string, mas o exemplo oficial da mesma página envia número (48.6)."
+    },
+    {
+      "pointer": "/paths/~1v2~1pedidos~1{id}/put/requestBody/content/application~1json/schema/properties/itens/items/properties/preco_tabela/type",
+      "value": "number",
+      "motivo": "A documentação declara string, mas o exemplo oficial da mesma página envia número (48.6)."
+    },
+    {
+      "pointer": "/paths/~1v2~1pedidos~1{id}#grade/put/requestBody/content/application~1json/schema/properties/itens/items/properties/preco_tabela/type",
+      "value": "number",
+      "motivo": "A documentação declara string, mas o exemplo oficial da mesma página envia número (48.6)."
+    }
+  ]
+}

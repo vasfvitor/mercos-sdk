@@ -1,0 +1,89 @@
+{
+  "method": "GET",
+  "path": "/v1/clientes/{id}",
+  "responses": {
+    "200": {
+      "ultima_alteracao": "2023-06-28 15:10:11",
+      "id": 7318748,
+      "razao_social": "Loja do Zé LTDA",
+      "nome_fantasia": "Zé Store",
+      "tipo": "J",
+      "cnpj": "46487899000110",
+      "inscricao_estadual": "ISENTO",
+      "suframa": "",
+      "rua": "Rua Abdon Batista",
+      "numero": "121",
+      "complemento": "sala 1402",
+      "cep": "89201010",
+      "bairro": "Centro",
+      "cidade": "Joinville",
+      "estado": "SC",
+      "observacao": "Cliente com ótimo histórico de pagamentos.",
+      "excluido": true,
+      "bloqueado_b2b": true,
+      "bloqueado": false,
+      "tags": [],
+      "limite_credito": [],
+      "contatos": [
+        {
+          "id": 3064357,
+          "nome": "Lucas da Silva",
+          "cargo": "Gerente de Compras",
+          "excluido": false,
+          "telefones": [
+            {
+              "id": 24021707,
+              "numero": "(21) 1111-1234",
+              "tipo": "T"
+            }
+          ],
+          "emails": [
+            {
+              "id": 13623835,
+              "email": "lucas@zestore.com.br",
+              "tipo": "T"
+            }
+          ]
+        }
+      ],
+      "nome_excecao_fiscal": "Isento",
+      "criador_id": 61534,
+      "emails": [
+        {
+          "id": 14104340,
+          "tipo": "T",
+          "email": "jose@zestore.com.br"
+        }
+      ],
+      "extras": [],
+      "enderecos_adicionais": [
+        {
+          "id": 4762589,
+          "ultima_alteracao": "2023-06-28 15:08:26",
+          "cep": "89223005",
+          "endereco": "Av. Rolf Wiest",
+          "numero": "277",
+          "complemento": "",
+          "bairro": "Bom Retiro",
+          "cidade": "Joinville",
+          "estado": "SC"
+        }
+      ],
+      "telefones": [
+        {
+          "id": 24609065,
+          "tipo": "T",
+          "numero": "(47) 9876-5432"
+        }
+      ],
+      "representadas_ids": [
+        987
+      ]
+    },
+    "401": "{\n\tSem permissao para acessar recurso\n}",
+    "429": {
+      "limite_de_requisicoes": 1,
+      "tempo_ate_permitir_novamente": 5
+    }
+  }
+}

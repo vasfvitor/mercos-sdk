@@ -1,0 +1,19 @@
+{
+  "method": "PUT",
+  "path": "/v1/tabelas_preco/{id}",
+  "request": {
+    "nome": "Tabela de Desconto",
+    "tipo": "D",
+    "acrescimo": null,
+    "desconto": 10,
+    "excluido": false
+  },
+  "responses": {
+    "200": {},
+    "401": "{\n\t\"Sem permissao para acessar recurso\"\n}",
+    "429": {
+      "limite_de_requisicoes": 1,
+      "tempo_ate_permitir_novamente": 5
+    }
+  }
+}

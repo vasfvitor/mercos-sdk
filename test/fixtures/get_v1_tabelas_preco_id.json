@@ -1,0 +1,22 @@
+{
+  "method": "GET",
+  "path": "/v1/tabelas_preco/{id}",
+  "responses": {
+    "200": [
+      {
+        "ultima_alteracao": "2018-07-12 14:48:49",
+        "nome": "Preço de Tabela #020",
+        "tipo": "P",
+        "acrescimo": null,
+        "desconto": null,
+        "excluido": true,
+        "id": 199234
+      }
+    ],
+    "401": "{\n\t\"Sem permissao para acessar recurso\"\n}",
+    "429": {
+      "limite_de_requisicoes": 1,
+      "tempo_ate_permitir_novamente": 5
+    }
+  }
+}

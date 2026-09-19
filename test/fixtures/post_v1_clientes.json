@@ -1,0 +1,99 @@
+{
+  "method": "POST",
+  "path": "/v1/clientes",
+  "request": {
+    "razao_social": "Loja do Zé LTDA",
+    "nome_fantasia": "Zé Store",
+    "tipo": "J",
+    "cnpj": "46487899000110",
+    "inscricao_estadual": "ISENTO",
+    "suframa": "",
+    "rua": "Rua Abdon Batista",
+    "numero": "121",
+    "complemento": "sala 1402",
+    "bairro": "Centro",
+    "cep": "89201010",
+    "cidade": "Joinville",
+    "estado": "SC",
+    "observacao": "Cliente com ótimo histórico de pagamentos.",
+    "emails": [
+      {
+        "email": "jose@zestore.com.br"
+      },
+      {
+        "email": "marcos@zestore.com.br"
+      }
+    ],
+    "telefones": [
+      {
+        "numero": "(11) 98765-4321"
+      },
+      {
+        "numero": "(47) 9876-5432"
+      }
+    ],
+    "contatos": [
+      {
+        "nome": "Lucas da Silva",
+        "cargo": "Gerente de Compras",
+        "emails": [
+          {
+            "email": "lucas@zestore.com.br"
+          }
+        ],
+        "telefones": [
+          {
+            "numero": "(21) 1111-1234"
+          }
+        ]
+      }
+    ],
+    "enderecos_adicionais": [
+      {
+        "cep": "89223-005",
+        "endereco": "Av. Rolf Wiest",
+        "numero": "277",
+        "complemento": "",
+        "bairro": "Bom Retiro",
+        "cidade": "Joinville",
+        "estado": "SC"
+      },
+      {
+        "cep": "89223-005",
+        "endereco": "Av. Rolf Wiest",
+        "numero": "333",
+        "complemento": "Sala 1",
+        "bairro": "Bom Retiro",
+        "cidade": "Joinville",
+        "estado": "SC"
+      }
+    ],
+    "nome_excecao_fiscal": "Isento",
+    "segmento_id": 123,
+    "excluido": false,
+    "bloqueado": true,
+    "motivo_bloqueio_id": 1,
+    "extras": [
+      {
+        "campo_id": 96,
+        "valor": "Campo Livre"
+      }
+    ]
+  },
+  "responses": {
+    "401": "{\n\tSem permissao para acessar recurso\n}",
+    "412": {
+      "mensagem": "Dados inválidos",
+      "erros": [
+        {
+          "mensagem": "Este campo é obrigatório.",
+          "campo": "razao_social"
+        }
+      ]
+    },
+    "429": {
+      "limite_de_requisicoes": 1,
+      "tempo_ate_permitir_novamente": 5
+    }
+  }
+}
