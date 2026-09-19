@@ -2,6 +2,12 @@
 
 This project follows [semantic versioning](https://semver.org/).
 
+## 0.2.0 - unreleased
+
+- New resources: `categorias`, `formasPagamento`, and `statusCustom`, each with `list`, `get`,
+  `create`, and `update`.
+- New `estoque` resource with `adjust` for one product and `adjustMany` for a batch.
+
 ## 0.1.2 - 2026-09-19
 
 - The release workflow now stages the version on npm, and a maintainer approves it there. It

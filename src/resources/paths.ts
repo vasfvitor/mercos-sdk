@@ -11,6 +11,12 @@ export const PATHS = {
   condicoesPagamento: "/v1/condicoes_pagamento",
   transportadoras: "/v1/transportadoras",
   usuarios: "/v1/usuarios",
+  categorias: "/v1/categorias",
+  formasPagamento: "/v1/formas_pagamento",
+  // The values of the `status_custom` order filter.
+  statusCustom: "/v1/pedidos/status",
+  ajustarEstoque: "/v1/ajustar_estoque",
+  ajustarEstoqueEmLote: "/v1/ajustar_estoque_em_lote",
   // This route exists only in the documentation prose, with no OpenAPI fragment, so its body is untyped.
   tokenStatus: "/v1/token_auth_status",
 } as const;

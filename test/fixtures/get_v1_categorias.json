@@ -1,0 +1,53 @@
+{
+  "method": "GET",
+  "path": "/v1/categorias",
+  "responses": {
+    "200": [
+      {
+        "ultima_alteracao": "2016-08-26 15:00:09",
+        "id": 1,
+        "nome": "Jogos",
+        "excluido": false,
+        "representada_id": 987
+      },
+      {
+        "ultima_alteracao": "2016-08-26 15:00:09",
+        "id": 2,
+        "categoria_pai_id": 1,
+        "nome": "Eletronicos",
+        "excluido": false,
+        "representada_id": 987
+      },
+      {
+        "ultima_alteracao": "2016-08-29 11:04:29",
+        "id": 3,
+        "categoria_pai_id": 1,
+        "nome": "Tabuleiro",
+        "excluido": false,
+        "representada_id": 987
+      },
+      {
+        "ultima_alteracao": "2016-08-29 11:04:56",
+        "id": 4,
+        "categoria_pai_id": 2,
+        "nome": "PC",
+        "excluido": false,
+        "representada_id": 987
+      }
+    ],
+    "401": "{\n\t\"Sem permissao para acessar recurso\"\n}",
+    "412": {
+      "mensagem": "Dados inválidos",
+      "erros": [
+        {
+          "campo": "divisao_id",
+          "mensagem": "Divisão inexistente."
+        }
+      ]
+    },
+    "429": {
+      "limite_de_requisicoes": 1,
+      "tempo_ate_permitir_novamente": 5
+    }
+  }
+}

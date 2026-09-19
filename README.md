@@ -143,6 +143,10 @@ o SDK o mascara antes de montar o erro.
 | `mercos.condicoesPagamento`  | `list`, `get`                                 |
 | `mercos.transportadoras`     | `list`, `get`                                 |
 | `mercos.usuarios`            | `list`, `get`                                 |
+| `mercos.categorias`          | `list`, `get`, `create`, `update`             |
+| `mercos.formasPagamento`     | `list`, `get`, `create`, `update`             |
+| `mercos.statusCustom`        | `list`, `get`, `create`, `update`             |
+| `mercos.estoque`             | `adjust`, `adjustMany`                        |
 | `mercos.tokenStatus()`       | Confere os tokens.                            |
 
 Todo método recebe um objeto de opções como último argumento. Ele tem `timeoutMs` e `signal`, um
@@ -151,6 +155,10 @@ Todo método recebe um objeto de opções como último argumento. Ele tem `timeo
 
 Pedidos usam a versão 2 da API. `get` por ID só funciona no sandbox: em produção o Mercos
 bloqueia essa leitura, e o erro traz uma dica a respeito.
+
+`statusCustom` são os status personalizados de pedido, os valores do filtro `status_custom`.
+`estoque.adjust` define o saldo do produto como `novo_saldo`, não soma nem subtrai. Com o controle
+de estoque desligado na conta, o Mercos recusa o ajuste com 422.
 
 `produtos.create`, `produtos.update`, `pedidos.create` e `pedidos.update` também aceitam os corpos
 de grade que o Mercos documenta nas mesmas rotas. `ProdutoInput` e `PedidoInput` são uniões do

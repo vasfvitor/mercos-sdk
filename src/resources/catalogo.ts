@@ -1,13 +1,22 @@
 // Resources with no behavior of their own: only a path, types, and filters. The logic lives in base.ts.
 import type {
+  Categoria,
+  CategoriaInput,
+  CategoriaUpdate,
   Cliente,
   ClienteInput,
   ClienteUpdate,
   CondicaoPagamento,
+  FormaPagamento,
+  FormaPagamentoInput,
+  FormaPagamentoUpdate,
   Produto,
   ProdutoInput,
   ProdutoTabelaPreco,
   ProdutoUpdate,
+  StatusCustom,
+  StatusCustomInput,
+  StatusCustomUpdate,
   TabelaPreco,
   Transportadora,
   Usuario,
@@ -27,3 +36,6 @@ export type ProdutosTabelaPrecoResource = ReadOnlyResource<ProdutoTabelaPreco, D
 export type CondicoesPagamentoResource = ReadOnlyResource<CondicaoPagamento, DivisaoFilters>;
 export type TransportadorasResource = ReadOnlyResource<Transportadora>;
 export type UsuariosResource = ReadOnlyResource<Usuario>;
+export type CategoriasResource = CrudResource<Categoria, CategoriaInput, CategoriaUpdate, DivisaoFilters>;
+export type FormasPagamentoResource = CrudResource<FormaPagamento, FormaPagamentoInput, FormaPagamentoUpdate>;
+export type StatusCustomResource = CrudResource<StatusCustom, StatusCustomInput, StatusCustomUpdate>;

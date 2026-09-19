@@ -2,7 +2,14 @@
 // token variables exist, so `pnpm test` and CI never touch the network.
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { type Cliente, createMercos, type PedidoInput, type Produto, StatusPedido } from "../../src/index.ts";
+import {
+  type Cliente,
+  createMercos,
+  MercosError,
+  type PedidoInput,
+  type Produto,
+  StatusPedido,
+} from "../../src/index.ts";
 import { rejectsWith } from "../helpers.ts";
 
 const applicationToken = process.env.MERCOS_APPLICATION_TOKEN;
@@ -51,7 +58,10 @@ test("an order goes from rejected to created to cancelled", { skip }, async (t) 
   await t.test("without a payment condition the API answers 422", async () => {
     await assert.rejects(
       mercos.pedidos.create(pedido),
-      rejectsWith("validation", (error) => assert.match(error.fieldErrors[0]!.mensagem, /condicao_pagamento/)),
+      rejectsWith("validation", (error) => {
+        assert.match(error.fieldErrors[0]!.mensagem, /condicao_pagamento/);
+        assert.equal(error.fieldErrors[0]!.campo, undefined);
+      }),
     );
   });
 
@@ -65,4 +75,35 @@ test("an order goes from rejected to created to cancelled", { skip }, async (t) 
     await mercos.pedidos.cancel(created.id);
   }
   assert.equal((await mercos.pedidos.get(created.id)).status, StatusPedido.Cancelado);
+});
+
+test("the new catalog lists answer with arrays of records", { skip }, async () => {
+  for (const resource of [mercos.categorias, mercos.formasPagamento, mercos.statusCustom]) {
+    for await (const record of resource.list()) {
+      assert.equal(typeof record.id, "number");
+      break;
+    }
+  }
+});
+
+test("a stock adjustment sets the balance, and the old balance goes back", { skip }, async (t) => {
+  const produto = await firstLive<Produto>(mercos.produtos.list(), "products");
+  const before = produto.saldo_estoque ?? 0;
+  const during = before + 1;
+  try {
+    await mercos.estoque.adjust({ produto_id: produto.id, novo_saldo: during });
+  } catch (error) {
+    // Stock control is an account setting. With it off, the API refuses every adjustment with a 422.
+    if (error instanceof MercosError && /controle de estoque/.test(error.message))
+      return t.skip("turn on stock control in the sandbox account");
+    throw error;
+  }
+  try {
+    assert.equal((await mercos.produtos.get(produto.id)).saldo_estoque, during);
+    const echoed = await mercos.estoque.adjustMany([{ produto_id: produto.id, novo_saldo: during + 1 }]);
+    assert.deepEqual(echoed, [{ produto_id: produto.id, novo_saldo: during + 1 }]);
+  } finally {
+    await mercos.estoque.adjust({ produto_id: produto.id, novo_saldo: before });
+  }
+  assert.equal((await mercos.produtos.get(produto.id)).saldo_estoque, before);
 });

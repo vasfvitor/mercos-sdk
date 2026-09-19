@@ -2,14 +2,18 @@ import { MercosError } from "./errors.ts";
 import { type CallOptions, createHttp, defaultSleep, type FetchLike, type SleepLike } from "./http.ts";
 import { crud, readOnly } from "./resources/base.ts";
 import type {
+  CategoriasResource,
   ClientesResource,
   CondicoesPagamentoResource,
+  FormasPagamentoResource,
   ProdutosResource,
   ProdutosTabelaPrecoResource,
+  StatusCustomResource,
   TabelasPrecoResource,
   TransportadorasResource,
   UsuariosResource,
 } from "./resources/catalogo.ts";
+import { type EstoqueResource, estoque } from "./resources/estoque.ts";
 import { PATHS } from "./resources/paths.ts";
 import { type PedidosResource, pedidos } from "./resources/pedidos.ts";
 
@@ -46,6 +50,10 @@ export interface Mercos {
   condicoesPagamento: CondicoesPagamentoResource;
   transportadoras: TransportadorasResource;
   usuarios: UsuariosResource;
+  categorias: CategoriasResource;
+  formasPagamento: FormasPagamentoResource;
+  statusCustom: StatusCustomResource;
+  estoque: EstoqueResource;
   /** Checks that the chosen environment accepts the token pair. */
   tokenStatus(options?: CallOptions): Promise<unknown>;
 }
@@ -95,6 +103,10 @@ export function createMercos(options: MercosOptions): Mercos {
     condicoesPagamento: readOnly(http, PATHS.condicoesPagamento),
     transportadoras: readOnly(http, PATHS.transportadoras),
     usuarios: readOnly(http, PATHS.usuarios),
+    categorias: crud(http, PATHS.categorias),
+    formasPagamento: crud(http, PATHS.formasPagamento),
+    statusCustom: crud(http, PATHS.statusCustom),
+    estoque: estoque(http),
     tokenStatus: async (options) => (await http.request<unknown>("GET", PATHS.tokenStatus, options)).data,
   };
 }

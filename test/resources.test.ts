@@ -1,6 +1,13 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { type Pedido, type PedidoInput, type ProdutoInput, StatusPedido } from "../src/index.ts";
+import {
+  type AjusteEstoque,
+  type CategoriaInput,
+  type Pedido,
+  type PedidoInput,
+  type ProdutoInput,
+  StatusPedido,
+} from "../src/index.ts";
 import { fake, fixture, rejectsWith } from "./helpers.ts";
 
 test("pedidos.create returns the MeusPedidosID header as a number, plus the item IDs", async () => {
@@ -61,7 +68,7 @@ test("produtos.create takes the grid body on the same route as a plain product",
 });
 
 test("each catalog resource lists on the right path", async () => {
-  const { mercos, calls } = fake(Array.from({ length: 7 }, () => ({ body: [] })));
+  const { mercos, calls } = fake(Array.from({ length: 10 }, () => ({ body: [] })));
   for (const resource of [
     mercos.clientes,
     mercos.produtos,
@@ -70,6 +77,9 @@ test("each catalog resource lists on the right path", async () => {
     mercos.condicoesPagamento,
     mercos.transportadoras,
     mercos.usuarios,
+    mercos.categorias,
+    mercos.formasPagamento,
+    mercos.statusCustom,
   ]) {
     await resource.list().next();
   }
@@ -83,8 +93,36 @@ test("each catalog resource lists on the right path", async () => {
       "/api/v1/condicoes_pagamento",
       "/api/v1/transportadoras",
       "/api/v1/usuarios",
+      "/api/v1/categorias",
+      "/api/v1/formas_pagamento",
+      "/api/v1/pedidos/status",
     ],
   );
+});
+
+test("categorias.create posts the documented body, and statusCustom.update puts under the nested path", async () => {
+  const example = fixture("post_v1_categorias");
+  const { mercos, calls } = fake([{ status: 201, headers: { MeusPedidosID: "39" } }, { body: {} }]);
+
+  assert.deepEqual(await mercos.categorias.create(example.request as CategoriaInput), { id: 39 });
+  await mercos.statusCustom.update(3, { nome: "Em transporte" });
+
+  assert.deepEqual([calls[0]!.method, calls[0]!.url.pathname], ["POST", "/api/v1/categorias"]);
+  assert.deepEqual(calls[0]!.body, example.request);
+  assert.deepEqual([calls[1]!.method, calls[1]!.url.pathname], ["PUT", "/api/v1/pedidos/status/3"]);
+});
+
+test("estoque.adjust puts one balance with no ID in the path, and adjustMany posts the list", async () => {
+  const batch = fixture("post_v1_ajustar_estoque_em_lote").responses["200"] as AjusteEstoque[];
+  const { mercos, calls } = fake([{ body: fixture("put_v1_ajustar_estoque").responses["200"] }, { body: batch }]);
+
+  assert.equal(await mercos.estoque.adjust({ produto_id: 10, novo_saldo: 254.87 }), undefined);
+  assert.deepEqual(await mercos.estoque.adjustMany(batch), batch);
+
+  assert.deepEqual([calls[0]!.method, calls[0]!.url.pathname], ["PUT", "/api/v1/ajustar_estoque"]);
+  assert.deepEqual(calls[0]!.body, { produto_id: 10, novo_saldo: 254.87 });
+  assert.deepEqual([calls[1]!.method, calls[1]!.url.pathname], ["POST", "/api/v1/ajustar_estoque_em_lote"]);
+  assert.deepEqual(calls[1]!.body, batch);
 });
 
 test("StatusPedido compares directly with the status the API returns, which is a string", () => {

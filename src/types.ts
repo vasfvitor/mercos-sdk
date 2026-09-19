@@ -39,3 +39,17 @@ export type ProdutoTabelaPreco = Listed<"get_v1_produtos_tabela_preco">;
 export type CondicaoPagamento = Listed<"get_v1_condicoes_pagamento">;
 export type Transportadora = Listed<"get_v1_transportadoras">;
 export type Usuario = Listed<"get_v1_usuarios">;
+
+export type Categoria = Listed<"get_v1_categorias">;
+export type CategoriaInput = Input<"post_v1_categorias">;
+export type CategoriaUpdate = Input<"put_v1_categorias_id">;
+
+export type FormaPagamento = Listed<"get_v1_formas_pagamento">;
+export type FormaPagamentoInput = Input<"post_v1_formas_pagamento">;
+export type FormaPagamentoUpdate = Input<"put_v1_formas_pagamento_id">;
+
+export type StatusCustom = Listed<"get_v1_pedidos_status">;
+export type StatusCustomInput = Input<"post_v1_pedidos_status">;
+export type StatusCustomUpdate = Input<"put_v1_pedidos_status_id">;
+
+export type AjusteEstoque = Input<"put_v1_ajustar_estoque">;

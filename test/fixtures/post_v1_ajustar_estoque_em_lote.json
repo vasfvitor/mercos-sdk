@@ -1,0 +1,21 @@
+{
+  "method": "POST",
+  "path": "/v1/ajustar_estoque_em_lote",
+  "responses": {
+    "200": [
+      {
+        "produto_id": 10,
+        "novo_saldo": 254.87
+      },
+      {
+        "produto_id": 11,
+        "novo_saldo": 254.87
+      }
+    ],
+    "401": "{\n\t\"Sem permissao para acessar recurso\"\n}",
+    "429": {
+      "limite_de_requisicoes": 1,
+      "tempo_ate_permitir_novamente": 5
+    }
+  }
+}

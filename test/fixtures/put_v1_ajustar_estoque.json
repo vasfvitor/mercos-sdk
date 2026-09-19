@@ -1,0 +1,14 @@
+{
+  "method": "PUT",
+  "path": "/v1/ajustar_estoque",
+  "responses": {
+    "200": {
+      "novo_saldo": 254.87
+    },
+    "401": "{\n\t\"Sem permissao para acessar recurso\"\n}",
+    "429": {
+      "limite_de_requisicoes": 1,
+      "tempo_ate_permitir_novamente": 5
+    }
+  }
+}

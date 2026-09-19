@@ -147,6 +147,10 @@ masks it before it builds the error.
 | `mercos.condicoesPagamento`  | `list`, `get`                                 |
 | `mercos.transportadoras`     | `list`, `get`                                 |
 | `mercos.usuarios`            | `list`, `get`                                 |
+| `mercos.categorias`          | `list`, `get`, `create`, `update`             |
+| `mercos.formasPagamento`     | `list`, `get`, `create`, `update`             |
+| `mercos.statusCustom`        | `list`, `get`, `create`, `update`             |
+| `mercos.estoque`             | `adjust`, `adjustMany`                        |
 | `mercos.tokenStatus()`       | Checks the tokens.                            |
 
 Every method takes an options object as its last argument. It holds `timeoutMs` and `signal`,
@@ -155,6 +159,10 @@ an `AbortSignal` that cancels the request even while it waits in the queue:
 
 Orders use version 2 of the API. The `get` method works only in the sandbox. In production,
 Mercos blocks reads by identifier, and the error carries a hint about it.
+
+The `statusCustom` resource holds the custom order statuses, the values of the `status_custom`
+filter. The `estoque.adjust` method sets the product's balance to `novo_saldo`. It doesn't add or
+subtract. When the account has stock control turned off, Mercos refuses the adjustment with 422.
 
 `produtos.create`, `produtos.update`, `pedidos.create`, and `pedidos.update` also take the grid
 bodies that Mercos documents on the same routes. `ProdutoInput` and `PedidoInput` are unions of

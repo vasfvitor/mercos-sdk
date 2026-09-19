@@ -1,0 +1,19 @@
+{
+  "method": "GET",
+  "path": "/v1/categorias/{id}",
+  "responses": {
+    "200": {
+      "ultima_alteracao": "2016-08-29 11:04:56",
+      "id": 39,
+      "categoria_pai_id": 2,
+      "nome": "PC",
+      "excluido": false,
+      "representada_id": 987
+    },
+    "401": "{\n\t\"Sem permissao para acessar recurso\"\n}",
+    "429": {
+      "limite_de_requisicoes": 1,
+      "tempo_ate_permitir_novamente": 5
+    }
+  }
+}
