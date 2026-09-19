@@ -20,22 +20,12 @@
   },
   "set": [
     {
-      "pointer": "/paths/~1v2~1pedidos/post/requestBody/content/application~1json/schema/properties/itens/items/properties/preco_tabela/type",
-      "value": "number",
-      "motivo": "A documentação declara string, mas o exemplo oficial da mesma página envia número (48.6)."
-    },
-    {
-      "pointer": "/paths/~1v2~1pedidos#grade/post/requestBody/content/application~1json/schema/properties/itens/items/properties/preco_tabela/type",
-      "value": "number",
-      "motivo": "A documentação declara string, mas o exemplo oficial da mesma página envia número (48.6)."
-    },
-    {
-      "pointer": "/paths/~1v2~1pedidos~1{id}/put/requestBody/content/application~1json/schema/properties/itens/items/properties/preco_tabela/type",
-      "value": "number",
-      "motivo": "A documentação declara string, mas o exemplo oficial da mesma página envia número (48.6)."
-    },
-    {
-      "pointer": "/paths/~1v2~1pedidos~1{id}#grade/put/requestBody/content/application~1json/schema/properties/itens/items/properties/preco_tabela/type",
+      "pointers": [
+        "/paths/~1v2~1pedidos/post/requestBody/content/application~1json/schema/properties/itens/items/properties/preco_tabela/type",
+        "/paths/~1v2~1pedidos#grade/post/requestBody/content/application~1json/schema/properties/itens/items/properties/preco_tabela/type",
+        "/paths/~1v2~1pedidos~1{id}/put/requestBody/content/application~1json/schema/properties/itens/items/properties/preco_tabela/type",
+        "/paths/~1v2~1pedidos~1{id}#grade/put/requestBody/content/application~1json/schema/properties/itens/items/properties/preco_tabela/type"
+      ],
       "value": "number",
       "motivo": "A documentação declara string, mas o exemplo oficial da mesma página envia número (48.6)."
     }

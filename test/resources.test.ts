@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { MercosError, type Pedido, type PedidoInput, StatusPedido } from "../src/index.ts";
-import { fake, fixture } from "./helpers.ts";
+import { type Pedido, type PedidoInput, StatusPedido } from "../src/index.ts";
+import { fake, fixture, rejectsWith } from "./helpers.ts";
 
 test("pedidos.create devolve o ID do header MeusPedidosID como número, mais os IDs dos itens", async () => {
   const exemplo = fixture("post_v2_pedidos");
@@ -29,11 +29,7 @@ test("create com 201 de corpo vazio ainda lê o ID do header", async () => {
 
 test("create sem header e sem id no corpo é resposta inesperada", async () => {
   const { mercos } = fake([{ status: 201, body: {} }]);
-  await assert.rejects(mercos.clientes.create({} as never), (error: unknown) => {
-    assert.ok(error instanceof MercosError);
-    assert.equal(error.kind, "unexpected_response");
-    return true;
-  });
+  await assert.rejects(mercos.clientes.create({} as never), rejectsWith("unexpected_response"));
 });
 
 test("pedidos.update usa PUT na v2 e pedidos.cancel usa a rota da v1", async () => {

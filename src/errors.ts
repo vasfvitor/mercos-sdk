@@ -56,7 +56,7 @@ export class MercosError extends Error {
  * A API devolve `erros` em quatro formas, conforme a rota: objetos `{campo, mensagem}`,
  * pares `[campo, mensagem]`, strings soltas, ou nada. Todas viram a mesma lista.
  */
-export function normalizeFieldErrors(erros: unknown): MercosFieldError[] {
+function normalizeFieldErrors(erros: unknown): MercosFieldError[] {
   if (!Array.isArray(erros)) return [];
   const result: MercosFieldError[] = [];
   for (const erro of erros) {
@@ -89,17 +89,21 @@ function kindForStatus(status: number): MercosErrorKind {
   if (status === 401 || status === 403) return "auth";
   if (status === 404) return "not_found";
   if (status === 400 || status === 412 || status === 422) return "validation";
+  if (status === 429) return "rate_limit";
   if (status >= 500) return "server";
   return "http";
 }
 
-export interface ResponseErrorInput {
+interface ResponseErrorInput {
   status: number;
   method: string;
   path: string;
   text: string;
   body: unknown;
-  production: boolean;
+  readByIdInProduction: boolean;
+  /** Só no 429 que não será mais repetido: quanto o Mercos pediu e os limites que o barraram. */
+  retryAfterSeconds?: number;
+  limits: { maxRetries: number; maxWaitSeconds: number };
 }
 
 export function errorFromResponse(input: ResponseErrorInput): MercosError {
@@ -110,9 +114,8 @@ export function errorFromResponse(input: ResponseErrorInput): MercosError {
 
   let hint: string | undefined;
   if (html) hint = WRONG_HOST_HINT;
-  // Não se sabe qual status o Mercos usa para o bloqueio, mas 401 é token e 5xx é falha do servidor.
-  else if (input.production && method === "GET" && /\/\d+$/.test(path) && status >= 402 && status < 500)
-    hint = READ_BY_ID_HINT;
+  // Não se sabe qual status o Mercos usa para o bloqueio, mas 401 é token, 429 é limite e 5xx é o servidor.
+  else if (input.readByIdInProduction && status >= 402 && status < 500 && status !== 429) hint = READ_BY_ID_HINT;
 
   const detail =
     typeof payload.mensagem === "string"
@@ -121,7 +124,14 @@ export function errorFromResponse(input: ResponseErrorInput): MercosError {
         ? body.replace(/[{}\s"]+/g, " ").trim()
         : "";
   const fields = fieldErrors.map((erro) => (erro.campo ? `${erro.campo}: ${erro.mensagem}` : erro.mensagem)).join("; ");
-  const message = [`Mercos respondeu ${status} em ${method} ${path}.`, detail, fields].filter(Boolean).join(" ");
+  const { retryAfterSeconds, limits } = input;
+  const limit =
+    retryAfterSeconds === undefined
+      ? ""
+      : retryAfterSeconds > limits.maxWaitSeconds
+        ? `O Mercos pediu ${retryAfterSeconds}s de espera, acima do teto de ${limits.maxWaitSeconds}s.`
+        : `Limite de ${limits.maxRetries} repetições esgotado.`;
+  const message = [`Mercos respondeu ${status} em ${method} ${path}.`, detail, fields, limit].filter(Boolean).join(" ");
 
   return new MercosError(kindForStatus(status), message, {
     status,
@@ -129,6 +139,7 @@ export function errorFromResponse(input: ResponseErrorInput): MercosError {
     path,
     fieldErrors,
     hint,
+    retryAfterSeconds,
     body: html ? undefined : body,
   });
 }

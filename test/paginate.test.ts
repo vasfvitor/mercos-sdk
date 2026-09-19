@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { collect, MercosError, StatusPedido } from "../src/index.ts";
-import { fake, fixture, LIMITED } from "./helpers.ts";
+import { collect, StatusPedido } from "../src/index.ts";
+import { fake, fixture, LIMITED, rejectsWith } from "./helpers.ts";
 
 const registro = (id: number, ultima_alteracao: string) => ({ id, ultima_alteracao });
 
@@ -44,11 +44,7 @@ test("registro alterado de novo entre páginas não é tratado como repetido", a
 test("página inteira no mesmo segundo com mais páginas prometidas falha alto", async () => {
   const mesmaHora = [registro(1, "2024-01-01 10:00:00"), registro(2, "2024-01-01 10:00:00")];
   const { mercos, calls } = fake([{ body: mesmaHora, headers: LIMITED }]);
-  await assert.rejects(collect(mercos.clientes.list()), (error: unknown) => {
-    assert.ok(error instanceof MercosError);
-    assert.equal(error.kind, "pagination");
-    return true;
-  });
+  await assert.rejects(collect(mercos.clientes.list()), rejectsWith("pagination"));
   assert.equal(calls.length, 1);
 });
 
@@ -98,11 +94,7 @@ test("página vazia sem o header encerra sem erro", async () => {
 
 test("resposta que não é lista vira unexpected_response", async () => {
   const { mercos } = fake([{ body: { mensagem: "ops" } }]);
-  await assert.rejects(collect(mercos.produtos.list()), (error: unknown) => {
-    assert.ok(error instanceof MercosError);
-    assert.equal(error.kind, "unexpected_response");
-    return true;
-  });
+  await assert.rejects(collect(mercos.produtos.list()), rejectsWith("unexpected_response"));
 });
 
 test("filtros de pedido vão para a query, com status_custom repetido", async () => {

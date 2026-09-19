@@ -2,10 +2,10 @@ import { errorFromResponse, looksLikeHtml, MercosError, WRONG_HOST_HINT } from "
 
 export type FetchLike = (url: string, init: RequestInit) => Promise<Response>;
 export type SleepLike = (ms: number, signal?: AbortSignal) => Promise<void>;
-export type QueryValue = string | number | boolean | undefined | readonly (string | number)[];
+type QueryValue = string | number | boolean | undefined | readonly (string | number)[];
 export type Query = Record<string, QueryValue>;
 
-export interface HttpConfig {
+interface HttpConfig {
   baseUrl: string;
   production: boolean;
   applicationToken: string;
@@ -22,6 +22,8 @@ export interface RequestOptions {
   query?: Query;
   body?: unknown;
   signal?: AbortSignal | undefined;
+  /** Leitura por ID: em produção o Mercos bloqueia, e o erro ganha uma dica a respeito. */
+  readById?: boolean;
 }
 
 export interface MercosResponse<T> {
@@ -64,6 +66,19 @@ function buildUrl(baseUrl: string, path: string, query: Query | undefined): stri
   return `${baseUrl}${path}${search ? `?${search}` : ""}`;
 }
 
+const noop = () => undefined;
+
+/** Rejeita com o motivo do abort assim que ele acontece, sem deixar listener para trás. */
+function abortable<T>(promise: Promise<T>, signal: AbortSignal | undefined): Promise<T> {
+  if (!signal) return promise;
+  return new Promise<T>((resolve, reject) => {
+    const onAbort = () => reject(signal.reason);
+    if (signal.aborted) return onAbort();
+    signal.addEventListener("abort", onAbort, { once: true });
+    promise.then(resolve, reject).finally(() => signal.removeEventListener("abort", onAbort));
+  });
+}
+
 /** Corpo vazio vira undefined; texto que não é JSON fica como texto (o 401 do Mercos é assim). */
 function parseBody(text: string): unknown {
   if (text.trim() === "") return undefined;
@@ -85,15 +100,19 @@ function waitSeconds(body: unknown, headers: Headers): number {
 
 export function createHttp(config: HttpConfig): Http {
   // Se a API ecoar um token no corpo, ele não pode chegar a mensagens de erro nem a logs.
-  const secrets = [config.applicationToken, config.companyToken].filter((token) => token !== "");
+  const secrets = [config.applicationToken, config.companyToken];
   const redact = (text: string) => secrets.reduce((result, token) => result.replaceAll(token, "***"), text);
 
   // O limite do Mercos é global, então requisições paralelas só rendem mais 429.
   // Cada chamada entra no fim desta cadeia e a espera do 429 acontece com a fila parada.
-  let tail: Promise<unknown> = Promise.resolve();
-  function serialize<T>(task: () => Promise<T>): Promise<T> {
-    const result = tail.then(task);
-    tail = result.catch(() => undefined);
+  // Quem aborta enquanto espera sai da fila na hora, sem gastar requisição. A vez seguinte ainda
+  // espera a anterior terminar, e `tail` não guarda a resposta de ninguém.
+  let tail: Promise<void> = Promise.resolve();
+  function serialize<T>(task: () => Promise<T>, signal: AbortSignal | undefined): Promise<T> {
+    const previous = tail;
+    const result = abortable(previous, signal).then(task);
+    const settled = result.then(noop, noop);
+    tail = previous.then(() => settled);
     return result;
   }
 
@@ -107,8 +126,9 @@ export function createHttp(config: HttpConfig): Http {
         CompanyToken: config.companyToken,
         ...(options.body === undefined ? {} : { "Content-Type": "application/json" }),
       },
-      ...(options.body === undefined ? {} : { body: JSON.stringify(options.body) }),
-      signal: options.signal ?? null,
+      // JSON.stringify(undefined) já é undefined, então requisição sem corpo continua sem corpo.
+      body: JSON.stringify(options.body),
+      signal: options.signal,
     };
 
     for (let retries = 0; ; retries++) {
@@ -130,17 +150,6 @@ export function createHttp(config: HttpConfig): Http {
           await config.sleep((seconds + RETRY_PADDING_SECONDS) * 1000, options.signal);
           continue;
         }
-        const reason =
-          seconds > config.maxWaitSeconds
-            ? `O Mercos pediu ${seconds}s de espera, acima do teto de ${config.maxWaitSeconds}s.`
-            : `Limite de ${config.maxRetries} repetições esgotado.`;
-        throw new MercosError("rate_limit", `Mercos respondeu 429 em ${method} ${path}. ${reason}`, {
-          status: 429,
-          method,
-          path,
-          retryAfterSeconds: seconds,
-          body,
-        });
       }
 
       if (!response.ok) {
@@ -150,7 +159,9 @@ export function createHttp(config: HttpConfig): Http {
           path,
           text,
           body,
-          production: config.production,
+          readByIdInProduction: config.production && options.readById === true,
+          ...(response.status === 429 ? { retryAfterSeconds: waitSeconds(body, response.headers) } : {}),
+          limits: { maxRetries: config.maxRetries, maxWaitSeconds: config.maxWaitSeconds },
         });
       }
       if (looksLikeHtml(text)) {
@@ -166,21 +177,6 @@ export function createHttp(config: HttpConfig): Http {
   }
 
   return {
-    request<T>(method: string, path: string, options: RequestOptions = {}) {
-      const { signal } = options;
-      const queued = serialize(() => {
-        // Quem desistiu enquanto esperava na fila não chega a gastar uma requisição.
-        if (signal?.aborted) throw signal.reason;
-        return send<T>(method, path, options);
-      });
-      if (!signal) return queued;
-      // A fila pode ficar minutos parada num 429 de outra chamada. O abort não espera a vez.
-      return new Promise<MercosResponse<T>>((resolve, reject) => {
-        const onAbort = () => reject(signal.reason);
-        if (signal.aborted) onAbort();
-        else signal.addEventListener("abort", onAbort, { once: true });
-        queued.then(resolve, reject).finally(() => signal.removeEventListener("abort", onAbort));
-      });
-    },
+    request: (method, path, options = {}) => serialize(() => send(method, path, options), options.signal),
   };
 }

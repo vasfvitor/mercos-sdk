@@ -2,7 +2,7 @@
 import { existsSync, readFileSync } from "node:fs";
 
 export const INDEX_URL = "https://docs.mercos.com/llms.txt";
-export const CACHE_DIR = ".cache/docs";
+const CACHE_DIR = ".cache/docs";
 export const INDEX_FILE = `${CACHE_DIR}/llms.txt`;
 export const PAGES_DIR = `${CACHE_DIR}/pages`;
 export const SPEC_FILE = "spec/mercos-openapi.json";

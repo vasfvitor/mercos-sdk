@@ -2,6 +2,7 @@
 // Cada página traz o documento de uma operação só, com chaves de caminho sujas. Aqui elas são
 // normalizadas, os rascunhos descartados e as correções manuais de spec/patches.json aplicadas.
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { BASE_URLS } from "../src/client.ts";
 import { extractOpenApi, readIndex, SPEC_FILE } from "./lib/docs.ts";
 
 type Json = Record<string, unknown>;
@@ -12,7 +13,7 @@ interface Patches {
   /** Por slug da página: nome da variante quando duas operações dividem caminho e método. */
   variants: Record<string, string>;
   /** Correções pontuais no documento final, por JSON Pointer. */
-  set: { pointer: string; value: unknown; motivo: string }[];
+  set: { pointers: string[]; value: unknown; motivo: string }[];
 }
 
 const METHODS = new Set(["get", "post", "put", "delete", "patch"]);
@@ -41,7 +42,7 @@ function setPointer(doc: Json, pointer: string, value: unknown): void {
     .split("/")
     .slice(1)
     .map((key) => key.replace(/~1/g, "/").replace(/~0/g, "~"));
-  let node = doc as Record<string, unknown>;
+  let node = doc;
   for (const key of keys.slice(0, -1)) {
     if (typeof node[key] !== "object" || node[key] === null)
       throw new Error(`Pointer inválido em patches.json: ${pointer}`);
@@ -102,8 +103,8 @@ const document: Json = {
       "Gerado por scripts/merge-spec.ts; não edite à mão, use spec/patches.json.",
   },
   servers: [
-    { url: "https://sandbox.mercos.com/api", description: "Sandbox" },
-    { url: "https://app.mercos.com/api", description: "Produção" },
+    { url: BASE_URLS.sandbox, description: "Sandbox" },
+    { url: BASE_URLS.production, description: "Produção" },
   ],
   security: [{ ApplicationToken: [], CompanyToken: [] }],
   paths: Object.fromEntries(Object.entries(paths).sort(([a], [b]) => a.localeCompare(b))),
@@ -115,7 +116,7 @@ const document: Json = {
   },
 };
 
-for (const patch of patches.set) setPointer(document, patch.pointer, patch.value);
+for (const patch of patches.set) for (const pointer of patch.pointers) setPointer(document, pointer, patch.value);
 
 writeFileSync(SPEC_FILE, `${JSON.stringify(document, null, 2)}\n`);
 for (const note of notes) console.warn(`aviso: ${note}`);

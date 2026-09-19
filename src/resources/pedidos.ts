@@ -1,11 +1,8 @@
 import type { StatusFaturamento, StatusPedido } from "../enums.ts";
 import type { Http } from "../http.ts";
 import type { Pedido, PedidoInput, PedidoUpdate } from "../types.ts";
-import { createdId, get, type ListWithFilters, list, update } from "./base.ts";
-
-// Pedidos usam a versão 2 da API. A versão 1 está depreciada e só o cancelamento continua nela.
-const PATH = "/v2/pedidos";
-const CANCEL_PATH = "/v1/pedidos/cancelar";
+import { type CrudResource, crud, post } from "./base.ts";
+import { PATHS } from "./paths.ts";
 
 export type PedidoFilters = {
   status?: StatusPedido;
@@ -23,28 +20,26 @@ export interface PedidoCreated {
   itens: { id: number }[];
 }
 
-export interface PedidosResource {
-  list(options?: ListWithFilters<PedidoFilters>): AsyncGenerator<Pedido>;
-  get(id: number, signal?: AbortSignal): Promise<Pedido>;
+export interface PedidosResource
+  extends Omit<CrudResource<Pedido, PedidoInput, PedidoUpdate, PedidoFilters>, "create"> {
   create(pedido: PedidoInput, signal?: AbortSignal): Promise<PedidoCreated>;
-  update(id: number, pedido: PedidoUpdate, signal?: AbortSignal): Promise<void>;
   cancel(id: number, signal?: AbortSignal): Promise<void>;
 }
 
 export function pedidos(http: Http): PedidosResource {
   return {
-    list: (options) => list<Pedido, PedidoFilters>(http, PATH, options),
-    get: (id, signal) => get<Pedido>(http, PATH, id, signal),
+    ...crud<Pedido, PedidoInput, PedidoUpdate, PedidoFilters>(http, PATHS.pedidos),
     async create(pedido, signal) {
-      const response = await http.request<{ numero?: number; itens?: { id: number }[] } | undefined>("POST", PATH, {
-        body: pedido,
+      const { id, data } = await post<{ numero?: number; itens?: { id: number }[] }>(
+        http,
+        PATHS.pedidos,
+        pedido,
         signal,
-      });
-      return { id: createdId(response, PATH), numero: response.data?.numero, itens: response.data?.itens ?? [] };
+      );
+      return { id, numero: data?.numero, itens: data?.itens ?? [] };
     },
-    update: (id, pedido, signal) => update(http, PATH, id, pedido, signal),
     async cancel(id, signal) {
-      await http.request<unknown>("POST", `${CANCEL_PATH}/${id}`, { signal });
+      await http.request<unknown>("POST", `${PATHS.cancelarPedido}/${id}`, { signal });
     },
   };
 }

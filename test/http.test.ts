@@ -1,16 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { createMercos, MercosError } from "../src/index.ts";
-import { fake, THROTTLED, TOKENS } from "./helpers.ts";
-
-function rejectsWith(kind: string, check?: (error: MercosError) => void) {
-  return (error: unknown) => {
-    assert.ok(error instanceof MercosError, `esperava MercosError, veio ${String(error)}`);
-    assert.equal(error.kind, kind);
-    check?.(error);
-    return true;
-  };
-}
+import { createMercos } from "../src/index.ts";
+import { fake, rejectsWith, THROTTLED, TOKENS } from "./helpers.ts";
 
 test("envia os dois tokens e usa o host do sandbox por padrão", async () => {
   const { mercos, calls } = fake([{ body: { ok: true } }]);
@@ -255,4 +246,28 @@ test("401 em GET por ID na produção não ganha a dica de GET por ID", async ()
 test("token ausente falha na criação do cliente, antes de qualquer requisição", () => {
   assert.throws(() => fake([], { companyToken: "" }), rejectsWith("config"));
   assert.throws(() => fake([], { applicationToken: undefined as never }), rejectsWith("config"));
+});
+
+test("abort de quem está na fila não deixa a chamada seguinte furar a que está em voo", async () => {
+  let inFlight = 0;
+  let peak = 0;
+  const slow = async () => {
+    inFlight++;
+    peak = Math.max(peak, inFlight);
+    await new Promise((resolve) => setImmediate(resolve));
+    inFlight--;
+    return { body: {} };
+  };
+  const { mercos, calls } = fake([slow, slow]);
+  const controller = new AbortController();
+
+  const first = mercos.tokenStatus();
+  const second = mercos.tokenStatus(controller.signal);
+  const third = mercos.tokenStatus();
+  controller.abort(new Error("desisti"));
+
+  await assert.rejects(second, /desisti/);
+  await Promise.all([first, third]);
+  assert.equal(calls.length, 2);
+  assert.equal(peak, 1);
 });

@@ -1,11 +1,13 @@
 // Salva os exemplos embutidos na especificação como fixtures de teste, um arquivo por operação.
 // Só entram os recursos que o SDK cobre. Os exemplos vêm da documentação pública, sem dado real.
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { PATHS } from "../src/resources/paths.ts";
 import { SPEC_FILE } from "./lib/docs.ts";
 
 const OUTPUT_DIR = "test/fixtures";
-const RESOURCES =
-  /^\/(v2\/pedidos|v1\/(pedidos\/cancelar|clientes|produtos|tabelas_preco|produtos_tabela_preco|condicoes_pagamento|transportadoras|usuarios))(\/\{id\})?(#.*)?$/;
+const COVERED = new Set<string>(Object.values(PATHS));
+/** "/v2/pedidos/{id}#grade" é coberto porque "/v2/pedidos" é. */
+const isCovered = (path: string) => COVERED.has(path.replace(/(\/\{id\})?(#.*)?$/, ""));
 
 interface Example {
   value?: unknown;
@@ -42,7 +44,7 @@ mkdirSync(OUTPUT_DIR, { recursive: true });
 
 let count = 0;
 for (const [path, item] of Object.entries(spec.paths)) {
-  if (!RESOURCES.test(path)) continue;
+  if (!isCovered(path)) continue;
   for (const [method, operation] of Object.entries(item)) {
     const responses: Record<string, unknown> = {};
     for (const [status, response] of Object.entries(operation.responses ?? {})) {

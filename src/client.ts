@@ -1,14 +1,17 @@
 import { MercosError } from "./errors.ts";
 import { createHttp, defaultSleep, type FetchLike, type SleepLike } from "./http.ts";
-import { type ClientesResource, clientes } from "./resources/clientes.ts";
-import { type CondicoesPagamentoResource, condicoesPagamento } from "./resources/condicoes-pagamento.ts";
+import { crud, readOnly } from "./resources/base.ts";
+import type {
+  ClientesResource,
+  CondicoesPagamentoResource,
+  ProdutosResource,
+  ProdutosTabelaPrecoResource,
+  TabelasPrecoResource,
+  TransportadorasResource,
+  UsuariosResource,
+} from "./resources/catalogo.ts";
+import { PATHS } from "./resources/paths.ts";
 import { type PedidosResource, pedidos } from "./resources/pedidos.ts";
-import { type ProdutosResource, produtos } from "./resources/produtos.ts";
-import { type ProdutosTabelaPrecoResource, produtosTabelaPreco } from "./resources/produtos-tabela-preco.ts";
-import { tokenStatus } from "./resources/status.ts";
-import { type TabelasPrecoResource, tabelasPreco } from "./resources/tabelas-preco.ts";
-import { type TransportadorasResource, transportadoras } from "./resources/transportadoras.ts";
-import { type UsuariosResource, usuarios } from "./resources/usuarios.ts";
 
 export type MercosEnvironment = "sandbox" | "production";
 
@@ -82,13 +85,13 @@ export function createMercos(options: MercosOptions): Mercos {
 
   return {
     pedidos: pedidos(http),
-    clientes: clientes(http),
-    produtos: produtos(http),
-    tabelasPreco: tabelasPreco(http),
-    produtosTabelaPreco: produtosTabelaPreco(http),
-    condicoesPagamento: condicoesPagamento(http),
-    transportadoras: transportadoras(http),
-    usuarios: usuarios(http),
-    tokenStatus: (signal) => tokenStatus(http, signal),
+    clientes: crud(http, PATHS.clientes),
+    produtos: crud(http, PATHS.produtos),
+    tabelasPreco: readOnly(http, PATHS.tabelasPreco),
+    produtosTabelaPreco: readOnly(http, PATHS.produtosTabelaPreco),
+    condicoesPagamento: readOnly(http, PATHS.condicoesPagamento),
+    transportadoras: readOnly(http, PATHS.transportadoras),
+    usuarios: readOnly(http, PATHS.usuarios),
+    tokenStatus: async (signal) => (await http.request<unknown>("GET", PATHS.tokenStatus, { signal })).data,
   };
 }

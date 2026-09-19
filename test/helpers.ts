@@ -1,22 +1,23 @@
+import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { createMercos, type Mercos, type MercosOptions } from "../src/index.ts";
+import { createMercos, type Mercos, MercosError, type MercosOptions } from "../src/index.ts";
 
-export interface Call {
+interface Call {
   method: string;
   url: URL;
   headers: Record<string, string>;
   body: unknown;
 }
 
-export interface Reply {
+interface Reply {
   status?: number;
   body?: unknown;
   headers?: Record<string, string>;
 }
 
-export type Handler = Reply | ((call: Call) => Reply | Promise<Reply>);
+type Handler = Reply | ((call: Call) => Reply | Promise<Reply>);
 
-export interface Fake {
+interface Fake {
   mercos: Mercos;
   calls: Call[];
   /** Esperas pedidas ao relógio falso, em milissegundos. Nenhuma espera de verdade acontece. */
@@ -44,8 +45,9 @@ export function fake(replies: Handler[], options: Partial<MercosOptions> = {}): 
       const next = queue.shift();
       if (!next) throw new Error(`Requisição inesperada: ${call.method} ${call.url.pathname}`);
       const reply = typeof next === "function" ? await next(call) : next;
-      const text = typeof reply.body === "string" ? reply.body : JSON.stringify(reply.body ?? "");
-      return new Response(reply.body === undefined ? "" : text, {
+      const text =
+        reply.body === undefined ? "" : typeof reply.body === "string" ? reply.body : JSON.stringify(reply.body);
+      return new Response(text, {
         status: reply.status ?? 200,
         headers: { "Content-Type": "application/json", ...reply.headers },
       });
@@ -57,6 +59,16 @@ export function fake(replies: Handler[], options: Partial<MercosOptions> = {}): 
     ...options,
   });
   return { mercos, calls, sleeps };
+}
+
+/** Predicado para assert.rejects e assert.throws: confere o `kind` e deixa inspecionar o resto. */
+export function rejectsWith(kind: string, check?: (error: MercosError) => void) {
+  return (error: unknown) => {
+    assert.ok(error instanceof MercosError, `esperava MercosError, veio ${String(error)}`);
+    assert.equal(error.kind, kind);
+    check?.(error);
+    return true;
+  };
 }
 
 export const LIMITED = { MEUSPEDIDOS_LIMITOU_REGISTROS: "1" };
