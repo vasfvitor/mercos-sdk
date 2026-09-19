@@ -3,22 +3,18 @@ import { test } from "node:test";
 import { collect, StatusPedido } from "../src/index.ts";
 import { fake, fixture, LIMITED, rejectsWith } from "./helpers.ts";
 
-const registro = (id: number, ultima_alteracao: string) => ({ id, ultima_alteracao });
+const record = (id: number, ultima_alteracao: string) => ({ id, ultima_alteracao });
 
-test("três páginas: página fora de ordem, repetidos descartados e cursor exato do servidor", async () => {
+test("three pages: an unsorted page, repeats dropped, and the server's exact cursor", async () => {
   const { mercos, calls } = fake([
-    // Fora de ordem de propósito: o cursor sai dos instantes da página, não da posição do último registro.
+    // Unsorted on purpose: the cursor comes from the instants on the page, not from the last record's position.
     {
-      body: [
-        registro(2, "2024-01-02 10:00:00"),
-        registro(3, "2024-01-03 10:00:00"),
-        registro(1, "2024-01-01 10:00:00"),
-      ],
+      body: [record(2, "2024-01-02 10:00:00"), record(3, "2024-01-03 10:00:00"), record(1, "2024-01-01 10:00:00")],
       headers: LIMITED,
     },
-    // O cursor recuou para o penúltimo instante, então o registro 3 volta e é descartado.
-    { body: [registro(3, "2024-01-03 10:00:00"), registro(4, "2024-01-04 10:00:00")], headers: LIMITED },
-    { body: [registro(5, "2024-01-05 10:00:00")] },
+    // The cursor stepped back to the second-highest instant, so record 3 comes back and gets dropped.
+    { body: [record(3, "2024-01-03 10:00:00"), record(4, "2024-01-04 10:00:00")], headers: LIMITED },
+    { body: [record(5, "2024-01-05 10:00:00")] },
   ]);
 
   const clientes = await collect(mercos.clientes.list());
@@ -33,39 +29,35 @@ test("três páginas: página fora de ordem, repetidos descartados e cursor exat
   );
 });
 
-test("registro alterado de novo entre páginas não é tratado como repetido", async () => {
+test("a record changed again between pages isn't treated as a repeat", async () => {
   const { mercos } = fake([
-    { body: [registro(9, "2024-01-01 09:00:00"), registro(1, "2024-01-01 10:00:00")], headers: LIMITED },
-    { body: [registro(1, "2024-01-01 10:00:07")] },
+    { body: [record(9, "2024-01-01 09:00:00"), record(1, "2024-01-01 10:00:00")], headers: LIMITED },
+    { body: [record(1, "2024-01-01 10:00:07")] },
   ]);
   assert.equal((await collect(mercos.clientes.list())).length, 3);
 });
 
-test("página inteira no mesmo segundo com mais páginas prometidas falha alto", async () => {
-  const mesmaHora = [registro(1, "2024-01-01 10:00:00"), registro(2, "2024-01-01 10:00:00")];
-  const { mercos, calls } = fake([{ body: mesmaHora, headers: LIMITED }]);
+test("a whole page in one second, with more pages promised, fails loudly", async () => {
+  const sameSecond = [record(1, "2024-01-01 10:00:00"), record(2, "2024-01-01 10:00:00")];
+  const { mercos, calls } = fake([{ body: sameSecond, headers: LIMITED }]);
   await assert.rejects(collect(mercos.clientes.list()), rejectsWith("pagination"));
   assert.equal(calls.length, 1);
 });
 
-test("registros do mesmo segundo cortados pelo fim da página não se perdem com servidor estrito", async () => {
-  // O servidor tem 2, 3 e 4 no mesmo segundo, mas a página 1 acabou antes do 4.
+test("same-second records cut off by the end of a page aren't lost with a strict server", async () => {
+  // The server has 2, 3, and 4 in the same second, but page 1 ended before 4.
   const { mercos, calls } = fake([
     {
-      body: [
-        registro(1, "2024-01-01 10:00:00"),
-        registro(2, "2024-01-01 10:00:05"),
-        registro(3, "2024-01-01 10:00:05"),
-      ],
+      body: [record(1, "2024-01-01 10:00:00"), record(2, "2024-01-01 10:00:05"), record(3, "2024-01-01 10:00:05")],
       headers: LIMITED,
     },
-    // alterado_apos estrito (>) a partir de 10:00:00: o segundo 10:00:05 volta inteiro.
+    // A strict alterado_apos (>) from 10:00:00 brings the whole 10:00:05 second back.
     {
       body: [
-        registro(2, "2024-01-01 10:00:05"),
-        registro(3, "2024-01-01 10:00:05"),
-        registro(4, "2024-01-01 10:00:05"),
-        registro(5, "2024-01-01 10:00:09"),
+        record(2, "2024-01-01 10:00:05"),
+        record(3, "2024-01-01 10:00:05"),
+        record(4, "2024-01-01 10:00:05"),
+        record(5, "2024-01-01 10:00:09"),
       ],
     },
   ]);
@@ -77,32 +69,32 @@ test("registros do mesmo segundo cortados pelo fim da página não se perdem com
   assert.equal(calls[1]!.url.searchParams.get("alterado_apos"), "2024-01-01 10:00:00");
 });
 
-test("cursor inicial com T não gera falso alarme contra o formato com espaço do servidor", async () => {
+test("a starting cursor with a T raises no false alarm against the server's space format", async () => {
   const { mercos } = fake([
-    { body: [registro(1, "2024-04-10 16:00:00"), registro(2, "2024-04-10 16:30:00")], headers: LIMITED },
-    { body: [registro(2, "2024-04-10 16:30:00"), registro(3, "2024-04-10 17:00:00")] },
+    { body: [record(1, "2024-04-10 16:00:00"), record(2, "2024-04-10 16:30:00")], headers: LIMITED },
+    { body: [record(2, "2024-04-10 16:30:00"), record(3, "2024-04-10 17:00:00")] },
   ]);
-  const clientes = await collect(mercos.clientes.list({ alteradoApos: "2024-04-10T15:45:00" }));
+  const clientes = await collect(mercos.clientes.list({ changedAfter: "2024-04-10T15:45:00" }));
   assert.equal(clientes.length, 3);
 });
 
-test("página vazia sem o header encerra sem erro", async () => {
+test("an empty page without the header ends with no error", async () => {
   const { mercos, calls } = fake([{ body: [] }]);
   assert.deepEqual(await collect(mercos.produtos.list()), []);
   assert.equal(calls.length, 1);
 });
 
-test("resposta que não é lista vira unexpected_response", async () => {
+test("a response that isn't a list becomes unexpected_response", async () => {
   const { mercos } = fake([{ body: { mensagem: "ops" } }]);
   await assert.rejects(collect(mercos.produtos.list()), rejectsWith("unexpected_response"));
 });
 
-test("filtros de pedido vão para a query, com status_custom repetido", async () => {
+test("order filters go into the query, with status_custom repeated", async () => {
   const { mercos, calls } = fake([{ body: fixture("get_v2_pedidos").responses["200"] }]);
   const pedidos = await collect(
     mercos.pedidos.list({
-      alteradoApos: "2024-01-01 00:00:00",
-      filtros: { status: StatusPedido.Orcamento, status_custom: [0, 4], registros_por_pagina: 15 },
+      changedAfter: "2024-01-01 00:00:00",
+      filters: { status: StatusPedido.Orcamento, status_custom: [0, 4], registros_por_pagina: 15 },
     }),
   );
 
@@ -116,10 +108,10 @@ test("filtros de pedido vão para a query, com status_custom repetido", async ()
   assert.equal(pedidos[0]!.itens?.[0]?.produto_id, 130);
 });
 
-test("o iterador é preguiçoso: parar cedo não busca a página seguinte", async () => {
+test("the iterator is lazy: stopping early doesn't fetch the next page", async () => {
   const { mercos, calls } = fake([
-    { body: [registro(1, "2024-01-01 10:00:00"), registro(2, "2024-01-02 10:00:00")], headers: LIMITED },
-    { body: [registro(3, "2024-01-03 10:00:00")] },
+    { body: [record(1, "2024-01-01 10:00:00"), record(2, "2024-01-02 10:00:00")], headers: LIMITED },
+    { body: [record(3, "2024-01-03 10:00:00")] },
   ]);
   for await (const cliente of mercos.clientes.list()) {
     assert.equal(cliente.id, 1);

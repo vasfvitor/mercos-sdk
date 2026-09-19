@@ -1,67 +1,67 @@
 import { MercosError } from "./errors.ts";
 import type { Http, Query } from "./http.ts";
 
-/** Ponto de partida quando quem chama quer tudo. É o valor que a documentação do Mercos usa. */
-const INICIO = "2000-01-01T00:00:00";
+/** Starting point when the caller wants everything. The Mercos documentation uses this value. */
+const EPOCH = "2000-01-01T00:00:00";
 const LIMITED_HEADER = "MEUSPEDIDOS_LIMITOU_REGISTROS";
 
 export interface ListOptions {
-  /** Traz só registros alterados depois deste instante, no formato que o Mercos devolve em `ultima_alteracao`. */
-  alteradoApos?: string;
+  /** Only records changed after this instant, in the format Mercos returns in `ultima_alteracao`. */
+  changedAfter?: string;
   signal?: AbortSignal;
 }
 
-/** O pouco que a paginação precisa enxergar num registro, seja ele de qual recurso for. */
-interface Paginado {
+/** The little that pagination needs to see in a record, whatever resource it belongs to. */
+interface Paginated {
   id?: unknown;
   ultima_alteracao?: unknown;
 }
 
-/** O servidor escreve "2024-04-10 15:45:00" e a documentação usa "2024-04-10T15:45:00". Só para comparar. */
+/** The server writes "2024-04-10 15:45:00" and the documentation uses "2024-04-10T15:45:00". For comparing only. */
 function comparable(timestamp: string): string {
   return timestamp.replace("T", " ");
 }
 
-function recordKey(record: Paginado): string {
+function recordKey(record: Paginated): string {
   return record.id === undefined ? JSON.stringify(record) : `${String(record.id)}|${String(record.ultima_alteracao)}`;
 }
 
 /**
- * Percorre uma listagem incremental do Mercos. O cursor seguinte é uma `ultima_alteracao` da
- * própria página, devolvida exatamente como o servidor escreveu, e o laço termina quando o header
- * MEUSPEDIDOS_LIMITOU_REGISTROS deixa de vir com valor 1.
+ * Walks an incremental Mercos list. The next cursor is an `ultima_alteracao` taken from the page
+ * itself, sent back exactly as the server wrote it. The loop ends when the
+ * MEUSPEDIDOS_LIMITOU_REGISTROS header stops arriving with a value of 1.
  */
 export async function* paginate<T extends object>(
   http: Http,
   path: string,
-  options: ListOptions & { filtros?: Query } = {},
+  options: ListOptions & { filters?: Query } = {},
 ): AsyncGenerator<T> {
-  let cursor = options.alteradoApos ?? INICIO;
-  // Registros já entregues que a página seguinte vai trazer de novo, por causa do recuo do cursor.
+  let cursor = options.changedAfter ?? EPOCH;
+  // Records already yielded that the next page brings back, because the cursor steps back.
   let seen = new Set<string>();
 
   for (;;) {
     const response = await http.request<unknown>("GET", path, {
-      query: { ...options.filtros, alterado_apos: cursor },
+      query: { ...options.filters, alterado_apos: cursor },
       signal: options.signal,
     });
     if (!Array.isArray(response.data)) {
-      throw new MercosError("unexpected_response", `GET ${path} não devolveu uma lista.`, {
+      throw new MercosError("unexpected_response", `GET ${path} didn't return a list.`, {
         method: "GET",
         path,
         body: response.data,
       });
     }
-    const records = response.data as Paginado[];
+    const records = response.data as Paginated[];
 
     for (const record of records) {
-      // Num gerador assíncrono o tipo do yield é Awaited<T>, que o compilador não reduz para T genérico.
+      // In an async generator the yield type is Awaited<T>, which the compiler can't reduce for a generic T.
       if (seen.size === 0 || !seen.has(recordKey(record))) yield record as Awaited<T>;
     }
 
     if (response.headers.get(LIMITED_HEADER) !== "1") return;
 
-    // Os dois maiores instantes distintos à frente do cursor. `raw` volta para o servidor como veio.
+    // The two highest distinct instants ahead of the cursor. `raw` goes back to the server as it came.
     const current = comparable(cursor);
     let top: { raw: string; key: string } | undefined;
     let second: { raw: string; key: string } | undefined;
@@ -77,16 +77,16 @@ export async function* paginate<T extends object>(
       }
     }
 
-    // `ultima_alteracao` tem resolução de um segundo, e o corte da página pode cair no meio de um
-    // segundo. Por isso o cursor recua para o PENÚLTIMO instante: o último é relido inteiro na
-    // página seguinte, seja o alterado_apos do servidor ">" ou ">=". Com um instante só, não há
-    // para onde recuar sem arriscar perda silenciosa ou laço infinito.
+    // `ultima_alteracao` has one-second resolution, and a page can end in the middle of a second.
+    // So the cursor steps back to the SECOND-highest instant: the next page reads the last second
+    // again in full, whether the server treats alterado_apos as ">" or ">=". With a single instant
+    // there is nowhere to step back to without risking silent loss or an infinite loop.
     if (second === undefined) {
       throw new MercosError(
         "pagination",
-        `GET ${path} avisou que há mais registros, mas a página inteira tem a mesma ultima_alteracao ` +
-          `("${top?.raw ?? cursor}"). Avançar o cursor daqui poderia perder registros em silêncio. ` +
-          "Se a rota aceitar registros_por_pagina, tente uma página maior.",
+        `GET ${path} reported more records, but the whole page shares one ultima_alteracao ` +
+          `("${top?.raw ?? cursor}"). Advancing the cursor from here could lose records silently. ` +
+          "If the route accepts registros_por_pagina, try a larger page.",
         { method: "GET", path },
       );
     }

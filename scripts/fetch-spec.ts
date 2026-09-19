@@ -1,6 +1,6 @@
-// Baixa o índice e as páginas de referência do Mercos para o cache local.
-// Uso: node scripts/fetch-spec.ts [--refresh]
-// Sem --refresh, páginas já presentes no cache não são baixadas de novo.
+// Downloads the Mercos index and reference pages into the local cache.
+// Usage: node scripts/fetch-spec.ts [--refresh]
+// Without --refresh, pages already in the cache aren't downloaded again.
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { setTimeout as sleep } from "node:timers/promises";
 import { INDEX_FILE, INDEX_URL, PAGES_DIR, parseIndex } from "./lib/docs.ts";
@@ -14,7 +14,7 @@ async function download(url: string): Promise<string> {
     const response = await fetch(url, { headers: { "User-Agent": "mercos-sdk spec fetcher" } });
     if (response.ok) return await response.text();
     const retryable = response.status === 429 || response.status >= 500;
-    if (!retryable || attempt === MAX_ATTEMPTS) throw new Error(`${response.status} ao baixar ${url}`);
+    if (!retryable || attempt === MAX_ATTEMPTS) throw new Error(`${response.status} while downloading ${url}`);
     await sleep(DELAY_MS * 2 ** attempt);
   }
 }
@@ -31,4 +31,6 @@ for (const page of pages) {
   downloaded++;
   await sleep(DELAY_MS);
 }
-console.log(`${pages.length} páginas no índice, ${downloaded} baixadas, ${pages.length - downloaded} do cache.`);
+console.log(
+  `${pages.length} pages in the index, ${downloaded} downloaded, ${pages.length - downloaded} from the cache.`,
+);

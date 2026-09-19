@@ -37,12 +37,12 @@ const mercos = createMercos({
 await mercos.tokenStatus();
 
 // Lists are async iterators. Pagination happens underneath.
-for await (const cliente of mercos.clientes.list({ alteradoApos: "2024-01-01 00:00:00" })) {
+for await (const cliente of mercos.clientes.list({ changedAfter: "2024-01-01 00:00:00" })) {
   console.log(cliente.id, cliente.razao_social);
 }
 
 // Or collect everything, with the filters that the route accepts.
-const quotes = await collect(mercos.pedidos.list({ filtros: { status: StatusPedido.Orcamento } }));
+const quotes = await collect(mercos.pedidos.list({ filters: { status: StatusPedido.Orcamento } }));
 
 // Creating an order returns the identifier that Mercos sends in the MeusPedidosID header.
 try {
@@ -101,7 +101,7 @@ Mercos lists are incremental. The cursor is `alterado_apos`, and the
   larger `registros_por_pagina` value usually fixes it.
 
 For incremental sync, store the highest `ultima_alteracao` that you received and pass it as
-`alteradoApos` on the next run.
+`changedAfter` on the next run.
 
 ### Errors
 

@@ -20,13 +20,13 @@ type Handler = Reply | ((call: Call) => Reply | Promise<Reply>);
 interface Fake {
   mercos: Mercos;
   calls: Call[];
-  /** Esperas pedidas ao relógio falso, em milissegundos. Nenhuma espera de verdade acontece. */
+  /** Waits requested from the fake clock, in milliseconds. No real waiting happens. */
   sleeps: number[];
 }
 
-export const TOKENS = { applicationToken: "app-token-de-teste", companyToken: "company-token-de-teste" };
+export const TOKENS = { applicationToken: "test-application-token", companyToken: "test-company-token" };
 
-/** Cliente com `fetch` roteirizado: cada requisição consome a próxima resposta da fila. */
+/** A client with a scripted `fetch`: each request consumes the next reply in the queue. */
 export function fake(replies: Handler[], options: Partial<MercosOptions> = {}): Fake {
   const queue = [...replies];
   const calls: Call[] = [];
@@ -43,7 +43,7 @@ export function fake(replies: Handler[], options: Partial<MercosOptions> = {}): 
       };
       calls.push(call);
       const next = queue.shift();
-      if (!next) throw new Error(`Requisição inesperada: ${call.method} ${call.url.pathname}`);
+      if (!next) throw new Error(`Unexpected request: ${call.method} ${call.url.pathname}`);
       const reply = typeof next === "function" ? await next(call) : next;
       const text =
         reply.body === undefined ? "" : typeof reply.body === "string" ? reply.body : JSON.stringify(reply.body);
@@ -61,10 +61,10 @@ export function fake(replies: Handler[], options: Partial<MercosOptions> = {}): 
   return { mercos, calls, sleeps };
 }
 
-/** Predicado para assert.rejects e assert.throws: confere o `kind` e deixa inspecionar o resto. */
+/** Predicate for assert.rejects and assert.throws: checks the `kind` and lets the caller inspect the rest. */
 export function rejectsWith(kind: string, check?: (error: MercosError) => void) {
   return (error: unknown) => {
-    assert.ok(error instanceof MercosError, `esperava MercosError, veio ${String(error)}`);
+    assert.ok(error instanceof MercosError, `expected a MercosError, got ${String(error)}`);
     assert.equal(error.kind, kind);
     check?.(error);
     return true;

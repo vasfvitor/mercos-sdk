@@ -1,4 +1,4 @@
-// Recursos sem comportamento próprio: só caminho, tipos e filtros. A lógica está em base.ts.
+// Resources with no behavior of their own: only a path, types, and filters. The logic lives in base.ts.
 import type {
   Cliente,
   ClienteInput,
@@ -15,12 +15,12 @@ import type {
 import type { CrudResource, DivisaoFilters, ReadOnlyResource } from "./base.ts";
 
 export type ClienteFilters = {
-  /** Inclui ou não os clientes excluídos na listagem. */
+  /** Whether the list includes deleted customers. */
   excluido?: boolean;
 };
 
 export type ClientesResource = CrudResource<Cliente, ClienteInput, ClienteUpdate, ClienteFilters>;
-/** `create` e `update` cobrem o produto simples. Produtos de grade têm outro corpo e ainda não são cobertos. */
+/** `create` and `update` cover simple products. Grid products take another body and aren't covered yet. */
 export type ProdutosResource = CrudResource<Produto, ProdutoInput, ProdutoUpdate, DivisaoFilters>;
 export type TabelasPrecoResource = ReadOnlyResource<TabelaPreco, DivisaoFilters>;
 export type ProdutosTabelaPrecoResource = ReadOnlyResource<ProdutoTabelaPreco, DivisaoFilters>;

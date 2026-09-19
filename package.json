@@ -1,7 +1,7 @@
 {
   "name": "mercos-sdk",
   "version": "0.1.0",
-  "description": "SDK TypeScript não oficial para a API de integração do Mercos: fetch nativo, zero dependências, paginação e throttling tratados",
+  "description": "Unofficial TypeScript SDK for the Mercos integration API: native fetch, zero dependencies, pagination and throttling handled",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,

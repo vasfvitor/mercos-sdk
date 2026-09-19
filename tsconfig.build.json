@@ -1,5 +1,5 @@
 {
-  // Emite só src/ para dist/. Os imports "./x.ts" viram "./x.js" por rewriteRelativeImportExtensions.
+  // Emits only src/ into dist/. rewriteRelativeImportExtensions turns "./x.ts" imports into "./x.js".
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "noEmit": false,

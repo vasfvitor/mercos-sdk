@@ -1,15 +1,17 @@
 # Changelog
 
-Este projeto segue o [versionamento semântico](https://semver.org/lang/pt-BR/).
+This project follows [semantic versioning](https://semver.org/).
 
-## 0.1.0 - não publicado
+## 0.1.0 - unreleased
 
-Primeira versão.
+First version.
 
-- Cliente `createMercos` com `fetch` nativo e sem dependências de runtime.
-- Fila única por cliente e repetição automática do 429, com teto de espera e de repetições.
-- Iterador de paginação sobre `alterado_apos`, com descarte de repetidos e guarda de cursor.
-- `MercosError` com `kind` e normalização dos quatro formatos de `erros`.
-- Recursos: pedidos, clientes, produtos, tabelas de preço, preços por tabela, condições de
-  pagamento, transportadoras, usuários e conferência de tokens.
-- Tipos das 169 operações documentadas, gerados a partir de `spec/mercos-openapi.json`.
+- A `createMercos` client built on native `fetch`, with no runtime dependencies.
+- A single request queue per client, and automatic retry on 429 responses, with a ceiling on
+  the wait and on the retry count.
+- A pagination iterator over `alterado_apos` that steps the cursor back so that records in
+  the same second aren't lost, and that drops the repeats.
+- A `MercosError` class with a `kind` field, which normalizes the four shapes of `erros`.
+- Resources: orders, customers, products, price tables, prices per table, payment conditions,
+  carriers, users, and a token check.
+- Types for the 169 documented operations, generated from `spec/mercos-openapi.json`.

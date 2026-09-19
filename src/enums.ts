@@ -1,9 +1,10 @@
-// Valores que a documentação do Mercos descreve só em prosa, por isso não aparecem nos tipos gerados.
+// Values that the Mercos documentation describes only in prose, so the generated types lack them.
+// Names stay in Portuguese because they are the API's own vocabulary.
 
-// Os status são strings porque é assim que a API os devolve ("status": "2"). Na query dos
-// filtros o valor vai como texto de qualquer forma, então a mesma constante serve para os dois lados.
+// Statuses are strings because that is how the API returns them ("status": "2"). In a filter
+// query the value travels as text anyway, so the same constant works in both directions.
 
-/** `status` do pedido. Um orçamento é um pedido com status "1". */
+/** Order `status`. A quote is an order with status "1". */
 export const StatusPedido = {
   Cancelado: "0",
   Orcamento: "1",
@@ -18,7 +19,7 @@ export const StatusFaturamento = {
 } as const;
 export type StatusFaturamento = (typeof StatusFaturamento)[keyof typeof StatusFaturamento];
 
-/** `tipo_ipi`: o campo `ipi` é um percentual ou um valor fixo em reais. */
+/** `tipo_ipi`: whether the `ipi` field is a percentage or a fixed amount in reais. */
 export const TipoIpi = {
   Percentual: "P",
   ValorFixo: "V",

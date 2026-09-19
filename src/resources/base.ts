@@ -3,12 +3,12 @@ import type { Http, MercosResponse, Query } from "../http.ts";
 import { type ListOptions, paginate } from "../paginate.ts";
 
 export interface ListWithFilters<Filters extends Query> extends ListOptions {
-  /** Filtros da rota, com os mesmos nomes da documentação do Mercos. */
-  filtros?: Filters;
+  /** Route filters, spelled exactly as the Mercos documentation names them. */
+  filters?: Filters;
 }
 
 export type DivisaoFilters = {
-  /** Só para contas de indústria com divisões. Sem o filtro, vêm os registros de todas. */
+  /** Only for manufacturer accounts with divisions. Without it, records from every division come back. */
   divisao_id?: number;
 };
 
@@ -16,10 +16,10 @@ export interface Created {
   id: number;
 }
 
-/** Recurso só de leitura. Sem `Filters`, a listagem aceita apenas as opções comuns. */
+/** Read-only resource. Without `Filters`, the list accepts only the common options. */
 export interface ReadOnlyResource<T, Filters extends Query = never> {
   list(options?: [Filters] extends [never] ? ListOptions : ListWithFilters<Filters>): AsyncGenerator<T>;
-  /** Leitura por ID. O Mercos só libera no sandbox; em produção o erro traz a dica. */
+  /** Read by ID. Mercos allows it only in the sandbox; in production the error carries a hint. */
   get(id: number, signal?: AbortSignal): Promise<T>;
 }
 
@@ -28,24 +28,28 @@ export interface CrudResource<T, Input, Update, Filters extends Query = never> e
   update(id: number, body: Update, signal?: AbortSignal): Promise<void>;
 }
 
-/** O ID de um registro criado vem no header MeusPedidosID. O corpo só serve de reserva. */
+/** The ID of a created record comes in the MeusPedidosID header. The body is only a fallback. */
 function createdId(response: MercosResponse<unknown>, path: string): number {
   const candidates = [response.headers.get("MeusPedidosID"), (response.data as { id?: unknown } | undefined)?.id];
   const id = candidates
     .map((value) => Number(value || Number.NaN))
     .find((value) => Number.isInteger(value) && value > 0);
   if (id === undefined) {
-    throw new MercosError("unexpected_response", `POST ${path} não devolveu o ID em MeusPedidosID nem no corpo.`, {
-      status: response.status,
-      method: "POST",
-      path,
-      body: response.data,
-    });
+    throw new MercosError(
+      "unexpected_response",
+      `POST ${path} returned no ID, neither in the MeusPedidosID header nor in the body.`,
+      {
+        status: response.status,
+        method: "POST",
+        path,
+        body: response.data,
+      },
+    );
   }
   return id;
 }
 
-/** POST de criação: devolve o ID e o corpo, para quem precisa de mais do que o ID. */
+/** Create POST: returns the ID and the body, for callers that need more than the ID. */
 export async function post<Data>(http: Http, path: string, body: unknown, signal?: AbortSignal) {
   const response = await http.request<Data | undefined>("POST", path, { body, signal });
   return { id: createdId(response, path), data: response.data };

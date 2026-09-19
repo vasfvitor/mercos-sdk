@@ -7,7 +7,7 @@ import { PATHS } from "./paths.ts";
 export type PedidoFilters = {
   status?: StatusPedido;
   status_faturamento?: StatusFaturamento;
-  /** Aceita vários valores. Use 0 para pedidos sem status customizado. */
+  /** Accepts several values. Use 0 for orders with no custom status. */
   status_custom?: readonly (string | number)[];
   divisao_id?: number;
   registros_por_pagina?: number;
@@ -16,7 +16,7 @@ export type PedidoFilters = {
 export interface PedidoCreated {
   id: number;
   numero: number | undefined;
-  /** IDs dos itens, na mesma ordem em que foram enviados. */
+  /** Item IDs, in the same order the items were sent. */
   itens: { id: number }[];
 }
 

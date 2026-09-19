@@ -1,5 +1,5 @@
 {
-  // Só checagem de tudo (fonte, scripts e testes). O que vai para o pacote sai de tsconfig.build.json.
+  // Type-checks everything (source, scripts, and tests). What ships in the package comes from tsconfig.build.json.
   "compilerOptions": {
     "target": "ES2022",
     "module": "NodeNext",

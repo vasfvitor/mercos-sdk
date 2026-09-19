@@ -12,9 +12,9 @@ interface HttpConfig {
   companyToken: string;
   fetch: FetchLike;
   sleep: SleepLike;
-  /** Quantas vezes repetir a mesma requisição depois de um 429. */
+  /** How many times to retry the same request after a 429. */
   maxRetries: number;
-  /** Espera máxima, em segundos, aceita para um único 429. Acima disso o erro vai para quem chamou. */
+  /** Longest wait, in seconds, accepted for a single 429. Beyond it, the error goes to the caller. */
   maxWaitSeconds: number;
 }
 
@@ -22,7 +22,7 @@ export interface RequestOptions {
   query?: Query;
   body?: unknown;
   signal?: AbortSignal | undefined;
-  /** Leitura por ID: em produção o Mercos bloqueia, e o erro ganha uma dica a respeito. */
+  /** Read by ID: Mercos blocks it in production, so the error carries a hint about that. */
   readById?: boolean;
 }
 
@@ -36,7 +36,7 @@ export interface Http {
   request<T>(method: string, path: string, options?: RequestOptions): Promise<MercosResponse<T>>;
 }
 
-/** Folga somada ao tempo que o Mercos pede, para não reenviar em cima do limite. */
+/** Slack added to the wait Mercos asks for, so the retry doesn't land right on the limit. */
 const RETRY_PADDING_SECONDS = 0.5;
 const FALLBACK_WAIT_SECONDS = 5;
 
@@ -68,7 +68,7 @@ function buildUrl(baseUrl: string, path: string, query: Query | undefined): stri
 
 const noop = () => undefined;
 
-/** Rejeita com o motivo do abort assim que ele acontece, sem deixar listener para trás. */
+/** Rejects with the abort reason as soon as it happens, and leaves no listener behind. */
 function abortable<T>(promise: Promise<T>, signal: AbortSignal | undefined): Promise<T> {
   if (!signal) return promise;
   return new Promise<T>((resolve, reject) => {
@@ -79,7 +79,7 @@ function abortable<T>(promise: Promise<T>, signal: AbortSignal | undefined): Pro
   });
 }
 
-/** Corpo vazio vira undefined; texto que não é JSON fica como texto (o 401 do Mercos é assim). */
+/** An empty body becomes undefined; text that isn't JSON stays text, like the Mercos 401. */
 function parseBody(text: string): unknown {
   if (text.trim() === "") return undefined;
   try {
@@ -92,21 +92,21 @@ function parseBody(text: string): unknown {
 function waitSeconds(body: unknown, headers: Headers): number {
   const reported = (body as { tempo_ate_permitir_novamente?: unknown } | undefined)?.tempo_ate_permitir_novamente;
   const raw = reported ?? headers.get("Retry-After");
-  // Number(null) e Number("") dão 0, o que viraria reenvio imediato. Ausência cai na espera de reserva.
+  // Number(null) and Number("") are 0, which would mean an instant retry. Absence gets the fallback wait.
   if (raw === null || raw === "") return FALLBACK_WAIT_SECONDS;
   const seconds = Number(raw);
   return Number.isFinite(seconds) && seconds >= 0 ? seconds : FALLBACK_WAIT_SECONDS;
 }
 
 export function createHttp(config: HttpConfig): Http {
-  // Se a API ecoar um token no corpo, ele não pode chegar a mensagens de erro nem a logs.
+  // If the API echoes a token in a body, it must not reach error messages or logs.
   const secrets = [config.applicationToken, config.companyToken];
   const redact = (text: string) => secrets.reduce((result, token) => result.replaceAll(token, "***"), text);
 
-  // O limite do Mercos é global, então requisições paralelas só rendem mais 429.
-  // Cada chamada entra no fim desta cadeia e a espera do 429 acontece com a fila parada.
-  // Quem aborta enquanto espera sai da fila na hora, sem gastar requisição. A vez seguinte ainda
-  // espera a anterior terminar, e `tail` não guarda a resposta de ninguém.
+  // The Mercos limit is global, so parallel requests only earn more 429s. Each call joins the
+  // end of this chain, and the 429 wait happens with the queue paused. A caller that aborts
+  // while waiting leaves the queue at once, without spending a request. The next turn still
+  // waits for the previous one to finish, and `tail` never holds on to anyone's response.
   let tail: Promise<void> = Promise.resolve();
   function serialize<T>(task: () => Promise<T>, signal: AbortSignal | undefined): Promise<T> {
     const previous = tail;
@@ -126,7 +126,7 @@ export function createHttp(config: HttpConfig): Http {
         CompanyToken: config.companyToken,
         ...(options.body === undefined ? {} : { "Content-Type": "application/json" }),
       },
-      // JSON.stringify(undefined) já é undefined, então requisição sem corpo continua sem corpo.
+      // JSON.stringify(undefined) is already undefined, so a request with no body stays without one.
       body: JSON.stringify(options.body),
       signal: options.signal,
     };
@@ -139,7 +139,7 @@ export function createHttp(config: HttpConfig): Http {
         text = redact(await response.text());
       } catch (cause) {
         if (options.signal?.aborted) throw cause;
-        throw new MercosError("network", `Falha de rede em ${method} ${path}.`, { method, path, cause });
+        throw new MercosError("network", `Network failure on ${method} ${path}.`, { method, path, cause });
       }
 
       const body = parseBody(text);
@@ -165,7 +165,7 @@ export function createHttp(config: HttpConfig): Http {
         });
       }
       if (looksLikeHtml(text)) {
-        throw new MercosError("unexpected_response", `Resposta em HTML em ${method} ${path}.`, {
+        throw new MercosError("unexpected_response", `HTML response to ${method} ${path}.`, {
           status: response.status,
           method,
           path,

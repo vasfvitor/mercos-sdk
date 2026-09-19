@@ -1,7 +1,7 @@
-// Única lista das rotas que o SDK cobre. O cliente monta os recursos daqui e
-// scripts/extract-fixtures.ts escolhe as fixtures daqui, então um recurso novo entra num lugar só.
+// The single list of routes the SDK covers. The client builds its resources from it, and
+// scripts/extract-fixtures.ts picks the fixtures from it, so a new resource goes in one place.
 export const PATHS = {
-  // Pedidos usam a versão 2 da API. A versão 1 está depreciada e só o cancelamento continua nela.
+  // Orders use version 2 of the API. Version 1 is deprecated, and only cancel still lives there.
   pedidos: "/v2/pedidos",
   cancelarPedido: "/v1/pedidos/cancelar",
   clientes: "/v1/clientes",
@@ -11,6 +11,6 @@ export const PATHS = {
   condicoesPagamento: "/v1/condicoes_pagamento",
   transportadoras: "/v1/transportadoras",
   usuarios: "/v1/usuarios",
-  // Esta rota só existe na prosa da documentação, sem fragmento OpenAPI, então o corpo fica sem tipo.
+  // This route exists only in the documentation prose, with no OpenAPI fragment, so its body is untyped.
   tokenStatus: "/v1/token_auth_status",
 } as const;

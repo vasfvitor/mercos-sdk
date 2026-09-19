@@ -1,12 +1,12 @@
-// Salva os exemplos embutidos na especificação como fixtures de teste, um arquivo por operação.
-// Só entram os recursos que o SDK cobre. Os exemplos vêm da documentação pública, sem dado real.
+// Saves the examples embedded in the specification as test fixtures, one file per operation.
+// Only the resources the SDK covers go in. The examples come from the public docs, with no real data.
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { PATHS } from "../src/resources/paths.ts";
 import { SPEC_FILE } from "./lib/docs.ts";
 
 const OUTPUT_DIR = "test/fixtures";
 const COVERED = new Set<string>(Object.values(PATHS));
-/** "/v2/pedidos/{id}#grade" é coberto porque "/v2/pedidos" é. */
+/** "/v2/pedidos/{id}#grade" is covered because "/v2/pedidos" is. */
 const isCovered = (path: string) => COVERED.has(path.replace(/(\/\{id\})?(#.*)?$/, ""));
 
 interface Example {
@@ -28,7 +28,7 @@ function firstExample(media: Media | undefined): unknown {
   return unwrap(named?.value ?? media.example);
 }
 
-/** Alguns exemplos foram publicados como JSON dentro de uma string. Texto que não é JSON fica como está. */
+/** Some examples were published as JSON inside a string. Text that isn't JSON stays as it is. */
 function unwrap(value: unknown): unknown {
   if (typeof value !== "string") return value;
   try {
@@ -61,4 +61,4 @@ for (const [path, item] of Object.entries(spec.paths)) {
     count++;
   }
 }
-console.log(`${count} fixtures gravadas em ${OUTPUT_DIR}.`);
+console.log(`${count} fixtures written to ${OUTPUT_DIR}.`);

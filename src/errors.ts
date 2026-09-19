@@ -11,7 +11,7 @@ export type MercosErrorKind =
   | "config";
 
 export interface MercosFieldError {
-  /** Campo apontado pela API. Ausente quando a API devolve só a mensagem. */
+  /** Field that the API points at. Absent when the API returns only a message. */
   campo?: string;
   mensagem: string;
 }
@@ -27,7 +27,7 @@ export interface MercosErrorDetails {
   cause?: unknown;
 }
 
-/** Único erro lançado pelo SDK. O campo `kind` diz o que aconteceu; os tokens nunca aparecem aqui. */
+/** The only error the SDK throws. `kind` says what happened; tokens never appear here. */
 export class MercosError extends Error {
   readonly kind: MercosErrorKind;
   readonly status: number | undefined;
@@ -53,22 +53,23 @@ export class MercosError extends Error {
 }
 
 /**
- * A API devolve `erros` em quatro formas, conforme a rota: objetos `{campo, mensagem}`,
- * pares `[campo, mensagem]`, strings soltas, ou nada. Todas viram a mesma lista.
+ * The API returns `erros` in four shapes, depending on the route: `{campo, mensagem}` objects,
+ * `[campo, mensagem]` pairs, bare strings, or nothing. All of them become the same list.
+ * The `campo` and `mensagem` keys stay in Portuguese because that is how the API spells them.
  */
-function normalizeFieldErrors(erros: unknown): MercosFieldError[] {
-  if (!Array.isArray(erros)) return [];
+function normalizeFieldErrors(entries: unknown): MercosFieldError[] {
+  if (!Array.isArray(entries)) return [];
   const result: MercosFieldError[] = [];
-  for (const erro of erros) {
-    if (typeof erro === "string") {
-      result.push({ mensagem: erro });
-    } else if (Array.isArray(erro)) {
-      const [campo, mensagem] = erro;
+  for (const entry of entries) {
+    if (typeof entry === "string") {
+      result.push({ mensagem: entry });
+    } else if (Array.isArray(entry)) {
+      const [campo, mensagem] = entry;
       result.push(
         mensagem === undefined ? { mensagem: String(campo) } : { campo: String(campo), mensagem: String(mensagem) },
       );
-    } else if (typeof erro === "object" && erro !== null) {
-      const { campo, mensagem } = erro as { campo?: unknown; mensagem?: unknown };
+    } else if (typeof entry === "object" && entry !== null) {
+      const { campo, mensagem } = entry as { campo?: unknown; mensagem?: unknown };
       result.push({ ...(campo === undefined ? {} : { campo: String(campo) }), mensagem: String(mensagem ?? "") });
     }
   }
@@ -76,11 +77,11 @@ function normalizeFieldErrors(erros: unknown): MercosFieldError[] {
 }
 
 export const WRONG_HOST_HINT =
-  "A resposta veio em HTML, o que indica host ou caminho errado. Confira o ambiente: sandbox.mercos.com/api ou app.mercos.com/api.";
+  "The response is HTML, which points to a wrong host or path. Check the environment: sandbox.mercos.com/api or app.mercos.com/api.";
 const READ_BY_ID_HINT =
-  "Em produção o Mercos não libera GET por ID. Use a listagem com alterado_apos ou peça a liberação ao suporte.";
+  "Mercos blocks reads by ID in production. Use the list with alterado_apos, or ask Mercos support to enable it.";
 
-/** Só o corpo decide: o Mercos rotula até texto puro como text/html, como no 401 de token recusado. */
+/** Only the body decides: Mercos labels even plain text as text/html, as in the 401 for a rejected token. */
 export function looksLikeHtml(text: string): boolean {
   return /^\s*<(!doctype|html)/i.test(text);
 }
@@ -101,7 +102,7 @@ interface ResponseErrorInput {
   text: string;
   body: unknown;
   readByIdInProduction: boolean;
-  /** Só no 429 que não será mais repetido: quanto o Mercos pediu e os limites que o barraram. */
+  /** Only on a 429 that won't be retried: the wait Mercos asked for, and the limits that stopped it. */
   retryAfterSeconds?: number;
   limits: { maxRetries: number; maxWaitSeconds: number };
 }
@@ -114,7 +115,7 @@ export function errorFromResponse(input: ResponseErrorInput): MercosError {
 
   let hint: string | undefined;
   if (html) hint = WRONG_HOST_HINT;
-  // Não se sabe qual status o Mercos usa para o bloqueio, mas 401 é token, 429 é limite e 5xx é o servidor.
+  // The status Mercos uses for the block is unknown, but 401 means tokens, 429 the limit, and 5xx the server.
   else if (input.readByIdInProduction && status >= 402 && status < 500 && status !== 429) hint = READ_BY_ID_HINT;
 
   const detail =
@@ -123,15 +124,15 @@ export function errorFromResponse(input: ResponseErrorInput): MercosError {
       : fieldErrors.length === 0 && typeof body === "string" && !html
         ? body.replace(/[{}\s"]+/g, " ").trim()
         : "";
-  const fields = fieldErrors.map((erro) => (erro.campo ? `${erro.campo}: ${erro.mensagem}` : erro.mensagem)).join("; ");
+  const fields = fieldErrors.map(({ campo, mensagem }) => (campo ? `${campo}: ${mensagem}` : mensagem)).join("; ");
   const { retryAfterSeconds, limits } = input;
   const limit =
     retryAfterSeconds === undefined
       ? ""
       : retryAfterSeconds > limits.maxWaitSeconds
-        ? `O Mercos pediu ${retryAfterSeconds}s de espera, acima do teto de ${limits.maxWaitSeconds}s.`
-        : `Limite de ${limits.maxRetries} repetições esgotado.`;
-  const message = [`Mercos respondeu ${status} em ${method} ${path}.`, detail, fields, limit].filter(Boolean).join(" ");
+        ? `Mercos asked for a ${retryAfterSeconds}s wait, above the ${limits.maxWaitSeconds}s ceiling.`
+        : `Gave up after ${limits.maxRetries} retries.`;
+  const message = [`Mercos responded ${status} to ${method} ${path}.`, detail, fields, limit].filter(Boolean).join(" ");
 
   return new MercosError(kindForStatus(status), message, {
     status,

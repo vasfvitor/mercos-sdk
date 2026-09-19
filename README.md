@@ -33,12 +33,12 @@ const mercos = createMercos({
 await mercos.tokenStatus();
 
 // Listagens são iteradores assíncronos. A paginação acontece por baixo.
-for await (const cliente of mercos.clientes.list({ alteradoApos: "2024-01-01 00:00:00" })) {
+for await (const cliente of mercos.clientes.list({ changedAfter: "2024-01-01 00:00:00" })) {
   console.log(cliente.id, cliente.razao_social);
 }
 
 // Ou tudo de uma vez, com filtros da rota.
-const orcamentos = await collect(mercos.pedidos.list({ filtros: { status: StatusPedido.Orcamento } }));
+const orcamentos = await collect(mercos.pedidos.list({ filters: { status: StatusPedido.Orcamento } }));
 
 // Criar um pedido devolve o ID que o Mercos manda no header MeusPedidosID.
 try {
@@ -97,7 +97,7 @@ As listagens do Mercos são incrementais. O cursor é `alterado_apos`, e o heade
   `registros_por_pagina` maior costuma resolver.
 
 Para sincronizar de forma incremental, guarde a maior `ultima_alteracao` que você recebeu e
-passe-a em `alteradoApos` na próxima execução.
+passe-a em `changedAfter` na próxima execução.
 
 ### Erros
 

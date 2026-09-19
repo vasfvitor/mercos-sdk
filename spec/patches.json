@@ -27,7 +27,7 @@
         "/paths/~1v2~1pedidos~1{id}#grade/put/requestBody/content/application~1json/schema/properties/itens/items/properties/preco_tabela/type"
       ],
       "value": "number",
-      "motivo": "A documentação declara string, mas o exemplo oficial da mesma página envia número (48.6)."
+      "reason": "The documentation declares a string, but the official example on the same page sends a number (48.6)."
     }
   ]
 }

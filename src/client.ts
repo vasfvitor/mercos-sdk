@@ -23,15 +23,15 @@ export const BASE_URLS: Record<MercosEnvironment, string> = {
 export interface MercosOptions {
   applicationToken: string;
   companyToken: string;
-  /** Padrão: "sandbox". Produção só depois da homologação com o Mercos. */
+  /** Defaults to "sandbox". Production only works after the Mercos approval review. */
   environment?: MercosEnvironment;
-  /** Substitui o `fetch` global. Útil em testes e para instrumentação. */
+  /** Replaces the global `fetch`. Useful for tests and instrumentation. */
   fetch?: FetchLike;
-  /** Substitui a espera entre repetições. Testes passam um relógio falso. */
+  /** Replaces the wait between retries. Tests pass a fake clock. */
   sleep?: SleepLike;
-  /** Repetições da mesma requisição depois de um 429. Padrão: 5. */
+  /** Retries of the same request after a 429. Defaults to 5. */
   maxRetries?: number;
-  /** Espera máxima, em segundos, aceita para um único 429. Padrão: 60. */
+  /** Longest wait, in seconds, accepted for a single 429. Defaults to 60. */
   maxWaitSeconds?: number;
 }
 
@@ -44,39 +44,39 @@ export interface Mercos {
   condicoesPagamento: CondicoesPagamentoResource;
   transportadoras: TransportadorasResource;
   usuarios: UsuariosResource;
-  /** Confere se o par de tokens é aceito pelo ambiente escolhido. */
+  /** Checks that the chosen environment accepts the token pair. */
   tokenStatus(signal?: AbortSignal): Promise<unknown>;
 }
 
 export function createMercos(options: MercosOptions): Mercos {
-  // jsdom e happy-dom definem `document` dentro do Node, em suítes de teste de backend. Isso não é navegador.
+  // jsdom and happy-dom define `document` inside Node, in backend test suites. That is not a browser.
   const onNode =
     typeof (globalThis as { process?: { versions?: { node?: string } } }).process?.versions?.node === "string";
   if ("document" in globalThis && !onNode) {
     throw new MercosError(
       "config",
-      "O SDK do Mercos roda só no servidor: a API recusa o preflight do navegador e os tokens ficariam expostos.",
+      "The Mercos SDK is server-side only: the API rejects browser preflight requests, and the tokens would be exposed.",
     );
   }
-  // Token lido de arquivo de segredo costuma vir com quebra de linha no fim, que o fetch recusa como header.
+  // A token read from a secret file often ends with a newline, which fetch rejects as a header value.
   const token = (name: "applicationToken" | "companyToken") => {
     const value = (options as Partial<MercosOptions> | undefined)?.[name];
     if (typeof value !== "string" || value.trim() === "")
-      throw new MercosError("config", `Opção obrigatória ausente: ${name}.`);
+      throw new MercosError("config", `Missing required option: ${name}.`);
     return value.trim();
   };
   const applicationToken = token("applicationToken");
   const companyToken = token("companyToken");
   const environment = options.environment ?? "sandbox";
   if (!Object.hasOwn(BASE_URLS, environment))
-    throw new MercosError("config", `Ambiente desconhecido: ${String(environment)}.`);
+    throw new MercosError("config", `Unknown environment: ${String(environment)}.`);
 
   const http = createHttp({
     baseUrl: BASE_URLS[environment],
     production: environment === "production",
     applicationToken,
     companyToken,
-    // Sem o arrow, `fetch` perde o `this` em Workers e lança "Illegal invocation".
+    // Without the arrow, `fetch` loses its `this` on Workers and throws "Illegal invocation".
     fetch: options.fetch ?? ((url, init) => fetch(url, init)),
     sleep: options.sleep ?? defaultSleep,
     maxRetries: options.maxRetries ?? 5,
