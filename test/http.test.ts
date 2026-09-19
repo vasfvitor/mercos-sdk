@@ -107,6 +107,18 @@ test("412 with errors shaped as pairs", async () => {
   );
 });
 
+test("a pair with an empty field carries only the message", async () => {
+  const body = { erros: [["", "Informe a condição de pagamento."]] };
+  const { mercos } = fake([{ status: 422, body }]);
+  await assert.rejects(
+    mercos.pedidos.create({} as never),
+    rejectsWith("validation", (error) => {
+      assert.deepEqual(error.fieldErrors, [{ mensagem: "Informe a condição de pagamento." }]);
+      assert.match(error.message, /v2\/pedidos\. Informe a condição/);
+    }),
+  );
+});
+
 test("422 with errors shaped as strings, and a 412 with only a message", async () => {
   const { mercos } = fake([
     {

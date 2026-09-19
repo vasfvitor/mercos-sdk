@@ -2,6 +2,13 @@
 
 This project follows [semantic versioning](https://semver.org/).
 
+## 0.1.1 - 2026-09-19
+
+- Fixed: when the API sends a validation error with an empty field name, as it does for an order
+  with no payment condition, the entry in `fieldErrors` now has no `campo`. Before, `campo` was
+  an empty string.
+- Shorter README text and package description.
+
 ## 0.1.0 - 2026-09-19
 
 First version.

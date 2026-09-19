@@ -60,6 +60,8 @@ export class MercosError extends Error {
  */
 function normalizeFieldErrors(entries: unknown): MercosFieldError[] {
   if (!Array.isArray(entries)) return [];
+  // An order with no payment condition gets `["", "message"]`: a pair whose field is empty.
+  const named = (campo: unknown) => (campo === undefined || campo === "" ? {} : { campo: String(campo) });
   const result: MercosFieldError[] = [];
   for (const entry of entries) {
     if (typeof entry === "string") {
@@ -67,11 +69,11 @@ function normalizeFieldErrors(entries: unknown): MercosFieldError[] {
     } else if (Array.isArray(entry)) {
       const [campo, mensagem] = entry;
       result.push(
-        mensagem === undefined ? { mensagem: String(campo) } : { campo: String(campo), mensagem: String(mensagem) },
+        mensagem === undefined ? { mensagem: String(campo) } : { ...named(campo), mensagem: String(mensagem) },
       );
     } else if (typeof entry === "object" && entry !== null) {
       const { campo, mensagem } = entry as { campo?: unknown; mensagem?: unknown };
-      result.push({ ...(campo === undefined ? {} : { campo: String(campo) }), mensagem: String(mensagem ?? "") });
+      result.push({ ...named(campo), mensagem: String(mensagem ?? "") });
     }
   }
   return result;
