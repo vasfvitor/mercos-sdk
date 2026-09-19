@@ -1,13 +1,14 @@
 # mercos-sdk
 
 SDK TypeScript **não oficial** para a [API de integração do Mercos](https://docs.mercos.com).
-Usa só o `fetch` nativo, não tem dependências de runtime e já trata as duas exigências da
-homologação do Mercos: paginação e throttling.
+Usa o `fetch` nativo, sem dependências de runtime. Trata o 429 e a paginação, os dois pontos que a
+[homologação do Mercos](https://docs.mercos.com/reference/homologação) cobra antes de liberar a
+produção.
 
 [English version](./README.en.md)
 
 > Este projeto não tem vínculo com a Mercos. Os tipos saem da documentação pública e podem
-> divergir do comportamento real da API. Problemas e correções são bem-vindos.
+> divergir do comportamento real da API.
 
 ## Instalação
 
@@ -29,18 +30,16 @@ const mercos = createMercos({
   environment: "sandbox", // ou "production", depois da homologação
 });
 
-// Confere se o par de tokens é aceito.
 await mercos.tokenStatus();
 
-// Listagens são iteradores assíncronos. A paginação acontece por baixo.
+// A paginação acontece dentro do iterador.
 for await (const cliente of mercos.clientes.list({ changedAfter: "2024-01-01 00:00:00" })) {
   console.log(cliente.id, cliente.razao_social);
 }
 
-// Ou tudo de uma vez, com filtros da rota.
 const orcamentos = await collect(mercos.pedidos.list({ filters: { status: StatusPedido.Orcamento } }));
 
-// Criar um pedido devolve o ID que o Mercos manda no header MeusPedidosID.
+// O ID vem do header MeusPedidosID.
 try {
   const { id, numero, itens } = await mercos.pedidos.create({
     cliente_id: 7172892,
@@ -61,7 +60,7 @@ disso, os dois tokens dão acesso total à conta e não podem chegar ao cliente.
 a iniciar quando detecta um navegador. Chame-o do seu backend e exponha ao navegador apenas as
 rotas de que a sua aplicação precisa.
 
-## O que o SDK trata por você
+## Comportamento
 
 ### Throttling
 
@@ -78,7 +77,7 @@ Dois limites devolvem o controle para você, com um `MercosError` de `kind` igua
 | `maxRetries`     | 5      | Repetições da mesma requisição depois de um 429.        |
 | `maxWaitSeconds` | 60     | Espera máxima aceita para um único 429, em segundos.    |
 
-Use **um** cliente por par de tokens no processo. Dois clientes não dividem a fila.
+Use um cliente por par de tokens no processo. Dois clientes não dividem a fila.
 
 ### Timeout e falhas passageiras
 
@@ -97,16 +96,14 @@ repetições.
 As listagens do Mercos são incrementais. O cursor é `alterado_apos`, e o header
 `MEUSPEDIDOS_LIMITOU_REGISTROS` com valor 1 avisa que há mais páginas. O iterador do SDK:
 
-- usa como próximo cursor a **penúltima** `ultima_alteracao` distinta da página, devolvida
-  exatamente como o servidor escreveu, sem depender da ordem dos registros. Esse campo tem
-  resolução de um segundo, e o corte da página pode cair no meio de um segundo. Recuar um
-  instante faz o último segundo ser relido inteiro, então nada se perde, seja o
-  `alterado_apos` do servidor estrito ou inclusivo;
+- usa como próximo cursor a penúltima `ultima_alteracao` distinta da página, devolvida como o
+  servidor escreveu. Esse campo tem resolução de um segundo, e o corte da página pode cair no
+  meio de um segundo. Com o recuo, o último segundo é relido inteiro, seja o `alterado_apos` do
+  servidor estrito ou inclusivo;
 - descarta os registros que voltam repetidos por causa desse recuo;
 - lança um erro de `kind` igual a `"pagination"` se o servidor prometer mais páginas e a
-  página inteira tiver a mesma `ultima_alteracao`, porque aí não há para onde recuar. Falhar
-  alto é melhor do que entrar em laço infinito ou perder dados em silêncio. Em pedidos, um
-  `registros_por_pagina` maior costuma resolver.
+  página inteira tiver a mesma `ultima_alteracao`, porque aí não há para onde recuar. Em
+  pedidos, um `registros_por_pagina` maior costuma resolver.
 
 Para sincronizar de forma incremental, guarde a maior `ultima_alteracao` que você recebeu e
 passe-a em `changedAfter` na próxima execução.
@@ -159,14 +156,8 @@ bloqueia essa leitura, e o erro traz uma dica a respeito.
 de grade que o Mercos documenta nas mesmas rotas. `ProdutoInput` e `PedidoInput` são uniões do
 corpo simples com os de grade.
 
-Os tipos de **todas** as 169 operações documentadas estão disponíveis em `paths` e
-`operations`, mesmo para rotas que ainda não têm método no cliente.
-
-## Homologação no Mercos
-
-Antes de liberar a produção, o Mercos revisa a integração. Os dois pontos que a revisão cobra,
-tratamento do 429 e paginação completa, são comportamento padrão deste SDK. O processo está em
-[docs.mercos.com/reference/homologação](https://docs.mercos.com/reference/homologação).
+Os tipos `paths` e `operations` cobrem as 169 operações documentadas, inclusive rotas que ainda
+não têm método no cliente.
 
 ## Verificado no sandbox
 
@@ -196,7 +187,7 @@ pnpm spec            # baixa as páginas, junta, gera os tipos e as fixtures
 pnpm spec:fetch -- --refresh   # ignora o cache local em .cache/docs
 ```
 
-Dois outros scripts vigiam a especificação. `pnpm spec:lint` confere que o arquivo montado é um
+`pnpm spec:lint` confere que o arquivo montado é um
 OpenAPI estruturalmente válido, e faz parte do `pnpm verify`. `pnpm spec:check` pergunta ao site da
 documentação, com uma requisição só, se o Mercos mudou algo desde o último `pnpm spec`. Sai com 1
 quando mudou.
@@ -208,8 +199,8 @@ O script de junção também conserta dois defeitos que se repetem nas páginas.
 declara um objeto e o próprio exemplo mostra uma lista, ou o contrário, vale o exemplo. Quando duas
 páginas documentam a mesma rota com corpos diferentes, os corpos viram um `oneOf` só.
 
-Os testes usam um `fetch` falso e um relógio falso, sem rede. Nenhum dado real de empresa entra
-no repositório: as fixtures vêm dos exemplos da documentação pública.
+Os testes usam um `fetch` falso e um relógio falso, sem rede. As fixtures vêm dos exemplos da
+documentação pública.
 
 Uma segunda suíte roda contra o sandbox de verdade. Ela se pula sozinha se as duas variáveis não
 existirem, e cancela o pedido que cria:

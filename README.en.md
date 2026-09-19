@@ -1,14 +1,15 @@
 # mercos-sdk
 
 An **unofficial** TypeScript SDK for the [Mercos integration API](https://docs.mercos.com).
-Mercos is a Brazilian B2B ordering platform. The SDK uses only native `fetch`, has no runtime
-dependencies, and handles the two behaviors that the Mercos approval review checks:
-pagination and throttling.
+Mercos is a Brazilian B2B ordering platform. The SDK uses native `fetch`, with no runtime
+dependencies. It handles 429 responses and pagination, the two behaviors that the
+[Mercos approval review](https://docs.mercos.com/reference/homologação) checks before it grants
+production access.
 
 [Versão em português](./README.md)
 
 > This project has no affiliation with Mercos. The types come from the public documentation
-> and can differ from how the API behaves. Issues and fixes are welcome.
+> and can differ from how the API behaves.
 
 ## Install
 
@@ -33,18 +34,16 @@ const mercos = createMercos({
   environment: "sandbox", // or "production", after the approval review
 });
 
-// Check that the API accepts the token pair.
 await mercos.tokenStatus();
 
-// Lists are async iterators. Pagination happens underneath.
+// Pagination happens inside the iterator.
 for await (const cliente of mercos.clientes.list({ changedAfter: "2024-01-01 00:00:00" })) {
   console.log(cliente.id, cliente.razao_social);
 }
 
-// Or collect everything, with the filters that the route accepts.
 const quotes = await collect(mercos.pedidos.list({ filters: { status: StatusPedido.Orcamento } }));
 
-// Creating an order returns the identifier that Mercos sends in the MeusPedidosID header.
+// The ID comes from the MeusPedidosID header.
 try {
   const { id, numero, itens } = await mercos.pedidos.create({
     cliente_id: 7172892,
@@ -65,7 +64,7 @@ tokens also grant full access to the account and must never reach the client. Th
 to start when it detects a browser. Call it from your backend, and expose to the browser only
 the routes that your app needs.
 
-## What the SDK handles for you
+## Behavior
 
 ### Throttling
 
@@ -82,7 +81,7 @@ a `retryAfterSeconds` field:
 | `maxRetries`     | 5       | Retries of the same request after a 429 response.    |
 | `maxWaitSeconds` | 60      | Longest wait accepted for a single 429, in seconds.  |
 
-Use **one** client per token pair in a process. Two clients don't share a queue.
+Use one client per token pair in a process. Two clients don't share a queue.
 
 ### Timeouts and transient failures
 
@@ -101,16 +100,14 @@ these retries off.
 Mercos lists are incremental. The cursor is `alterado_apos`, and the
 `MEUSPEDIDOS_LIMITOU_REGISTROS` header with a value of 1 signals more pages. The iterator:
 
-- Uses the **second-highest** distinct `ultima_alteracao` on the page as the next cursor,
-  sent back exactly as the server wrote it, without relying on record order. That field has
-  one-second resolution, and a page can end in the middle of a second. Stepping back one
-  value makes the next page read the last second again in full. Nothing gets lost, whether
-  the server treats `alterado_apos` as strict or inclusive.
+- Uses the second-highest distinct `ultima_alteracao` on the page as the next cursor, sent
+  back as the server wrote it. That field has one-second resolution, and a page can end in the
+  middle of a second. With the step back, the next page reads the last second again in full,
+  whether the server treats `alterado_apos` as strict or inclusive.
 - Drops the records that come back repeated because of that step back.
 - Throws an error whose `kind` is `"pagination"` when the server promises more pages and
   the whole page shares one `ultima_alteracao` value, because no earlier value exists to
-  step back to. Failing loudly beats an infinite loop or silent data loss. For orders, a
-  larger `registros_por_pagina` value usually fixes it.
+  step back to. For orders, a larger `registros_por_pagina` value usually fixes it.
 
 For incremental sync, store the highest `ultima_alteracao` that you received and pass it as
 `changedAfter` on the next run.
@@ -163,14 +160,8 @@ Mercos blocks reads by identifier, and the error carries a hint about it.
 bodies that Mercos documents on the same routes. `ProdutoInput` and `PedidoInput` are unions of
 the plain body and the grid ones.
 
-The `paths` and `operations` types cover **all** 169 documented operations, including routes
+The `paths` and `operations` types cover the 169 documented operations, including routes
 that don't have a client method yet.
-
-## Mercos approval review
-
-Before Mercos grants production access, it reviews the integration. The two behaviors that
-the review requires, 429 handling and complete pagination, are the defaults in this SDK. The
-[approval page](https://docs.mercos.com/reference/homologação) describes the process.
 
 ## Verified in the sandbox
 
@@ -200,7 +191,7 @@ pnpm spec            # fetch the pages, merge, generate the types and the fixtur
 pnpm spec:fetch -- --refresh   # ignore the local cache in .cache/docs
 ```
 
-Two more scripts guard the specification. `pnpm spec:lint` checks that the merged file is a
+`pnpm spec:lint` checks that the merged file is a
 structurally valid OpenAPI document, and it's part of `pnpm verify`. `pnpm spec:check` asks the
 documentation site, with a single request, whether Mercos changed anything since the last
 `pnpm spec`. It exits with 1 when it did.
@@ -212,8 +203,8 @@ The merge script also repairs two flaws that repeat across the pages. When a pag
 object and its own example shows a list, or the reverse, the example wins. When two pages
 document the same route with different bodies, the bodies become one `oneOf`.
 
-The tests use a fake `fetch` and a fake clock, with no network access. No real company data
-enters the repository: the fixtures come from the examples in the public documentation.
+The tests use a fake `fetch` and a fake clock, with no network access. The fixtures come from
+the examples in the public documentation.
 
 A second suite runs against the real sandbox. It skips itself unless both variables exist, and
 it cancels the order that it creates:
