@@ -238,10 +238,22 @@ test("maxRetries: 0 turns off the retry of reads too", async () => {
   assert.equal(calls.length, 1);
 });
 
-/** A fetch that never answers, and gives up only when its signal aborts, as the real one does. */
+/**
+ * A fetch that never answers, and gives up only when its signal aborts, as the real one does. The
+ * real one also holds a socket, which keeps the process alive. The interval stands in for it: the
+ * timer behind AbortSignal.timeout doesn't hold the event loop, so without it Node 22 exits early.
+ */
 const hang = (_url: string, init: RequestInit) =>
   new Promise<Response>((_, reject) => {
-    init.signal?.addEventListener("abort", () => reject(init.signal?.reason), { once: true });
+    const socket = setInterval(() => {}, 1000);
+    init.signal?.addEventListener(
+      "abort",
+      () => {
+        clearInterval(socket);
+        reject(init.signal?.reason);
+      },
+      { once: true },
+    );
   });
 
 test("a fetch that never answers becomes a timeout error, and frees the queue", async () => {
