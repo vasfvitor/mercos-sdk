@@ -20,7 +20,7 @@ export type ClienteFilters = {
 };
 
 export type ClientesResource = CrudResource<Cliente, ClienteInput, ClienteUpdate, ClienteFilters>;
-/** `create` and `update` cover simple products. Grid products take another body and aren't covered yet. */
+/** `create` and `update` take a plain product or a grid one: both bodies share the route. */
 export type ProdutosResource = CrudResource<Produto, ProdutoInput, ProdutoUpdate, DivisaoFilters>;
 export type TabelasPrecoResource = ReadOnlyResource<TabelaPreco, DivisaoFilters>;
 export type ProdutosTabelaPrecoResource = ReadOnlyResource<ProdutoTabelaPreco, DivisaoFilters>;

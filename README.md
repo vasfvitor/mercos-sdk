@@ -148,7 +148,7 @@ o SDK o mascara antes de montar o erro.
 | `mercos.usuarios`            | `list`, `get`                                 |
 | `mercos.tokenStatus()`       | Confere os tokens.                            |
 
-Todo método recebe um objeto de opções como último argumento. Hoje ele tem `signal`, um
+Todo método recebe um objeto de opções como último argumento. Ele tem `timeoutMs` e `signal`, um
 `AbortSignal` que cancela a requisição mesmo enquanto ela espera na fila:
 `mercos.pedidos.get(55, { signal })`.
 

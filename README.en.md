@@ -152,8 +152,8 @@ masks it before it builds the error.
 | `mercos.usuarios`            | `list`, `get`                                 |
 | `mercos.tokenStatus()`       | Checks the tokens.                            |
 
-Every method takes an options object as its last argument. Today it holds `signal`, an
-`AbortSignal` that cancels the request even while it waits in the queue:
+Every method takes an options object as its last argument. It holds `timeoutMs` and `signal`,
+an `AbortSignal` that cancels the request even while it waits in the queue:
 `mercos.pedidos.get(55, { signal })`.
 
 Orders use version 2 of the API. The `get` method works only in the sandbox. In production,
