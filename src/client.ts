@@ -33,6 +33,8 @@ export interface MercosOptions {
   maxRetries?: number;
   /** Longest wait, in seconds, accepted for a single 429. Defaults to 60. */
   maxWaitSeconds?: number;
+  /** Time limit for each attempt, in milliseconds. Defaults to 30000. Zero turns it off. */
+  timeoutMs?: number;
 }
 
 export interface Mercos {
@@ -81,6 +83,7 @@ export function createMercos(options: MercosOptions): Mercos {
     sleep: options.sleep ?? defaultSleep,
     maxRetries: options.maxRetries ?? 5,
     maxWaitSeconds: options.maxWaitSeconds ?? 60,
+    timeoutMs: options.timeoutMs ?? 30_000,
   });
 
   return {
@@ -92,7 +95,6 @@ export function createMercos(options: MercosOptions): Mercos {
     condicoesPagamento: readOnly(http, PATHS.condicoesPagamento),
     transportadoras: readOnly(http, PATHS.transportadoras),
     usuarios: readOnly(http, PATHS.usuarios),
-    tokenStatus: async (options) =>
-      (await http.request<unknown>("GET", PATHS.tokenStatus, { signal: options?.signal })).data,
+    tokenStatus: async (options) => (await http.request<unknown>("GET", PATHS.tokenStatus, options)).data,
   };
 }

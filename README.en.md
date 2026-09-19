@@ -84,6 +84,18 @@ a `retryAfterSeconds` field:
 
 Use **one** client per token pair in a process. Two clients don't share a queue.
 
+### Timeouts and transient failures
+
+Every attempt has a time limit, 30 seconds by default. A request that never answers would
+otherwise hold the queue, and every later call with it. When the limit passes, the call fails
+with a `MercosError` whose `kind` is `"timeout"`. Set `timeoutMs` in `createMercos`, or for one
+call: `mercos.pedidos.get(55, { timeoutMs: 5000 })`. Zero turns the limit off.
+
+A read (`GET`) that fails on the network, times out, or gets a 502, 503, or 504 is sent again
+up to twice. The first retry waits 1 second and the second waits 2. A write is never sent again: the first attempt may
+have created the order even though no response arrived. Setting `maxRetries` to 0 also turns
+these retries off.
+
 ### Pagination
 
 Mercos lists are incremental. The cursor is `alterado_apos`, and the
@@ -115,6 +127,7 @@ Every error that the SDK throws is a `MercosError`. The `kind` field says what h
 | `rate_limit`          | 429 beyond the configured limits.                               |
 | `server`              | 5xx.                                                            |
 | `network`             | The `fetch` call failed. The original error is in `cause`.      |
+| `timeout`             | No response within `timeoutMs`.                                 |
 | `unexpected_response` | A response outside the contract, such as a 201 with no header.  |
 | `pagination`          | The cursor didn't advance.                                      |
 | `config`              | Invalid options passed to `createMercos`.                       |
@@ -175,7 +188,7 @@ Tested on 2026-09-19 against `sandbox.mercos.com`, where the documentation was a
 
 ```sh
 pnpm install
-pnpm verify   # lint, type check, and tests
+pnpm verify   # lint, type check, specification lint, and tests
 pnpm build    # emits dist/
 ```
 
@@ -186,6 +199,11 @@ file from the OpenAPI fragments that each documentation page embeds:
 pnpm spec            # fetch the pages, merge, generate the types and the fixtures
 pnpm spec:fetch -- --refresh   # ignore the local cache in .cache/docs
 ```
+
+Two more scripts guard the specification. `pnpm spec:lint` checks that the merged file is a
+structurally valid OpenAPI document, and it's part of `pnpm verify`. `pnpm spec:check` asks the
+documentation site, with a single request, whether Mercos changed anything since the last
+`pnpm spec`. It exits with 1 when it did.
 
 Manual fixes to the specification live in `spec/patches.json`, each with its reason. To see
 what changed in the API, run `pnpm spec` again and read the `git diff` output.

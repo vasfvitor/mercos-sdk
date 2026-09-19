@@ -11,6 +11,8 @@ First version.
   the wait and on the retry count.
 - A pagination iterator over `alterado_apos` that steps the cursor back so that records in
   the same second aren't lost, and that drops the repeats.
+- A time limit on every attempt, 30 seconds by default, and up to two retries of a read after
+  a network failure, a timeout, or a 502, 503, or 504. A write is never repeated.
 - A `MercosError` class with a `kind` field, which normalizes the four shapes of `erros`.
 - Resources: orders, customers, products, price tables, prices per table, payment conditions,
   carriers, users, and a token check.

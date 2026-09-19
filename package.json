@@ -38,16 +38,19 @@
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "build": "rm -rf dist && tsc -p tsconfig.build.json",
-    "verify": "pnpm lint && pnpm check && pnpm test",
+    "verify": "pnpm lint && pnpm check && pnpm spec:lint && pnpm test",
     "spec:fetch": "node scripts/fetch-spec.ts",
     "spec:merge": "node scripts/merge-spec.ts",
     "spec:types": "node scripts/gen-types.ts",
     "spec:fixtures": "node scripts/extract-fixtures.ts",
-    "spec": "pnpm spec:fetch && pnpm spec:merge && pnpm spec:types && pnpm spec:fixtures",
+    "spec:lint": "node scripts/lint-spec.ts",
+    "spec:check": "node scripts/check-spec.ts",
+    "spec": "pnpm spec:fetch && pnpm spec:merge && pnpm spec:types && pnpm spec:fixtures && pnpm spec:check --update",
     "prepublishOnly": "pnpm verify && pnpm build"
   },
   "devDependencies": {
     "@biomejs/biome": "^2",
+    "@redocly/openapi-core": "^1.34.20",
     "@types/node": "^24",
     "openapi-typescript": "^7",
     "typescript": "^5.9"

@@ -39,7 +39,7 @@ export function pedidos(http: Http): PedidosResource {
       return { id, numero: data?.numero, itens: data?.itens ?? [] };
     },
     async cancel(id, options) {
-      await http.request<unknown>("POST", `${PATHS.cancelarPedido}/${id}`, { signal: options?.signal });
+      await http.request<unknown>("POST", `${PATHS.cancelarPedido}/${id}`, options);
     },
   };
 }

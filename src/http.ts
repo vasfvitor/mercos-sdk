@@ -16,18 +16,21 @@ interface HttpConfig {
   maxRetries: number;
   /** Longest wait, in seconds, accepted for a single 429. Beyond it, the error goes to the caller. */
   maxWaitSeconds: number;
+  /** Time limit for each attempt, in milliseconds. Zero turns it off. */
+  timeoutMs: number;
 }
 
 /** Options that every client method takes as its last argument. */
 export interface CallOptions {
   /** Cancels the request, including the time it spends in the queue or waiting out a 429. */
-  signal?: AbortSignal;
+  signal?: AbortSignal | undefined;
+  /** Time limit for each attempt of this call, in milliseconds. Overrides the client's. Zero turns it off. */
+  timeoutMs?: number | undefined;
 }
 
-export interface RequestOptions {
+export interface RequestOptions extends CallOptions {
   query?: Query;
   body?: unknown;
-  signal?: AbortSignal | undefined;
   /** Read by ID: Mercos blocks it in production, so the error carries a hint about that. */
   readById?: boolean;
 }
@@ -45,6 +48,10 @@ export interface Http {
 /** Slack added to the wait Mercos asks for, so the retry doesn't land right on the limit. */
 const RETRY_PADDING_SECONDS = 0.5;
 const FALLBACK_WAIT_SECONDS = 5;
+/** Gateway statuses: the request most likely never reached Mercos, or Mercos was restarting. */
+const TRANSIENT_STATUSES = new Set([502, 503, 504]);
+/** Retries of a read after a transient failure, waiting 1s and then 2s. `maxRetries` can lower it. */
+const TRANSIENT_RETRIES = 2;
 
 export const defaultSleep: SleepLike = (ms, signal) =>
   new Promise((resolve, reject) => {
@@ -124,20 +131,35 @@ export function createHttp(config: HttpConfig): Http {
 
   async function send<T>(method: string, path: string, options: RequestOptions): Promise<MercosResponse<T>> {
     const url = buildUrl(config.baseUrl, path, options.query);
-    const init: RequestInit = {
-      method,
-      headers: {
-        Accept: "application/json",
-        ApplicationToken: config.applicationToken,
-        CompanyToken: config.companyToken,
-        ...(options.body === undefined ? {} : { "Content-Type": "application/json" }),
-      },
-      // JSON.stringify(undefined) is already undefined, so a request with no body stays without one.
-      body: JSON.stringify(options.body),
-      signal: options.signal,
+    const headers = {
+      Accept: "application/json",
+      ApplicationToken: config.applicationToken,
+      CompanyToken: config.companyToken,
+      ...(options.body === undefined ? {} : { "Content-Type": "application/json" }),
+    };
+    // JSON.stringify(undefined) is already undefined, so a request with no body stays without one.
+    const body = JSON.stringify(options.body);
+    const timeoutMs = options.timeoutMs ?? config.timeoutMs;
+    // Only a read is safe to repeat. A POST that timed out may have created the order anyway.
+    const transientRetries = method === "GET" ? Math.min(TRANSIENT_RETRIES, config.maxRetries) : 0;
+    let transientFailures = 0;
+    const retryTransient = async () => {
+      if (transientFailures >= transientRetries) return false;
+      await config.sleep(1000 * 2 ** transientFailures++, options.signal);
+      return true;
     };
 
-    for (let retries = 0; ; retries++) {
+    for (let retries = 0; ; ) {
+      // A fetch that never answers would hold the whole queue, so every attempt gets its own deadline.
+      const deadline = timeoutMs > 0 ? AbortSignal.timeout(timeoutMs) : undefined;
+      const signals = [options.signal, deadline].filter((signal) => signal !== undefined);
+      const init: RequestInit = {
+        method,
+        headers,
+        body,
+        signal: signals.length > 1 ? AbortSignal.any(signals) : signals[0],
+      };
+
       let response: Response;
       let text: string;
       try {
@@ -145,18 +167,27 @@ export function createHttp(config: HttpConfig): Http {
         text = redact(await response.text());
       } catch (cause) {
         if (options.signal?.aborted) throw cause;
-        throw new MercosError("network", `Network failure on ${method} ${path}.`, { method, path, cause });
+        if (await retryTransient()) continue;
+        throw deadline?.aborted
+          ? new MercosError("timeout", `No response to ${method} ${path} within ${timeoutMs} ms.`, {
+              method,
+              path,
+              cause,
+            })
+          : new MercosError("network", `Network failure on ${method} ${path}.`, { method, path, cause });
       }
 
-      const body = parseBody(text);
+      const data = parseBody(text);
 
       if (response.status === 429) {
-        const seconds = waitSeconds(body, response.headers);
+        const seconds = waitSeconds(data, response.headers);
         if (retries < config.maxRetries && seconds <= config.maxWaitSeconds) {
+          retries++;
           await config.sleep((seconds + RETRY_PADDING_SECONDS) * 1000, options.signal);
           continue;
         }
       }
+      if (TRANSIENT_STATUSES.has(response.status) && (await retryTransient())) continue;
 
       if (!response.ok) {
         throw errorFromResponse({
@@ -164,9 +195,9 @@ export function createHttp(config: HttpConfig): Http {
           method,
           path,
           text,
-          body,
+          body: data,
           readByIdInProduction: config.production && options.readById === true,
-          ...(response.status === 429 ? { retryAfterSeconds: waitSeconds(body, response.headers) } : {}),
+          ...(response.status === 429 ? { retryAfterSeconds: waitSeconds(data, response.headers) } : {}),
           limits: { maxRetries: config.maxRetries, maxWaitSeconds: config.maxWaitSeconds },
         });
       }
@@ -178,7 +209,7 @@ export function createHttp(config: HttpConfig): Http {
           hint: WRONG_HOST_HINT,
         });
       }
-      return { status: response.status, headers: response.headers, data: body as T };
+      return { status: response.status, headers: response.headers, data: data as T };
     }
   }
 

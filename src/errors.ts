@@ -6,6 +6,7 @@ export type MercosErrorKind =
   | "server"
   | "http"
   | "network"
+  | "timeout"
   | "unexpected_response"
   | "pagination"
   | "config";

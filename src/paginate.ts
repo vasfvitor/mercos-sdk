@@ -43,6 +43,7 @@ export async function* paginate<T extends object>(
     const response = await http.request<unknown>("GET", path, {
       query: { ...options.filters, alterado_apos: cursor },
       signal: options.signal,
+      timeoutMs: options.timeoutMs,
     });
     if (!Array.isArray(response.data)) {
       throw new MercosError("unexpected_response", `GET ${path} didn't return a list.`, {

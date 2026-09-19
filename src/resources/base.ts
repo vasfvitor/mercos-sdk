@@ -51,7 +51,7 @@ function createdId(response: MercosResponse<unknown>, path: string): number {
 
 /** Create POST: returns the ID and the body, for callers that need more than the ID. */
 export async function post<Data>(http: Http, path: string, body: unknown, options?: CallOptions) {
-  const response = await http.request<Data | undefined>("POST", path, { body, signal: options?.signal });
+  const response = await http.request<Data | undefined>("POST", path, { body, ...options });
   return { id: createdId(response, path), data: response.data };
 }
 
@@ -61,8 +61,7 @@ export function readOnly<T extends object, Filters extends Query = never>(
 ): ReadOnlyResource<T, Filters> {
   return {
     list: (options) => paginate<T>(http, path, options),
-    get: async (id, options) =>
-      (await http.request<T>("GET", `${path}/${id}`, { signal: options?.signal, readById: true })).data,
+    get: async (id, options) => (await http.request<T>("GET", `${path}/${id}`, { ...options, readById: true })).data,
   };
 }
 
@@ -74,7 +73,7 @@ export function crud<T extends object, Input, Update, Filters extends Query = ne
     ...readOnly<T, Filters>(http, path),
     create: async (body, options) => ({ id: (await post(http, path, body, options)).id }),
     async update(id, body, options) {
-      await http.request<unknown>("PUT", `${path}/${id}`, { body, signal: options?.signal });
+      await http.request<unknown>("PUT", `${path}/${id}`, { body, ...options });
     },
   };
 }

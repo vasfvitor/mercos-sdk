@@ -80,6 +80,18 @@ Dois limites devolvem o controle para você, com um `MercosError` de `kind` igua
 
 Use **um** cliente por par de tokens no processo. Dois clientes não dividem a fila.
 
+### Timeout e falhas passageiras
+
+Cada tentativa tem um tempo limite, de 30 segundos por padrão. Sem isso, uma requisição que nunca
+responde seguraria a fila, e com ela todas as chamadas seguintes. Passado o limite, a chamada falha
+com um `MercosError` de `kind` igual a `"timeout"`. Ajuste `timeoutMs` no `createMercos` ou numa
+chamada só: `mercos.pedidos.get(55, { timeoutMs: 5000 })`. Zero desliga o limite.
+
+Uma leitura (`GET`) que falha na rede, estoura o tempo ou recebe 502, 503 ou 504 é reenviada até
+duas vezes, depois de 1 e de 2 segundos. Uma escrita nunca é reenviada: a primeira tentativa pode
+ter criado o pedido mesmo sem a resposta ter chegado. `maxRetries: 0` também desliga essas
+repetições.
+
 ### Paginação
 
 As listagens do Mercos são incrementais. O cursor é `alterado_apos`, e o header
@@ -111,6 +123,7 @@ Todo erro lançado pelo SDK é um `MercosError`. O campo `kind` diz o que aconte
 | `rate_limit`          | 429 além dos limites configurados.                            |
 | `server`              | 5xx.                                                          |
 | `network`             | O `fetch` falhou. A causa original fica em `cause`.           |
+| `timeout`             | Sem resposta dentro de `timeoutMs`.                           |
 | `unexpected_response` | Resposta fora do contrato, como um 201 sem `MeusPedidosID`.   |
 | `pagination`          | O cursor não avançou.                                         |
 | `config`              | Opções inválidas em `createMercos`.                           |
@@ -171,7 +184,7 @@ Testado em 2026-09-19 contra `sandbox.mercos.com`, onde a documentação era amb
 
 ```sh
 pnpm install
-pnpm verify   # lint, checagem de tipos e testes
+pnpm verify   # lint, checagem de tipos, lint da especificação e testes
 pnpm build    # emite dist/
 ```
 
@@ -182,6 +195,11 @@ partir dos fragmentos OpenAPI embutidos em cada página da documentação:
 pnpm spec            # baixa as páginas, junta, gera os tipos e as fixtures
 pnpm spec:fetch -- --refresh   # ignora o cache local em .cache/docs
 ```
+
+Dois outros scripts vigiam a especificação. `pnpm spec:lint` confere que o arquivo montado é um
+OpenAPI estruturalmente válido, e faz parte do `pnpm verify`. `pnpm spec:check` pergunta ao site da
+documentação, com uma requisição só, se o Mercos mudou algo desde o último `pnpm spec`. Sai com 1
+quando mudou.
 
 Correções manuais da especificação ficam em `spec/patches.json`, cada uma com o motivo. Rodar
 `pnpm spec` de novo e olhar o `git diff` mostra o que mudou na API.

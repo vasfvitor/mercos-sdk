@@ -192,17 +192,79 @@ test("a 401 on a read by ID in production doesn't get the read-by-ID hint", asyn
   );
 });
 
-test("a fetch failure becomes a network error that keeps the cause", async () => {
+test("a read that fails on the network is retried twice, then keeps the last cause", async () => {
+  const causes = [new TypeError("first"), new TypeError("second"), new TypeError("third")];
+  const { mercos, calls, sleeps } = fake(
+    causes.map((cause) => () => {
+      throw cause;
+    }),
+  );
+  await assert.rejects(
+    mercos.tokenStatus(),
+    rejectsWith("network", (error) => assert.equal(error.cause, causes[2])),
+  );
+  assert.equal(calls.length, 3);
+  assert.deepEqual(sleeps, [1000, 2000]);
+});
+
+test("a read recovers from a gateway error, and a plain 500 isn't retried", async () => {
+  const { mercos, sleeps } = fake([{ status: 503, body: "upstream down" }, { body: { ok: true } }, { status: 500 }]);
+  assert.deepEqual(await mercos.tokenStatus(), { ok: true });
+  assert.deepEqual(sleeps, [1000]);
+  await assert.rejects(mercos.tokenStatus(), rejectsWith("server"));
+  assert.deepEqual(sleeps, [1000]);
+});
+
+test("a write is never repeated: the first attempt may have created the record", async () => {
   const boom = new TypeError("fetch failed");
-  const { mercos } = fake([
+  const { mercos, calls, sleeps } = fake([
     () => {
       throw boom;
     },
+    { status: 504 },
   ]);
   await assert.rejects(
-    mercos.tokenStatus(),
+    mercos.clientes.create({} as never),
     rejectsWith("network", (error) => assert.equal(error.cause, boom)),
   );
+  await assert.rejects(mercos.clientes.create({} as never), rejectsWith("server"));
+  assert.equal(calls.length, 2);
+  assert.deepEqual(sleeps, []);
+});
+
+test("maxRetries: 0 turns off the retry of reads too", async () => {
+  const { mercos, calls } = fake([{ status: 502 }], { maxRetries: 0 });
+  await assert.rejects(mercos.tokenStatus(), rejectsWith("server"));
+  assert.equal(calls.length, 1);
+});
+
+/** A fetch that never answers, and gives up only when its signal aborts, as the real one does. */
+const hang = (_url: string, init: RequestInit) =>
+  new Promise<Response>((_, reject) => {
+    init.signal?.addEventListener("abort", () => reject(init.signal?.reason), { once: true });
+  });
+
+test("a fetch that never answers becomes a timeout error, and frees the queue", async () => {
+  let attempts = 0;
+  const { mercos } = fake([], {
+    timeoutMs: 10,
+    maxRetries: 0,
+    fetch: (url, init) => (attempts++ === 0 ? hang(url, init) : Promise.resolve(new Response('{"ok":true}'))),
+  });
+  const [first, second] = await Promise.allSettled([mercos.tokenStatus(), mercos.tokenStatus()]);
+  assert.equal(first.status, "rejected");
+  rejectsWith("timeout", (error) => assert.match(error.message, /within 10 ms/))(first.reason);
+  assert.deepEqual(second, { status: "fulfilled", value: { ok: true } });
+});
+
+test("the timeout of a call overrides the client's, and an abort by the caller isn't a timeout", async () => {
+  const { mercos } = fake([], { timeoutMs: 0, maxRetries: 0, fetch: hang });
+  await assert.rejects(mercos.pedidos.cancel(1, { timeoutMs: 10 }), rejectsWith("timeout"));
+
+  const controller = new AbortController();
+  const call = mercos.pedidos.cancel(1, { timeoutMs: 60_000, signal: controller.signal });
+  controller.abort(new Error("gave up"));
+  await assert.rejects(call, /gave up/);
 });
 
 test("a token with a trailing newline is trimmed before it becomes a header", async () => {
