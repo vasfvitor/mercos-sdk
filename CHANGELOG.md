@@ -2,6 +2,13 @@
 
 This project follows [semantic versioning](https://semver.org/).
 
+## 0.1.2 - 2026-09-19
+
+- The release workflow now stages the version on npm, and a maintainer approves it there. It
+  doesn't publish directly anymore.
+- Version 0.1.1 has a tag and no npm release, because npm refused the direct publish. Its changes
+  ship in this version.
+
 ## 0.1.1 - 2026-09-19
 
 - Fixed: when the API sends a validation error with an empty field name, as it does for an order

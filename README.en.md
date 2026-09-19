@@ -218,7 +218,10 @@ MERCOS_APPLICATION_TOKEN=... MERCOS_COMPANY_TOKEN=... pnpm test:live
 1. Set the version in `package.json` and date the entry in `CHANGELOG.md`.
 2. Publish a GitHub release whose tag is `v` plus that version, such as `v0.1.0`.
 
-The release workflow then publishes to npm with a provenance statement. It stores no npm
+3. Approve the version on npmjs.com, in the package's staging queue.
+
+The release workflow stages the version on npm with a provenance statement. Nobody can install
+it until the approval, which requires two-factor authentication. The workflow stores no npm
 token: on npmjs.com, the package lists this repository and `release.yml` as its trusted
 publisher.
 

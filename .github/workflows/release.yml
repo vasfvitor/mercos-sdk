@@ -1,8 +1,9 @@
 name: Release
 
-# Publishing a GitHub release publishes the same version to npm. No npm token is stored: npm
-# trusts this workflow through OIDC ("trusted publishing"), and the package gets a provenance
-# statement that links it to this commit.
+# Publishing a GitHub release stages the same version on npm. A maintainer then approves it on
+# npmjs.com, with 2FA, and only then can anyone install it. No npm token is stored: npm trusts this
+# workflow through OIDC ("trusted publishing"), and the package gets a provenance statement that
+# links it to this commit.
 on:
   release:
     types: [published]
@@ -25,5 +26,8 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: The release tag must match the version in package.json
         run: test "v$(node -p "require('./package.json').version")" = "${{ github.event.release.tag_name }}"
-      # `prepublishOnly` runs `pnpm verify` and `pnpm build` first.
-      - run: npm publish
+      # `npm stage` needs npm 11.15 or later, which is newer than the npm that ships with Node 24.
+      - run: npm install -g npm@^11.15.0
+      # Explicit, because the npm documentation doesn't say whether staging runs `prepublishOnly`.
+      - run: pnpm verify && pnpm build
+      - run: npm stage publish

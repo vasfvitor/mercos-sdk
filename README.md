@@ -214,8 +214,11 @@ MERCOS_APPLICATION_TOKEN=... MERCOS_COMPANY_TOKEN=... pnpm test:live
 1. Ajuste a versão no `package.json` e date a entrada no `CHANGELOG.md`.
 2. Publique uma release no GitHub com a tag `v` mais essa versão, por exemplo `v0.1.0`.
 
-O workflow de release publica no npm com atestado de procedência. Nenhum token do npm fica
-guardado: no npmjs.com, o pacote lista este repositório e o `release.yml` como publicador confiável.
+3. Aprove a versão no npmjs.com, na fila de staging do pacote.
+
+O workflow de release envia a versão para o staging do npm, com atestado de procedência. Ela só
+fica instalável depois da aprovação, que exige 2FA. Nenhum token do npm fica guardado: no
+npmjs.com, o pacote lista este repositório e o `release.yml` como publicador confiável.
 
 ## Licença
 
