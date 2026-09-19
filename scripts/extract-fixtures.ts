@@ -1,4 +1,3 @@
-// Saves the examples embedded in the specification as test fixtures, one file per operation.
 // Only the resources the SDK covers go in. The examples come from the public docs, with no real data.
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { PATHS } from "../src/resources/paths.ts";

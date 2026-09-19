@@ -12,11 +12,8 @@ interface HttpConfig {
   companyToken: string;
   fetch: FetchLike;
   sleep: SleepLike;
-  /** How many times to retry the same request after a 429. */
   maxRetries: number;
-  /** Longest wait, in seconds, accepted for a single 429. Beyond it, the error goes to the caller. */
   maxWaitSeconds: number;
-  /** Time limit for each attempt, in milliseconds. Zero turns it off. */
   timeoutMs: number;
 }
 

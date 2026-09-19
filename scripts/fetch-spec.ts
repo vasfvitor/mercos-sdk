@@ -1,4 +1,3 @@
-// Downloads the Mercos index and reference pages into the local cache.
 // Usage: node scripts/fetch-spec.ts [--refresh]
 // Without --refresh, pages already in the cache aren't downloaded again.
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";

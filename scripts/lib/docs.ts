@@ -1,4 +1,3 @@
-// Access to the local cache of the Mercos documentation, shared by the specification scripts.
 import { existsSync, readFileSync } from "node:fs";
 
 export const INDEX_URL = "https://docs.mercos.com/llms.txt";
@@ -14,7 +13,6 @@ export interface PageRef {
   file: string;
 }
 
-/** Reads the index in the order the documentation presents its pages. */
 export function parseIndex(text: string): PageRef[] {
   const pages: PageRef[] = [];
   for (const match of text.matchAll(/^- \[(.+?)\]\((https:\/\/docs\.mercos\.com\/reference\/(.+?)\.md)\)/gm)) {
@@ -30,7 +28,7 @@ export function readIndex(): PageRef[] {
   return parseIndex(readFileSync(INDEX_FILE, "utf8"));
 }
 
-/** Extracts the OpenAPI document embedded in a page. Prose-only pages return undefined. */
+/** Prose-only pages embed no OpenAPI document. */
 export function extractOpenApi(markdown: string): Record<string, unknown> | undefined {
   const match = markdown.match(/# OpenAPI definition\s*\n+(`{3,})json\n([\s\S]*?)\n\1/);
   return match ? (JSON.parse(match[2]!) as Record<string, unknown>) : undefined;

@@ -61,7 +61,6 @@ export function fake(replies: Handler[], options: Partial<MercosOptions> = {}): 
   return { mercos, calls, sleeps };
 }
 
-/** Predicate for assert.rejects and assert.throws: checks the `kind` and lets the caller inspect the rest. */
 export function rejectsWith(kind: string, check?: (error: MercosError) => void) {
   return (error: unknown) => {
     assert.ok(error instanceof MercosError, `expected a MercosError, got ${String(error)}`);

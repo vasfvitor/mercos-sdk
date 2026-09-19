@@ -17,7 +17,6 @@ type Input<O extends Operation> = operations[O] extends {
   ? Body
   : never;
 
-/** One record of a list operation. */
 type Listed<O extends Operation> = Ok<O> extends readonly (infer Record)[] ? Record : never;
 
 // The order list schema has no `itens`; the read-by-ID schema describes the whole record.

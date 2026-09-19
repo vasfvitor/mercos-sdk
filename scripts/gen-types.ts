@@ -1,4 +1,3 @@
-// Generates src/generated/mercos.ts from the committed OpenAPI document. Types only, no runtime.
 import { mkdirSync, writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import openapiTS, { astToString } from "openapi-typescript";

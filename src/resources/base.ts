@@ -16,7 +16,7 @@ export interface Created {
   id: number;
 }
 
-/** Read-only resource. Without `Filters`, the list accepts only the common options. */
+/** Without `Filters`, the list accepts only the common options. */
 export interface ReadOnlyResource<T, Filters extends Query = never> {
   list(options?: [Filters] extends [never] ? ListOptions : ListWithFilters<Filters>): AsyncGenerator<T>;
   /** Read by ID. Mercos allows it only in the sandbox; in production the error carries a hint. */
@@ -49,7 +49,7 @@ function createdId(response: MercosResponse<unknown>, path: string): number {
   return id;
 }
 
-/** Create POST: returns the ID and the body, for callers that need more than the ID. */
+/** Returns the body next to the ID, for callers that need more than the ID. */
 export async function post<Data>(http: Http, path: string, body: unknown, options?: CallOptions) {
   const response = await http.request<Data | undefined>("POST", path, { body, ...options });
   return { id: createdId(response, path), data: response.data };
