@@ -1,5 +1,5 @@
 import { MercosError } from "./errors.ts";
-import { createHttp, defaultSleep, type FetchLike, type SleepLike } from "./http.ts";
+import { type CallOptions, createHttp, defaultSleep, type FetchLike, type SleepLike } from "./http.ts";
 import { crud, readOnly } from "./resources/base.ts";
 import type {
   ClientesResource,
@@ -45,7 +45,7 @@ export interface Mercos {
   transportadoras: TransportadorasResource;
   usuarios: UsuariosResource;
   /** Checks that the chosen environment accepts the token pair. */
-  tokenStatus(signal?: AbortSignal): Promise<unknown>;
+  tokenStatus(options?: CallOptions): Promise<unknown>;
 }
 
 export function createMercos(options: MercosOptions): Mercos {
@@ -92,6 +92,7 @@ export function createMercos(options: MercosOptions): Mercos {
     condicoesPagamento: readOnly(http, PATHS.condicoesPagamento),
     transportadoras: readOnly(http, PATHS.transportadoras),
     usuarios: readOnly(http, PATHS.usuarios),
-    tokenStatus: async (signal) => (await http.request<unknown>("GET", PATHS.tokenStatus, { signal })).data,
+    tokenStatus: async (options) =>
+      (await http.request<unknown>("GET", PATHS.tokenStatus, { signal: options?.signal })).data,
   };
 }

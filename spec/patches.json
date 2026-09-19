@@ -18,6 +18,10 @@
     "incluir-um-produto-grade-v2": "grade-v2",
     "incluir-um-produto-grade-v2-1": "grade-v2"
   },
+  "records": {
+    "paths": ["/v1/produtos/{id}", "/v1/produtos_tabela_preco/{id}", "/v1/tabelas_preco/{id}"],
+    "reason": "The pages declare an array and show an array example, but the sandbox returned a single object for these on 2026-09-19."
+  },
   "set": [
     {
       "pointers": [

@@ -1,6 +1,6 @@
 {
   "method": "POST",
-  "path": "/v1/produtos#grade-v3",
+  "path": "/v1/produtos",
   "request": {
     "nome": "Produto Grade V3",
     "preco_tabela": 150.5,
@@ -38,13 +38,8 @@
   },
   "responses": {
     "201": {
-      "id": 20325477,
-      "produtos_grade": [
-        {
-          "id": 20325478,
-          "codigo": "GV001"
-        }
-      ]
+      "id": 20325471,
+      "produtos_grade": []
     },
     "401": "{\n\t\"Sem permissao para acessar recurso\"\n}",
     "429": {

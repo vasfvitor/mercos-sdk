@@ -12,6 +12,8 @@ interface Patches {
   paths: Record<string, string>;
   /** By page slug: the variant name when two operations share a path and a method. */
   variants: Record<string, string>;
+  /** Read-by-ID paths whose page declares, and exemplifies, an array, while the API returns one record. */
+  records: { paths: string[]; reason: string };
   /** Targeted fixes to the final document, by JSON Pointer. One fact, one entry. */
   set: { pointers: string[]; value: unknown; reason: string }[];
 }
@@ -51,6 +53,84 @@ function setPointer(doc: Json, pointer: string, value: unknown): void {
   node[keys.at(-1)!] = value;
 }
 
+/** Fields that every record carries. The pages declare them and almost never mark them as required. */
+const ALWAYS_PRESENT = ["id", "ultima_alteracao"];
+
+/**
+ * Whether an example is a list or a single record. Some pages publish the example as a JSON string,
+ * not always valid JSON, so for strings the first character decides.
+ */
+function container(example: unknown): "list" | "record" | undefined {
+  const opening = typeof example === "string" ? example.trimStart()[0] : undefined;
+  if (Array.isArray(example) || opening === "[") return "list";
+  if ((typeof example === "object" && example !== null) || opening === "{") return "record";
+  return undefined;
+}
+
+/**
+ * Fixes the shape of a GET 200 schema. The pages often declare `object` for a list, or `array` for
+ * a single record, while the example on the same page shows the real container. The example wins.
+ */
+function fixRecordSchema(path: string, operation: Json): void {
+  const responses = operation.responses as Record<string, { content?: Record<string, Json> }> | undefined;
+  const content = responses?.["200"]?.content?.["application/json"];
+  const schema = content?.schema as Json | undefined;
+  if (!content || !schema) return;
+
+  const examples = [
+    content.example,
+    ...Object.values((content.examples ?? {}) as Record<string, Json>).map((e) => e.value),
+  ].map(container);
+  const lists = examples.includes("list");
+  const records = examples.includes("record");
+  let record = (schema.type === "array" ? schema.items : schema) as Json | undefined;
+  if (schema.type === "object" && lists && !records) content.schema = { type: "array", items: schema };
+  else if (schema.type === "array" && record && ((records && !lists) || patches.records.paths.includes(path)))
+    content.schema = record;
+
+  record = ((content.schema as Json).items ?? content.schema) as Json;
+  const declared = Object.keys((record.properties ?? {}) as Json);
+  const required = new Set([
+    ...((record.required as string[] | undefined) ?? []),
+    ...ALWAYS_PRESENT.filter((key) => declared.includes(key)),
+  ]);
+  if (required.size > 0) record.required = [...required];
+}
+
+type Media = { schema?: Json; example?: unknown; examples?: Record<string, Json> };
+
+/** Example name for the operation that owns the path, next to the variants folded into it. */
+const BASE_EXAMPLE = "default";
+
+function namedExamples(media: Media, name: string): Record<string, Json> {
+  if (media.examples)
+    return Object.fromEntries(Object.entries(media.examples).map(([key, value]) => [`${name}: ${key}`, value]));
+  return media.example === undefined ? {} : { [name]: { value: media.example } };
+}
+
+/**
+ * Two pages can document the same path and method with different bodies: a plain order and an order
+ * with grid products, for instance. OpenAPI allows one operation per path and method, so the bodies
+ * become a `oneOf` inside the operation that owns the path, and each one keeps its example.
+ */
+function foldVariant(base: Json, variant: Json, name: string): void {
+  const media = (operation: Json) =>
+    (operation.requestBody as { content?: Record<string, Media> } | undefined)?.content?.["application/json"];
+  const into = media(base);
+  const from = media(variant);
+  if (into && from?.schema) {
+    const link = (variant.externalDocs as { url: string }).url;
+    const body = { title: name, description: `${String(variant.summary)}. ${link}`, ...from.schema };
+    const folded = into.schema?.oneOf as Json[] | undefined;
+    into.examples = { ...(folded ? into.examples : namedExamples(into, BASE_EXAMPLE)), ...namedExamples(from, name) };
+    into.schema = { oneOf: [...(folded ?? [{ title: BASE_EXAMPLE, ...into.schema }]), body] };
+    delete into.example;
+  } else if (from) {
+    base.requestBody ??= variant.requestBody;
+  }
+  base.responses = { ...(variant.responses as Json), ...(base.responses as Json) };
+}
+
 const paths: Record<string, Json> = {};
 const notes: string[] = [];
 let operations = 0;
@@ -77,6 +157,7 @@ for (const page of readIndex()) {
       }
 
       const operation = rawOperation as Json;
+      if (method === "get") fixRecordSchema(path, operation);
       const parameters = ((operation.parameters as Json[] | undefined) ?? []).filter(
         (parameter) => !(parameter.in === "header" && TOKEN_HEADERS.has(String(parameter.name).toLowerCase())),
       );
@@ -91,6 +172,16 @@ for (const page of readIndex()) {
       operations++;
     }
   }
+}
+
+// The pointers in patches.json name the variant keys, so the fixes go in before the variants fold.
+for (const patch of patches.set) for (const pointer of patch.pointers) setPointer({ paths }, pointer, patch.value);
+
+for (const key of Object.keys(paths).filter((path) => path.includes("#"))) {
+  const [path, name] = key.split("#") as [string, string];
+  for (const [method, variant] of Object.entries(paths[key]!))
+    foldVariant(paths[path]![method] as Json, variant as Json, name);
+  delete paths[key];
 }
 
 const document: Json = {
@@ -115,8 +206,6 @@ const document: Json = {
     },
   },
 };
-
-for (const patch of patches.set) for (const pointer of patch.pointers) setPointer(document, pointer, patch.value);
 
 writeFileSync(SPEC_FILE, `${JSON.stringify(document, null, 2)}\n`);
 for (const note of notes) console.warn(`warning: ${note}`);

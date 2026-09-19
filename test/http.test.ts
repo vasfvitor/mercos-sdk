@@ -235,7 +235,7 @@ test("abort rejects at once, even with the queue paused on another call's 429", 
   });
   const first = mercos.tokenStatus();
   const controller = new AbortController();
-  const second = mercos.tokenStatus(controller.signal);
+  const second = mercos.tokenStatus({ signal: controller.signal });
   await new Promise((resolve) => setImmediate(resolve));
 
   controller.abort(new Error("gave up"));
@@ -261,7 +261,7 @@ test("aborting a queued call doesn't let the next one jump ahead of the one in f
   const controller = new AbortController();
 
   const first = mercos.tokenStatus();
-  const second = mercos.tokenStatus(controller.signal);
+  const second = mercos.tokenStatus({ signal: controller.signal });
   const third = mercos.tokenStatus();
   controller.abort(new Error("gave up"));
 

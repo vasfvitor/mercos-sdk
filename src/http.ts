@@ -18,6 +18,12 @@ interface HttpConfig {
   maxWaitSeconds: number;
 }
 
+/** Options that every client method takes as its last argument. */
+export interface CallOptions {
+  /** Cancels the request, including the time it spends in the queue or waiting out a 429. */
+  signal?: AbortSignal;
+}
+
 export interface RequestOptions {
   query?: Query;
   body?: unknown;

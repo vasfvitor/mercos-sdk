@@ -139,8 +139,16 @@ masks it before it builds the error.
 | `mercos.usuarios`            | `list`, `get`                                 |
 | `mercos.tokenStatus()`       | Checks the tokens.                            |
 
+Every method takes an options object as its last argument. Today it holds `signal`, an
+`AbortSignal` that cancels the request even while it waits in the queue:
+`mercos.pedidos.get(55, { signal })`.
+
 Orders use version 2 of the API. The `get` method works only in the sandbox. In production,
 Mercos blocks reads by identifier, and the error carries a hint about it.
+
+`produtos.create`, `produtos.update`, `pedidos.create`, and `pedidos.update` also take the grid
+bodies that Mercos documents on the same routes. `ProdutoInput` and `PedidoInput` are unions of
+the plain body and the grid ones.
 
 The `paths` and `operations` types cover **all** 169 documented operations, including routes
 that don't have a client method yet.
@@ -151,15 +159,17 @@ Before Mercos grants production access, it reviews the integration. The two beha
 the review requires, 429 handling and complete pagination, are the defaults in this SDK. The
 [approval page](https://docs.mercos.com/reference/homologação) describes the process.
 
-## Open questions
+## Verified in the sandbox
 
-Only sandbox tests with a valid `CompanyToken` can settle these:
+Tested on 2026-09-19 against `sandbox.mercos.com`, where the documentation was ambiguous:
 
-- Whether an order created through the API starts as a quote. The create body has no `status`
-  field.
-- Whether the payment condition is required on create. The prose says yes and the schema says
-  no.
-- Whether the date format for extra fields in the documentation is a typo.
+- An order created through the API starts as `StatusPedido.Gerado` (`"2"`), not as a quote. The
+  create body doesn't accept `status`.
+- The payment condition is required on create: either `condicao_pagamento_id` or the free-text
+  `condicao_pagamento`. Without one of them the API responds 422, even though the schema marks
+  neither as required.
+- The date of an extra field goes as `yyyy-mm-dd`. The `yyyy-dd-mm` in the documentation is a
+  typo: the API rejects it with 422 and names the format `%Y-%m-%d`.
 
 ## Development
 
@@ -180,8 +190,19 @@ pnpm spec:fetch -- --refresh   # ignore the local cache in .cache/docs
 Manual fixes to the specification live in `spec/patches.json`, each with its reason. To see
 what changed in the API, run `pnpm spec` again and read the `git diff` output.
 
+The merge script also repairs two flaws that repeat across the pages. When a page declares an
+object and its own example shows a list, or the reverse, the example wins. When two pages
+document the same route with different bodies, the bodies become one `oneOf`.
+
 The tests use a fake `fetch` and a fake clock, with no network access. No real company data
 enters the repository: the fixtures come from the examples in the public documentation.
+
+A second suite runs against the real sandbox. It skips itself unless both variables exist, and
+it cancels the order that it creates:
+
+```sh
+MERCOS_APPLICATION_TOKEN=... MERCOS_COMPANY_TOKEN=... pnpm test:live
+```
 
 ## License
 

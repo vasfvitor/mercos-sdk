@@ -4,7 +4,7 @@
 // Statuses are strings because that is how the API returns them ("status": "2"). In a filter
 // query the value travels as text anyway, so the same constant works in both directions.
 
-/** Order `status`. A quote is an order with status "1". */
+/** Order `status`. A quote is an order with status "1". Orders created through the API start as "2". */
 export const StatusPedido = {
   Cancelado: "0",
   Orcamento: "1",

@@ -1,5 +1,5 @@
 import { MercosError } from "../errors.ts";
-import type { Http, MercosResponse, Query } from "../http.ts";
+import type { CallOptions, Http, MercosResponse, Query } from "../http.ts";
 import { type ListOptions, paginate } from "../paginate.ts";
 
 export interface ListWithFilters<Filters extends Query> extends ListOptions {
@@ -20,12 +20,12 @@ export interface Created {
 export interface ReadOnlyResource<T, Filters extends Query = never> {
   list(options?: [Filters] extends [never] ? ListOptions : ListWithFilters<Filters>): AsyncGenerator<T>;
   /** Read by ID. Mercos allows it only in the sandbox; in production the error carries a hint. */
-  get(id: number, signal?: AbortSignal): Promise<T>;
+  get(id: number, options?: CallOptions): Promise<T>;
 }
 
 export interface CrudResource<T, Input, Update, Filters extends Query = never> extends ReadOnlyResource<T, Filters> {
-  create(body: Input, signal?: AbortSignal): Promise<Created>;
-  update(id: number, body: Update, signal?: AbortSignal): Promise<void>;
+  create(body: Input, options?: CallOptions): Promise<Created>;
+  update(id: number, body: Update, options?: CallOptions): Promise<void>;
 }
 
 /** The ID of a created record comes in the MeusPedidosID header. The body is only a fallback. */
@@ -50,8 +50,8 @@ function createdId(response: MercosResponse<unknown>, path: string): number {
 }
 
 /** Create POST: returns the ID and the body, for callers that need more than the ID. */
-export async function post<Data>(http: Http, path: string, body: unknown, signal?: AbortSignal) {
-  const response = await http.request<Data | undefined>("POST", path, { body, signal });
+export async function post<Data>(http: Http, path: string, body: unknown, options?: CallOptions) {
+  const response = await http.request<Data | undefined>("POST", path, { body, signal: options?.signal });
   return { id: createdId(response, path), data: response.data };
 }
 
@@ -61,7 +61,8 @@ export function readOnly<T extends object, Filters extends Query = never>(
 ): ReadOnlyResource<T, Filters> {
   return {
     list: (options) => paginate<T>(http, path, options),
-    get: async (id, signal) => (await http.request<T>("GET", `${path}/${id}`, { signal, readById: true })).data,
+    get: async (id, options) =>
+      (await http.request<T>("GET", `${path}/${id}`, { signal: options?.signal, readById: true })).data,
   };
 }
 
@@ -71,9 +72,9 @@ export function crud<T extends object, Input, Update, Filters extends Query = ne
 ): CrudResource<T, Input, Update, Filters> {
   return {
     ...readOnly<T, Filters>(http, path),
-    create: async (body, signal) => ({ id: (await post(http, path, body, signal)).id }),
-    async update(id, body, signal) {
-      await http.request<unknown>("PUT", `${path}/${id}`, { body, signal });
+    create: async (body, options) => ({ id: (await post(http, path, body, options)).id }),
+    async update(id, body, options) {
+      await http.request<unknown>("PUT", `${path}/${id}`, { body, signal: options?.signal });
     },
   };
 }

@@ -1,5 +1,5 @@
 import type { StatusFaturamento, StatusPedido } from "../enums.ts";
-import type { Http } from "../http.ts";
+import type { CallOptions, Http } from "../http.ts";
 import type { Pedido, PedidoInput, PedidoUpdate } from "../types.ts";
 import { type CrudResource, crud, post } from "./base.ts";
 import { PATHS } from "./paths.ts";
@@ -22,24 +22,24 @@ export interface PedidoCreated {
 
 export interface PedidosResource
   extends Omit<CrudResource<Pedido, PedidoInput, PedidoUpdate, PedidoFilters>, "create"> {
-  create(pedido: PedidoInput, signal?: AbortSignal): Promise<PedidoCreated>;
-  cancel(id: number, signal?: AbortSignal): Promise<void>;
+  create(pedido: PedidoInput, options?: CallOptions): Promise<PedidoCreated>;
+  cancel(id: number, options?: CallOptions): Promise<void>;
 }
 
 export function pedidos(http: Http): PedidosResource {
   return {
     ...crud<Pedido, PedidoInput, PedidoUpdate, PedidoFilters>(http, PATHS.pedidos),
-    async create(pedido, signal) {
+    async create(pedido, options) {
       const { id, data } = await post<{ numero?: number; itens?: { id: number }[] }>(
         http,
         PATHS.pedidos,
         pedido,
-        signal,
+        options,
       );
       return { id, numero: data?.numero, itens: data?.itens ?? [] };
     },
-    async cancel(id, signal) {
-      await http.request<unknown>("POST", `${PATHS.cancelarPedido}/${id}`, { signal });
+    async cancel(id, options) {
+      await http.request<unknown>("POST", `${PATHS.cancelarPedido}/${id}`, { signal: options?.signal });
     },
   };
 }

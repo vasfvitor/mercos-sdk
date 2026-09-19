@@ -70,40 +70,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/v1/atendimentos#atualizar-em-lote": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Atualizar atendimentos em lote */
-        post: operations["post_v1_atendimentos_atualizar_em_lote"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/atendimentos#excluir-em-lote": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Excluir atendimentos em lote */
-        post: operations["post_v1_atendimentos_excluir_em_lote"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/v1/campos_extras": {
         parameters: {
             query?: never;
@@ -647,40 +613,6 @@ export interface paths {
         get: operations["get_v1_eventos_id"];
         put?: never;
         post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/eventos#atualizar-em-lote": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Atualizar eventos em lote */
-        post: operations["post_v1_eventos_atualizar_em_lote"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/eventos#excluir-em-lote": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Excluir eventos em lote */
-        post: operations["post_v1_eventos_excluir_em_lote"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1263,80 +1195,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/v1/produtos/{id}#grade-v2": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Alterar um produto grade (v2)
-         * @description _Diferença: Em um produto grade v2 **SÃO** enviados os campos `grade_cores` ou `grade_tamanhos`._
-         */
-        put: operations["put_v1_produtos_id_grade_v2"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/produtos/{id}#grade-v3": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /** Alterar um produto grade v3 */
-        put: operations["put_v1_produtos_id_grade_v3"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/produtos#grade-v2": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Incluir um produto grade (v2)
-         * @description _Diferença: Em um produto grade v2 **SÃO** enviados os campos `grade_cores` ou `grade_tamanhos`._
-         */
-        post: operations["post_v1_produtos_grade_v2"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/produtos#grade-v3": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Incluir um produto grade v3 */
-        post: operations["post_v1_produtos_grade_v3"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/v1/promocoes": {
         parameters: {
             query?: never;
@@ -1871,40 +1729,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/v2/pedidos/{id}#grade": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /** Alterar um pedido com produto de grade */
-        put: operations["put_v2_pedidos_id_grade"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v2/pedidos#grade": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Incluir um pedido com produtos de grade */
-        post: operations["post_v2_pedidos_grade"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1963,7 +1787,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -1972,7 +1796,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -2028,7 +1852,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -2037,7 +1861,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -2142,7 +1966,7 @@ export interface operations {
                          * @description Data e hora da última alteração do evento.
                          * @example 2025-05-18 00:00:00
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     }[];
                 };
             };
@@ -2152,7 +1976,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -2161,7 +1985,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -2211,7 +2035,56 @@ export interface operations {
                     resultado_id?: number;
                     /** @description Tipo de evento (`1`: VISITA, `2`: LIGACAO, `3`: OUTROS, `4`: EMAIL, `5`: WHATSAPP, `6`: SKYPE) */
                     tipo: number;
-                };
+                } | {
+                    /** @description ID do cliente. */
+                    cliente_id: number;
+                    /**
+                     * Format: int32
+                     * @description ID do colaborador.
+                     */
+                    colaborador_id?: number;
+                    /**
+                     * Format: date-time
+                     * @description Data e hora do fim do atendimento.
+                     */
+                    data_fim?: string;
+                    /**
+                     * Format: date-time
+                     * @description Tipo de evento (`1`: VISITA, `2`: LIGACAO, `3`: OUTROS, `4`: EMAIL, `5`: WHATSAPP, `6`: SKYPE)Tipo de evento (1: VISITA, 2: LIGACAO, 3: OUTROS, 4: EMAIL, 5: WHATSAPP, 6: SKYPE)
+                     */
+                    data_inicio?: string;
+                    /** @description Descrição do evento. */
+                    descricao?: string;
+                    /**
+                     * Format: int32
+                     * @description ID do evento.
+                     */
+                    evento_id?: number;
+                    /** @description Indica se o evento foi excluído. */
+                    excluido?: boolean;
+                    /**
+                     * Format: int32
+                     * @description ID do atendimento.
+                     */
+                    id: number;
+                    /** @description Motivo do atendimento. */
+                    motivo?: string;
+                    /**
+                     * Format: int32
+                     * @description ID do resultado do atendimento.
+                     */
+                    resultado_id?: number;
+                    /** @description Tipo de evento (`1`: VISITA, `2`: LIGACAO, `3`: OUTROS, `4`: EMAIL, `5`: WHATSAPP, `6`: SKYPE)Tipo de evento (1: VISITA, 2: LIGACAO, 3: OUTROS, 4: EMAIL, 5: WHATSAPP, 6: SKYPE). */
+                    tipo: number;
+                }[] | {
+                    /** @description Indica se o atendimento foi excluído. */
+                    excluido: boolean;
+                    /**
+                     * @description ID do atendimento.
+                     * @default
+                     */
+                    id: number;
+                }[];
             };
         };
         responses: {
@@ -2230,7 +2103,22 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        erros?: string[][];
+                        /** @example Ocorreram erros de validação */
+                        mensagem?: string;
+                        /** @example /api/v1/atendimentos */
+                        url?: string;
+                    };
                 };
             };
             /** @description Too Many Requests */
@@ -2239,7 +2127,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -2344,180 +2232,17 @@ export interface operations {
                          * @description Data e hora da última alteração do evento.
                          * @example 2025-05-18 00:00:00
                          */
-                        ultima_alteracao?: string;
-                    }[];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Too Many Requests */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-        };
-    };
-    post_v1_atendimentos_atualizar_em_lote: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": {
-                    /** @description ID do cliente. */
-                    cliente_id: number;
-                    /**
-                     * Format: int32
-                     * @description ID do colaborador.
-                     */
-                    colaborador_id?: number;
-                    /**
-                     * Format: date-time
-                     * @description Data e hora do fim do atendimento.
-                     */
-                    data_fim?: string;
-                    /**
-                     * Format: date-time
-                     * @description Tipo de evento (`1`: VISITA, `2`: LIGACAO, `3`: OUTROS, `4`: EMAIL, `5`: WHATSAPP, `6`: SKYPE)Tipo de evento (1: VISITA, 2: LIGACAO, 3: OUTROS, 4: EMAIL, 5: WHATSAPP, 6: SKYPE)
-                     */
-                    data_inicio?: string;
-                    /** @description Descrição do evento. */
-                    descricao?: string;
-                    /**
-                     * Format: int32
-                     * @description ID do evento.
-                     */
-                    evento_id?: number;
-                    /** @description Indica se o evento foi excluído. */
-                    excluido?: boolean;
-                    /**
-                     * Format: int32
-                     * @description ID do atendimento.
-                     */
-                    id: number;
-                    /** @description Motivo do atendimento. */
-                    motivo?: string;
-                    /**
-                     * Format: int32
-                     * @description ID do resultado do atendimento.
-                     */
-                    resultado_id?: number;
-                    /** @description Tipo de evento (`1`: VISITA, `2`: LIGACAO, `3`: OUTROS, `4`: EMAIL, `5`: WHATSAPP, `6`: SKYPE)Tipo de evento (1: VISITA, 2: LIGACAO, 3: OUTROS, 4: EMAIL, 5: WHATSAPP, 6: SKYPE). */
-                    tipo: number;
-                }[];
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Unprocessable Entity */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        erros?: string[][];
-                        /** @example Ocorreram erros de validação */
-                        mensagem?: string;
-                        /** @example /api/v1/atendimentos */
-                        url?: string;
+                        ultima_alteracao: string;
                     };
                 };
             };
-            /** @description Too Many Requests */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-        };
-    };
-    post_v1_atendimentos_excluir_em_lote: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": {
-                    /** @description Indica se o atendimento foi excluído. */
-                    excluido: boolean;
-                    /**
-                     * @description ID do atendimento.
-                     * @default
-                     */
-                    id: number;
-                }[];
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
             /** @description Unauthorized */
             401: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Unprocessable Entity */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        erros?: string[][];
-                        /** @example Ocorreram erros de validação */
-                        mensagem?: string;
-                        /** @example /api/v1/atendimentos */
-                        url?: string;
-                    };
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -2526,7 +2251,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -2559,9 +2284,9 @@ export interface operations {
                         /** @description Formatação do valor numérico: ``"0"`` Sem formatação, ``"1"`` R$ (monetário), ``"2"`` %. */
                         formato?: string;
                         /** @description Identificador único do campo extra. */
-                        id?: number;
+                        id: number;
                         /** @description Lista de itens disponíveis (apenas para campos do tipo lista). */
-                        itens?: Record<string, never>[];
+                        itens?: Record<string, unknown>[];
                         /** @description Indica se o campo do tipo lista permite seleção múltipla. */
                         lista_multipla?: boolean;
                         /** @description Nome do campo extra. */
@@ -2577,8 +2302,8 @@ export interface operations {
                          * Format: date-time
                          * @description Data e hora da última modificação do campo.
                          */
-                        ultima_alteracao?: string;
-                    };
+                        ultima_alteracao: string;
+                    }[];
                 };
             };
             /** @description Unauthorized */
@@ -2587,7 +2312,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -2596,7 +2321,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -2666,7 +2391,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Unauthorized */
@@ -2675,7 +2400,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -2699,7 +2424,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -2802,7 +2527,7 @@ export interface operations {
                          * @description Data e hora da última modificação deste registro no Mercos.
                          * @example 2024-01-04 11:00:11
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     }[];
                 };
             };
@@ -2812,7 +2537,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -2821,7 +2546,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -2885,7 +2610,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Unprocessable Entity */
@@ -2911,7 +2636,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -2989,7 +2714,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Unprocessable Entity */
@@ -3011,7 +2736,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -3047,7 +2772,7 @@ export interface operations {
                         exibir_para_cliente: boolean;
                         /** @example 0 */
                         formato?: string;
-                        itens?: Record<string, never>[];
+                        itens?: Record<string, unknown>[];
                         /**
                          * @default true
                          * @example false
@@ -3071,7 +2796,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -3080,7 +2805,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -3133,7 +2858,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Unauthorized */
@@ -3142,7 +2867,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -3166,7 +2891,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -3236,7 +2961,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed — `divisao_id` inválido, ou a requisição enviou o parâmetro antigo `representada_id`. */
@@ -3260,7 +2985,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -3319,7 +3044,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -3328,7 +3053,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -3389,7 +3114,7 @@ export interface operations {
                          * @description Data e hora da última modificação desta categoria no Mercos.
                          * @example 2016-08-29 11:04:56
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     };
                 };
             };
@@ -3399,7 +3124,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -3408,7 +3133,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -3467,7 +3192,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -3476,7 +3201,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -3580,12 +3305,12 @@ export interface operations {
                             /** @description Retorna um Double se o campo for do tipo numérico. */
                             valor_decimal?: string;
                             /** @description Retorna uma lista de ids e valores dos itens da lista, ex: \[\[1, "sp"], \[2, "sc"]]. */
-                            valor_lista?: Record<string, never>[];
+                            valor_lista?: Record<string, unknown>[];
                             /** @description Retorna um texto se o campo for do tipo texto. */
                             valor_texto?: string;
                         }[];
                         /** @description Identificador único */
-                        id?: number;
+                        id: number;
                         /** @description Identificação da inscrição estadual do cliente. */
                         inscricao_estadual?: string;
                         /** @description Lista de objetos LimiteCreditoCliente, cada elemento da lista é um objeto no formato: \{"limite_disponivel": Float, "limite_total": Float\} */
@@ -3636,8 +3361,8 @@ export interface operations {
                          * Format: date-time
                          * @description Data e hora da última modificação deste cliente no Mercos.
                          */
-                        ultima_alteracao?: string;
-                    };
+                        ultima_alteracao: string;
+                    }[];
                 };
             };
             /** @description Unauthorized */
@@ -3646,7 +3371,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -3655,7 +3380,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -3868,7 +3593,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -3895,7 +3620,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -3946,7 +3671,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -3955,7 +3680,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -4004,7 +3729,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -4013,7 +3738,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -4061,7 +3786,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -4092,7 +3817,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -4138,7 +3863,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -4169,7 +3894,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -4211,7 +3936,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Unauthorized */
@@ -4220,7 +3945,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -4247,7 +3972,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -4296,7 +4021,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -4320,7 +4045,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -4499,7 +4224,7 @@ export interface operations {
                             /** @description Retorna um Double se o campo for do tipo numérico. */
                             valor_decimal?: string;
                             /** @description Retorna uma lista de ids e valores dos itens da lista, ex: \[\[1, "sp"], \[2, "sc"]]. */
-                            valor_lista?: Record<string, never>[];
+                            valor_lista?: Record<string, unknown>[];
                             /** @description Retorna um texto se o campo for do tipo texto. */
                             valor_texto?: string;
                         }[];
@@ -4515,7 +4240,7 @@ export interface operations {
                          */
                         inscricao_estadual?: string;
                         /** @description Lista de objetos LimiteCreditoCliente, cada elemento da lista é um objeto no formato: \{"limite_disponivel": Float, "limite_total": Float\} */
-                        limite_credito?: Record<string, never>[];
+                        limite_credito?: Record<string, unknown>[];
                         /**
                          * @description Exceção fiscal que identifica o(s) cliente(s) sujeito(s) a esta configuração de ICMS-ST. Ex: “SIMPLES”.
                          * @example Isento
@@ -4559,7 +4284,7 @@ export interface operations {
                          */
                         suframa?: string;
                         /** @description Lista de IDs das tags vinculadas ao cliente. Ex: \[1, 5, 12]. */
-                        tags?: Record<string, never>[];
+                        tags?: Record<string, unknown>[];
                         /** @description Lista de objetos Telefone com os telefones do cliente. - numero (String: 30) */
                         telefones?: {
                             /**
@@ -4581,7 +4306,7 @@ export interface operations {
                          * @description Data e hora da última modificação deste cliente no Mercos.
                          * @example 2023-06-28 15:10:11
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     };
                 };
             };
@@ -4591,7 +4316,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -4600,7 +4325,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -4742,7 +4467,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -4779,7 +4504,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -4952,7 +4677,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Unprocessable Entity */
@@ -4974,7 +4699,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -5489,7 +5214,7 @@ export interface operations {
                          * Format: date-time
                          * @description Data e hora da última modificação da condição no Mercos.
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                         /**
                          * Format: double
                          * @description Valor mínimo do pedido (sem IPI e ICMS-ST) para que esta condição de pagamento possa ser utilizada.
@@ -5504,7 +5229,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed — `divisao_id` inválido, ou a requisição enviou o parâmetro antigo `representada_id`. */
@@ -5528,7 +5253,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -5587,7 +5312,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -5611,7 +5336,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -5669,10 +5394,10 @@ export interface operations {
                          * Format: date-time
                          * @description Data e hora da última modificação da condição no Mercos.
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                         /** @description Valor mínimo do pedido (sem IPI e ICMS-ST) para que esta condição de pagamento possa ser utilizada. */
                         valor_minimo?: string;
-                    }[];
+                    };
                 };
             };
             /** @description Unauthorized */
@@ -5681,7 +5406,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -5690,7 +5415,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -5752,7 +5477,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -5776,7 +5501,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -5867,7 +5592,7 @@ export interface operations {
                          * @description Data e hora da última modificação na configuração.
                          * @example 2017-03-24 09:57:19
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                         /**
                          * Format: double
                          * @description A Margem de Valor Agregado (em percentual). Utilizado quando `tipo_st` for `"MVA"`.
@@ -5889,7 +5614,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed — `divisao_id` inválido, ou a requisição enviou o parâmetro antigo `representada_id`. */
@@ -5913,7 +5638,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -6003,7 +5728,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -6012,7 +5737,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -6101,7 +5826,7 @@ export interface operations {
                          * @description Data e hora da última modificação na configuração.
                          * @example 2017-03-24 09:57:19
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                         /**
                          * Format: double
                          * @description A Margem de Valor Agregado (em percentual). Utilizado quando `tipo_st` for `"MVA"`.
@@ -6123,7 +5848,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -6132,7 +5857,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -6173,7 +5898,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -6182,7 +5907,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -6211,11 +5936,11 @@ export interface operations {
                         /** @description Indica se a divisão está excluída. */
                         excluido?: boolean;
                         /** @description Identificador único da divisão no Mercos. */
-                        id?: number;
+                        id: number;
                         /** @description Nome fantasia da divisão. */
                         nome_fantasia?: string;
                         /** @description Data e hora da última modificação desta divisão no Mercos. Formato "yyyy-mm-dd hh:mm:ss". */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     }[];
                 };
             };
@@ -6334,9 +6059,9 @@ export interface operations {
                         /** @description Indica se o vínculo está excluído. */
                         excluido?: boolean;
                         /** @description Identificador único do vínculo no Mercos. */
-                        id?: number;
+                        id: number;
                         /** @description Data e hora da última modificação deste vínculo no Mercos. Formato "yyyy-mm-dd hh:mm:ss". */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     }[];
                 };
             };
@@ -6466,11 +6191,11 @@ export interface operations {
                         /** @description Indica se a divisão está excluída. */
                         excluido?: boolean;
                         /** @description Identificador único da divisão no Mercos. */
-                        id?: number;
+                        id: number;
                         /** @description Nome fantasia da divisão. */
                         nome_fantasia?: string;
                         /** @description Data e hora da última modificação desta divisão no Mercos. Formato "yyyy-mm-dd hh:mm:ss". */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     };
                 };
             };
@@ -6527,7 +6252,7 @@ export interface operations {
                         /** @description Indica se o evento foi excluído. */
                         excluido?: boolean;
                         /** @description Identificador único do evento. */
-                        id?: number;
+                        id: number;
                         /** @description Indica se o evento foi realizado. */
                         realizado?: boolean;
                         /** @description Tipo de evento (`1`: VISITA, `2`: LIGACAO, `3`: OUTROS, `4`: EMAIL, `5`: WHATSAPP, `6`: SKYPE). */
@@ -6536,7 +6261,7 @@ export interface operations {
                          * Format: date-time
                          * @description Data e hora da última alteração do evento.
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     }[];
                 };
             };
@@ -6546,7 +6271,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -6555,7 +6280,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -6569,14 +6294,6 @@ export interface operations {
         };
         requestBody?: {
             content: {
-                /**
-                 * @example [
-                 *       {
-                 *         "id": 379,
-                 *         "excluido": true
-                 *       }
-                 *     ]
-                 */
                 "application/json": {
                     /** @description ID do cliente. */
                     cliente_id?: number;
@@ -6595,6 +6312,31 @@ export interface operations {
                     realizado?: boolean;
                     /** @description Tipo de evento (`1`: VISITA, `2:` LIGACAO, `3`: OUTROS, `4`: EMAIL, `5`: WHATSAPP, `6`: SKYPE). */
                     tipo: number;
+                }[] | {
+                    /** @description ID do cliente. */
+                    cliente_id?: number;
+                    /** @description ID do colaborador. */
+                    colaborador_id?: number;
+                    /**
+                     * Format: date-time
+                     * @description Data e hora do evento.
+                     */
+                    data_evento: string;
+                    /** @description Descrição do evento. */
+                    descricao?: string;
+                    /** @description Indica se o evento foi excluído. */
+                    excluido?: boolean;
+                    /** @description ID do evento. */
+                    id: number;
+                    /** @description Indica se o evento foi realizado. */
+                    realizado?: boolean;
+                    /** @description Tipo de evento (`1`: VISITA, `2:` LIGACAO, `3`: OUTROS, `4`: EMAIL, `5`: WHATSAPP, `6`: SKYPE). */
+                    tipo?: number;
+                }[] | {
+                    /** @description Indica se o evento foi excluído. */
+                    excluido: boolean;
+                    /** @description ID do evento. */
+                    id: number;
                 }[];
             };
         };
@@ -6614,7 +6356,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Unprocessable Entity */
@@ -6638,7 +6380,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -6692,7 +6434,7 @@ export interface operations {
                          * Format: date-time
                          * @description Data e hora da última alteração do evento.
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     };
                 };
             };
@@ -6702,7 +6444,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -6711,160 +6453,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-        };
-    };
-    post_v1_eventos_atualizar_em_lote: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                /**
-                 * @example [
-                 *       {
-                 *         "id": 379,
-                 *         "excluido": true
-                 *       }
-                 *     ]
-                 */
-                "application/json": {
-                    /** @description ID do cliente. */
-                    cliente_id?: number;
-                    /** @description ID do colaborador. */
-                    colaborador_id?: number;
-                    /**
-                     * Format: date-time
-                     * @description Data e hora do evento.
-                     */
-                    data_evento: string;
-                    /** @description Descrição do evento. */
-                    descricao?: string;
-                    /** @description Indica se o evento foi excluído. */
-                    excluido?: boolean;
-                    /** @description ID do evento. */
-                    id: number;
-                    /** @description Indica se o evento foi realizado. */
-                    realizado?: boolean;
-                    /** @description Tipo de evento (`1`: VISITA, `2:` LIGACAO, `3`: OUTROS, `4`: EMAIL, `5`: WHATSAPP, `6`: SKYPE). */
-                    tipo?: number;
-                }[];
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Unprocessable Entity */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        erros?: string[][];
-                        /** @example Ocorreram erros de validação */
-                        mensagem?: string;
-                        /** @example /api/v1/eventos */
-                        url?: string;
-                    };
-                };
-            };
-            /** @description Too Many Requests */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-        };
-    };
-    post_v1_eventos_excluir_em_lote: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                /**
-                 * @example [
-                 *       {
-                 *         "id": 379,
-                 *         "excluido": true
-                 *       }
-                 *     ]
-                 */
-                "application/json": {
-                    /** @description Indica se o evento foi excluído. */
-                    excluido: boolean;
-                    /** @description ID do evento. */
-                    id: number;
-                }[];
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Unprocessable Entity */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        erros?: unknown[][];
-                        mensagem?: string;
-                        url?: string;
-                    };
-                };
-            };
-            /** @description Too Many Requests */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -6915,7 +6504,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -6939,7 +6528,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -6993,7 +6582,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -7017,7 +6606,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -7062,7 +6651,7 @@ export interface operations {
                          * @description Data e hora da última modificação no registro.
                          * @example 2014-01-17 06:00:43
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     }[];
                 };
             };
@@ -7072,7 +6661,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -7081,7 +6670,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -7125,7 +6714,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -7149,7 +6738,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -7195,7 +6784,7 @@ export interface operations {
                          * @description Data e hora da última modificação no registro.
                          * @example 2017-02-21 15:58:35
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     };
                 };
             };
@@ -7205,7 +6794,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -7214,7 +6803,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -7261,7 +6850,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -7285,7 +6874,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -7312,14 +6901,14 @@ export interface operations {
                         /** @description Indica se o funil está excluído. */
                         excluido?: boolean;
                         /** @description Identificador único. */
-                        id?: number;
+                        id: number;
                         /** @description Nome do funil. */
                         nome?: string;
                         /**
                          * Format: date-time
                          * @description Data e hora da última modificação deste funil no Mercos.
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     }[];
                 };
             };
@@ -7329,7 +6918,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -7338,7 +6927,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -7370,7 +6959,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Unauthorized */
@@ -7379,7 +6968,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Unprocessable Entity */
@@ -7401,7 +6990,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -7456,7 +7045,7 @@ export interface operations {
                          * @description Data e hora da última modificação desta etapa no Mercos.
                          * @example 2024-01-15 10:30:00
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     }[];
                 };
             };
@@ -7466,7 +7055,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -7475,7 +7064,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -7536,7 +7125,7 @@ export interface operations {
                          * @description Data e hora da última modificação deste motivo no Mercos.
                          * @example 2024-01-10 09:00:00
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     }[];
                 };
             };
@@ -7546,7 +7135,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -7555,7 +7144,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -7613,7 +7202,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Unprocessable Entity */
@@ -7635,7 +7224,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -7725,7 +7314,7 @@ export interface operations {
                          * @description Data e hora da última modificação desta oportunidade no Mercos.
                          * @example 2024-01-18 14:30:00
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                         /**
                          * @description UUID único da oportunidade.
                          * @example a1b2c3d4-e5f6-7890-abcd-ef1234567890
@@ -7746,7 +7335,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -7755,7 +7344,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -7835,7 +7424,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Unauthorized */
@@ -7844,7 +7433,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Unprocessable Entity */
@@ -7866,7 +7455,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -7893,14 +7482,14 @@ export interface operations {
                         /** @description Indica se o funil está excluído. */
                         excluido?: boolean;
                         /** @description Identificador único. */
-                        id?: number;
+                        id: number;
                         /** @description Nome do funil. */
                         nome?: string;
                         /**
                          * Format: date-time
                          * @description Data e hora da última modificação deste funil no Mercos.
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     };
                 };
             };
@@ -7910,7 +7499,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -7919,7 +7508,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -7960,7 +7549,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -7969,7 +7558,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -8021,7 +7610,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -8048,7 +7637,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -8089,7 +7678,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -8098,7 +7687,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -8177,7 +7766,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -8186,7 +7775,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -8232,7 +7821,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -8241,7 +7830,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -8287,7 +7876,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Unprocessable Entity */
@@ -8308,7 +7897,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -8369,7 +7958,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -8378,7 +7967,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -8410,7 +7999,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Created */
@@ -8419,7 +8008,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Unauthorized */
@@ -8428,7 +8017,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -8455,7 +8044,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -8506,7 +8095,7 @@ export interface operations {
                          * @description Data e hora da última modificação deste motivo na Mercos.
                          * @example 2026-05-12 10:21:50
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     };
                 };
             };
@@ -8516,7 +8105,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -8525,7 +8114,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -8572,7 +8161,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -8596,7 +8185,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -8692,7 +8281,7 @@ export interface operations {
                          * @description Data da última alteração da nota fiscal. Ex: `2023-07-12`.
                          * @example 2016-03-25
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                         /**
                          * @description Valor da nota fiscal. Ex: `9999999.99`
                          * @default 0
@@ -8708,7 +8297,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -8717,7 +8306,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -8769,7 +8358,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Unauthorized */
@@ -8778,7 +8367,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -8802,7 +8391,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -8898,7 +8487,7 @@ export interface operations {
                          * @description Data da última alteração da nota fiscal. Ex: `2023-07-12`.
                          * @example 2016-03-25
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                         /**
                          * @description Valor da nota fiscal. Ex: `9999999.99`
                          * @default 0
@@ -8914,7 +8503,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -8923,7 +8512,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -8973,7 +8562,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -8997,7 +8586,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -9040,7 +8629,7 @@ export interface operations {
                         /** @description Formas de pagamento disponíveis: `credit` para Cartão de crédito, `boleto` para Boleto. */
                         forma_pagamento?: string;
                         /** @description Identificador único da solicitação de pagamento. */
-                        id?: number;
+                        id: number;
                         /** @description Número da Nota Fiscal, quando informada. */
                         nota_fiscal?: string;
                         /** @description Número de parcelas. */
@@ -9095,7 +8684,7 @@ export interface operations {
                          * Format: date-time
                          * @description Data e hora da última atualização na solicitação de pagamento. Alterações no status da transação também atualizam este campo.
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                         /** @description Valor cobrado. */
                         valor?: number;
                     }[];
@@ -9107,7 +8696,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -9116,7 +8705,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -9263,7 +8852,7 @@ export interface operations {
                              */
                             valor_hora?: string;
                             /** @description Retorna uma lista de IDs e valores dos itens da lista. Ex: `[[1, "sp"], [2, "sc"]]`. */
-                            valor_lista?: Record<string, never>[];
+                            valor_lista?: Record<string, unknown>[];
                             /**
                              * @description Retorna um texto se o campo for do tipo texto ou somente leitura.
                              * @example
@@ -9370,7 +8959,7 @@ export interface operations {
                              */
                             quantidade: number;
                             /** @description Lista com as grades de cores e tamanhos usadas e suas respectivas quantidades. Caso o produto possua somente Cor, o Tamanho será `null`, e vice-versa. A soma das quantidades nesta lista será igual ao campo `quantidade` do item. Campos: `cor` (String: 15), `tamanho` (String: 15), `quantidade` (Double). */
-                            quantidade_grades?: Record<string, never>[];
+                            quantidade_grades?: Record<string, unknown>[];
                             /**
                              * @description Valor da ST (Substituição Tributária).
                              * @default 0
@@ -9456,7 +9045,7 @@ export interface operations {
                          */
                         transportadora_nome?: string;
                         /** @example 2017-02-20 09:19:20 */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     }[];
                 };
             };
@@ -9466,7 +9055,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed — `divisao_id` inválido, ou a requisição enviou o parâmetro antigo `representada_id`. */
@@ -9490,7 +9079,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -9605,7 +9194,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -9629,7 +9218,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -9689,7 +9278,7 @@ export interface operations {
                         /** @description Identificador único da forma de pagamento. Usado apenas caso você integre a entidade Formas de Pagamento. */
                         forma_pagamento_id?: unknown;
                         /** @description Identificador único. */
-                        id?: unknown;
+                        id: unknown;
                         items?: unknown;
                         /** @description Nome do contato do cliente. */
                         nome_contato?: unknown;
@@ -9830,7 +9419,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -9854,7 +9443,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -9903,7 +9492,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -9912,7 +9501,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -9959,7 +9548,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -9979,7 +9568,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -10011,7 +9600,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -10031,7 +9620,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -10068,7 +9657,7 @@ export interface operations {
                         /** @example Aguardando estoque */
                         nome?: string;
                         /** @example 2016-08-26 15:00:09 */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     }[];
                 };
             };
@@ -10078,7 +9667,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -10087,7 +9676,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -10130,7 +9719,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -10151,7 +9740,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -10188,7 +9777,7 @@ export interface operations {
                         /** @example Aguardando NF-e */
                         nome?: string;
                         /** @example 2016-08-29 11:04:56 */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     };
                 };
             };
@@ -10198,7 +9787,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -10207,7 +9796,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -10254,7 +9843,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -10278,7 +9867,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -10306,8 +9895,8 @@ export interface operations {
                         id: number;
                         nome?: string;
                         /** Format: date-time */
-                        ultima_alteracao?: string;
-                    };
+                        ultima_alteracao: string;
+                    }[];
                 };
             };
             /** @description Unauthorized */
@@ -10316,7 +9905,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -10325,7 +9914,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -10371,7 +9960,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -10392,7 +9981,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -10420,7 +10009,7 @@ export interface operations {
                         id: number;
                         nome?: string;
                         /** Format: date-time */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     };
                 };
             };
@@ -10430,7 +10019,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -10439,7 +10028,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -10489,7 +10078,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -10510,7 +10099,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -10590,7 +10179,7 @@ export interface operations {
                          * @description Data e hora da última modificação desta política comercial.
                          * @example 2019-08-29 11:03:30
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     }[];
                 };
             };
@@ -10600,7 +10189,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed — `divisao_id` inválido, ou a requisição enviou o parâmetro antigo `representada_id`. */
@@ -10624,7 +10213,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -10701,7 +10290,7 @@ export interface operations {
                          * @description Data e hora da última modificação desta política comercial.
                          * @example 2019-08-29 11:03:30
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     };
                 };
             };
@@ -10711,7 +10300,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -10720,7 +10309,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -10779,7 +10368,7 @@ export interface operations {
                         /** @description Indica se o produto é exibido no e-commerce B2B. (`1 = Produto é exibido no e-commerce B2B` - `0 = Produto não é exibido no e-commerce B2B`) */
                         exibir_no_b2b?: boolean;
                         /** @description Identificador único */
-                        id?: number;
+                        id: number;
                         /**
                          * Format: double
                          * @description Caso não possua IPI, informe null.
@@ -10833,7 +10422,7 @@ export interface operations {
                             /** @description Identificador único do produto grade. */
                             id?: number;
                             /** @description Lista de itens de variação IDs que devem ser vinculadas ao produto grade. */
-                            itens_variacoes_ids?: Record<string, never>[];
+                            itens_variacoes_ids?: Record<string, unknown>[];
                             /** @description Lista de dicionários, onde é apresentado o nome das variações e dos itens de variação que devem ser vinculadas ao produto grade. */
                             itens_variacoes_nomes?: {
                                 cor?: string;
@@ -10868,7 +10457,7 @@ export interface operations {
                          * Format: date-time
                          * @description Data e hora da última modificação deste produto na Mercos.
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                         /** @description Unidade de medida do produto, por exemplo "Kg" ou "Cx". Opcional. */
                         unidade?: string;
                     }[];
@@ -10880,7 +10469,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed — `divisao_id` inválido, ou a requisição enviou o parâmetro antigo `representada_id`. */
@@ -10904,7 +10493,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -11049,1169 +10638,7 @@ export interface operations {
                      * @default UN
                      */
                     unidade?: string;
-                };
-            };
-        };
-        responses: {
-            /** @description Created */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /**
-                         * @default 0
-                         * @example 20325477
-                         */
-                        id: number;
-                    };
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Too Many Requests */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-        };
-    };
-    get_v1_produtos_tabela_preco: {
-        parameters: {
-            query: {
-                /** @description Retorna os registros alterados após esta data. */
-                alterado_apos: string;
-                /** @description Filtra os registros de uma divisão. Disponível apenas nas contas de indústria com divisões. Sem este filtro, a consulta retorna os registros de todas as divisões. O valor precisa ser o `id` de uma divisão da sua conta. */
-                divisao_id?: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /**
-                         * @description Indica se o preço está excluído.
-                         * @default true
-                         * @example true
-                         */
-                        excluido: boolean;
-                        /**
-                         * @description Identificador único.
-                         * @default 0
-                         * @example 80029033
-                         */
-                        id: number;
-                        /**
-                         * @description Preço do produto nesta tabela.
-                         * @default 0
-                         * @example 1287.34
-                         */
-                        preco: number;
-                        /**
-                         * @description ID do Produto. Este deve ser o ID cadastrado no Mercos, e não o ID do seu Sistema.
-                         * @default 0
-                         * @example 67396357
-                         */
-                        produto_id: number;
-                        /**
-                         * @description ID da Tabela de Preço. Este deve ser o ID cadastrado no Mercos, e não o ID do seu Sistema.
-                         * @default 0
-                         * @example 199213
-                         */
-                        tabela_id: number;
-                        /**
-                         * @description Data e hora da última modificação desta tabela de preço no Mercos.
-                         * @example 2018-07-12 14:53:39
-                         */
-                        ultima_alteracao?: string;
-                    }[];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Precondition Failed — `divisao_id` inválido, ou a requisição enviou o parâmetro antigo `representada_id`. */
-            412: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        erros?: {
-                            campo?: string;
-                            mensagem?: string;
-                        }[];
-                        mensagem?: string;
-                    };
-                };
-            };
-            /** @description Too Many Requests */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-        };
-    };
-    post_v1_produtos_tabela_preco: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": {
-                    /**
-                     * @description Identificador da divisão. Opcional: quando não informado, o Mercos usa a divisão associada à integração. Utilize este campo se a sua conta **é** uma indústria com divisões. Nas demais contas, utilize `representada_id`.
-                     * @example 987
-                     */
-                    divisao_id?: number | null;
-                    /**
-                     * @description Preço do produto nesta tabela.
-                     * @default 100
-                     */
-                    preco: number;
-                    /**
-                     * @description ID do Produto. Este deve ser o ID cadastrado no Mercos, e não o ID do seu Sistema.
-                     * @default 123
-                     */
-                    produto_id: number;
-                    /**
-                     * @description Identificador da representada. Opcional: quando não informado, o Mercos usa a representada associada à integração. Utilize este campo se a sua conta **não é** uma indústria com divisões. Se for, utilize `divisao_id` no lugar dele.
-                     * @example 987
-                     */
-                    representada_id?: number | null;
-                    /**
-                     * @description ID da Tabela de Preço. Este deve ser o ID cadastrado no Mercos, e não o ID do seu Sistema.
-                     * @default 23
-                     */
-                    tabela_id: number;
-                };
-            };
-        };
-        responses: {
-            /** @description Created */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Too Many Requests */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-        };
-    };
-    post_v1_produtos_tabela_preco_em_lote: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": {
-                    /**
-                     * @description Identificador da divisão dona do produto e da tabela de preço do vínculo. Disponível apenas nas contas de indústria com divisões: nas demais contas o campo responde `422`. Opcional: quando não informado, o Mercos usa a divisão associada à integração. Itens do mesmo lote podem informar divisões diferentes.
-                     * @example 987
-                     */
-                    divisao_id?: number | null;
-                    /**
-                     * @description ID do Vínculo do Produto com Tabela de Preço que será editado. Este deve ser o ID cadastrado no Mercos, e não o ID do seu Sistema.
-                     * @default 168
-                     */
-                    id: number;
-                    /**
-                     * @description Preço do produto nesta tabela.
-                     * @default 21
-                     */
-                    preco: number;
-                    /**
-                     * @description ID do Produto. Este deve ser o ID cadastrado no Mercos, e não o ID do seu Sistema.
-                     * @default 1336
-                     */
-                    produto_id: number;
-                    /**
-                     * @description ID da Tabela de Preço. Este deve ser o ID cadastrado no Mercos, e não o ID do seu Sistema. Informar o valor 0 para alterar a tabela de preço padrão do produto.
-                     * @default 61
-                     */
-                    tabela_id: number;
-                }[];
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        id: number;
-                        preco: number;
-                        produto_id: number;
-                        tabela_id: number;
-                    }[];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Unprocessable Entity */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        erros?: string[][];
-                        mensagem?: string;
-                        url?: string;
-                    };
-                };
-            };
-            /** @description Too Many Requests */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-        };
-    };
-    get_v1_produtos_tabela_preco_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description ID do vínculo da tabela de preço com o produto */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    MeusPedidosID?: string;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /**
-                         * @description Indica se o preço está excluído.
-                         * @default true
-                         * @example true
-                         */
-                        excluido: boolean;
-                        /**
-                         * @description Identificador único.
-                         * @default 0
-                         * @example 80029033
-                         */
-                        id: number;
-                        /**
-                         * @description Preço do produto nesta tabela.
-                         * @default 0
-                         * @example 1287.34
-                         */
-                        preco: number;
-                        /**
-                         * @description ID do Produto. Este deve ser o ID cadastrado no Mercos, e não o ID do seu Sistema.
-                         * @default 0
-                         * @example 67396357
-                         */
-                        produto_id: number;
-                        /**
-                         * @description ID da Tabela de Preço. Este deve ser o ID cadastrado no Mercos, e não o ID do seu Sistema.
-                         * @default 0
-                         * @example 199213
-                         */
-                        tabela_id: number;
-                        /**
-                         * @description Data e hora da última modificação desta tabela de preço no Mercos.
-                         * @example 2018-07-12 14:53:39
-                         */
-                        ultima_alteracao?: string;
-                    }[];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Too Many Requests */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-        };
-    };
-    put_v1_produtos_tabela_preco_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description ID do vínculo da tabela de preço com o produto */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": {
-                    /**
-                     * @description Identificador da divisão. Opcional: quando não informado, o Mercos usa a divisão associada à integração. Utilize este campo se a sua conta **é** uma indústria com divisões. Nas demais contas, utilize `representada_id`.
-                     * @example 987
-                     */
-                    divisao_id?: number | null;
-                    /** @description Preço do produto nesta tabela. */
-                    preco: number;
-                    /** @description ID do Produto. Este deve ser o ID cadastrado no Mercos, e não o ID do seu Sistema. */
-                    produto_id: number;
-                    /**
-                     * @description Identificador da representada. Opcional: quando não informado, o Mercos usa a representada associada à integração. Utilize este campo se a sua conta **não é** uma indústria com divisões. Se for, utilize `divisao_id` no lugar dele.
-                     * @example 987
-                     */
-                    representada_id?: number | null;
-                    /** @description ID da Tabela de Preço. Este deve ser o ID cadastrado no Mercos, e não o ID do seu Sistema. */
-                    tabela_id: number;
-                };
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Precondition Failed */
-            412: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        erros?: {
-                            campo?: string;
-                            mensagem?: string;
-                        }[];
-                        mensagem?: string;
-                    };
-                };
-            };
-            /** @description Too Many Requests */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-        };
-    };
-    get_v1_produtos_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description ID do produto no sistema Mercos. */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /**
-                         * Format: double
-                         * @description Altura da embalagem do produto em centímetros (com até 5 casas decimais).
-                         */
-                        altura?: number;
-                        /**
-                         * @description Indica se o produto está ativo. Os produtos inativos podem ser atualizados, inclusive podendo voltar a ser ativos.
-                         * @default false
-                         */
-                        ativo: boolean;
-                        /** @description Identificador único da categoria relacionada ao produto. */
-                        categoria_id?: number;
-                        /** @description Código de referência do produto */
-                        codigo?: string;
-                        /** @description Código do NCM - Nomenclatura Comum do Mercosul, utilizado para cálculo automático do ST. */
-                        codigo_ncm?: string;
-                        /**
-                         * Format: double
-                         * @description Comissão do produto. Ex: 5.0 para 5%. Informe null caso não queira calcular comissões pela Mercos.
-                         */
-                        comissao?: number;
-                        /**
-                         * Format: double
-                         * @description Comprimento da embalagem do produto em centímetros (com até 5 casas decimais).
-                         */
-                        comprimento?: number;
-                        /**
-                         * @description Identificador da divisão do registro. Retornado no lugar de `representada_id` quando a sua conta **é** uma indústria com divisões.
-                         * @example 987
-                         */
-                        divisao_id?: number;
-                        /**
-                         * @description Indica se o produto está excluído. Os produtos excluídos não poderão mais ser atualizados.  Após excluir um produto `"excluido": true`, este processo não tem retorno, será necessário criar outro produto.
-                         * @default false
-                         */
-                        excluido: boolean;
-                        /** @description Indica se o produto é exibido no e-commerce B2B. (`1 = Produto é exibido no e-commerce B2B` - `0 = Produto não é exibido no e-commerce B2B`) */
-                        exibir_no_b2b?: boolean;
-                        /** @description Identificador único */
-                        id?: number;
-                        /**
-                         * Format: double
-                         * @description Caso não possua IPI, informe null.
-                         */
-                        ipi?: number;
-                        /**
-                         * Format: double
-                         * @description Largura da embalagem do produto em centímetros (com até 5 casas decimais).
-                         */
-                        largura?: number;
-                        /** @description Moeda do produto: Real ("0"), Dólar ("1") ou Euro ("2"). */
-                        moeda?: string;
-                        /**
-                         * Format: double
-                         * @description Múltiplo de venda do produto.
-                         */
-                        multiplo?: number;
-                        /** @description Nome do produto. */
-                        nome?: string;
-                        /** @description Utilize para guardar quaisquer informações que não tenham campos específicos. */
-                        observacoes?: string;
-                        /**
-                         * Format: double
-                         * @description Peso bruto do produto em kg (com até 3 casas decimais).
-                         */
-                        peso_bruto?: number;
-                        /** @description Indica se o peso bruto e as dimensões (Largura, Altura e Comprimento) informadas são unitárias. Em caso de caixa master esse campo deve ser enviado como falso = 0. (`1 = Peso e dimensões unitárias` - `0 = Peso e dimensões não são unitárias`) */
-                        peso_dimensoes_unitario?: boolean;
-                        /**
-                         * Format: double
-                         * @description Preço mínimo do produto para o recurso da Rentabilidade (apenas Plano Ouro)
-                         */
-                        preco_minimo?: number;
-                        /**
-                         * Format: double
-                         * @description Preço deste produto na tabela padrão.
-                         */
-                        preco_tabela?: number;
-                        /** @description Indica se os produtos grade vão herdar do agregador as tabelas de preço, ou se terão preços específicos. */
-                        precos_especificos?: boolean;
-                        /** @description Lista de produtos grade que o produto possui. */
-                        produtos_grade?: {
-                            /** @description Indica se o produto está ativo. Os produtos inativos podem ser atualizados, inclusive podendo voltar a ser ativos. */
-                            ativo?: boolean;
-                            /** @description Código de referência do produto */
-                            codigo?: string;
-                            /** @description Indica se o produto está excluído. Os produtos excluídos não poderão mais ser atualizados.  Após excluir um produto `"excluido": true`, este processo não tem retorno, será necessário criar outro produto. */
-                            excluido?: boolean;
-                            /** @description Indica se o produto é exibido no e-commerce B2B. Por padrão esse campo é verdadeiro, caso deseje que o produto não seja exibido no B2B, esse campo deve ser enviado como falso. */
-                            exibir_no_b2b?: boolean;
-                            /** @description Identificador único do produto grade. */
-                            id?: number;
-                            /** @description Lista de itens de variação IDs que devem ser vinculadas ao produto grade. */
-                            itens_variacoes_ids?: Record<string, never>[];
-                            /** @description Lista de dicionários, onde é apresentado o nome das variações e dos itens de variação que devem ser vinculadas ao produto grade. */
-                            itens_variacoes_nomes?: {
-                                cor?: string;
-                                tamanho?: string;
-                            }[];
-                            /**
-                             * Format: double
-                             * @description Preço deste produto na tabela padrão. Deve ser enviado este campo quando os produtos grade possuirem preços específicos de acordo com o produto agregador.
-                             */
-                            preco_tabela?: number;
-                            /** @description Saldo de estoque do produto. Valor máximo suportado: 9999999.99 */
-                            saldo_estoque?: number;
-                        }[];
-                        /**
-                         * @description Identificador da representada do registro. Retornado quando a sua conta **não é** uma indústria com divisões.
-                         * @example 987
-                         */
-                        representada_id?: number;
-                        /**
-                         * Format: double
-                         * @description Saldo de estoque do produto. Valor máximo suportado: 9999999.99
-                         */
-                        saldo_estoque?: number;
-                        /**
-                         * Format: double
-                         * @description Percentual de Substituição Tributária do produto. Caso não possua ST ou se esse imposto deve ser calculado com base na regra vinculada ao NCM, informe null.
-                         */
-                        st?: number;
-                        /** @description Tipo do IPI do produto: "P" para percentual, "V" para valor fixo em Reais. */
-                        tipo_ipi?: string;
-                        /**
-                         * Format: date-time
-                         * @description Data e hora da última modificação deste produto na Mercos.
-                         */
-                        ultima_alteracao?: string;
-                        /** @description Unidade de medida do produto, por exemplo "Kg" ou "Cx". Opcional. */
-                        unidade?: string;
-                    }[];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Too Many Requests */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-        };
-    };
-    put_v1_produtos_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description ID do produto no sistema Mercos. */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": {
-                    /**
-                     * Format: double
-                     * @description Altura da embalagem do produto em centímetros, com até 5 casas decimais.
-                     */
-                    altura?: number;
-                    /** @description Indica se o produto está ativo. Os produtos inativos podem ser atualizados, inclusive podendo voltar a ser ativos. */
-                    ativo?: boolean;
-                    /** @description Identificador único da categoria relacionada ao produto. */
-                    categoria_id?: number;
-                    /** @description Código de referência do produto. */
-                    codigo?: string;
-                    /** @description Código do NCM - Nomenclatura Comum do Mercosul, utilizado para cálculo automático do ST. */
-                    codigo_ncm?: string;
-                    /**
-                     * Format: double
-                     * @description Comissão do produto. Exemplo: 5.0 para 5%. Informe null caso não queira calcular comissões pela Mercos.
-                     */
-                    comissao?: number;
-                    /**
-                     * Format: double
-                     * @description Comprimento da embalagem do produto em centímetros, com até 5 casas decimais.
-                     */
-                    comprimento?: number;
-                    /**
-                     * @description Identificador da divisão. Opcional: quando não informado, o Mercos usa a divisão associada à integração. Utilize este campo se a sua conta **é** uma indústria com divisões. Nas demais contas, utilize `representada_id`.
-                     * @example 987
-                     */
-                    divisao_id?: number | null;
-                    /** @description Indica se o produto está excluído. Os produtos excluídos não poderão mais ser atualizados. Após excluir um produto com "excluido": true, este processo não tem retorno; será necessário criar outro produto. */
-                    excluido?: boolean;
-                    /** @description Indica se o produto é exibido no e-commerce B2B. Por padrão esse campo é verdadeiro; caso deseje que o produto não seja exibido no B2B, envie false. */
-                    exibir_b2b?: boolean;
-                    /**
-                     * Format: double
-                     * @description Valor do IPI do produto. Caso não possua IPI, informe null.
-                     */
-                    ipi?: number;
-                    /**
-                     * Format: double
-                     * @description Largura da embalagem do produto em centímetros, com até 5 casas decimais.
-                     */
-                    largura?: number;
-                    /** @description Moeda do produto: Real ("0"), Dólar ("1") ou Euro ("2"). */
-                    moeda?: string;
-                    /**
-                     * Format: double
-                     * @description Múltiplo de venda do produto.
-                     */
-                    multiplo?: number;
-                    /**
-                     * @description Nome do produto.
-                     * @default Produto Simples Alterado
-                     */
-                    nome: string;
-                    /** @description Utilize para guardar quaisquer informações que não tenham campos específicos. */
-                    observacoes?: string;
-                    /**
-                     * Format: double
-                     * @description Peso bruto do produto em kg, com até 3 casas decimais.
-                     */
-                    peso_bruto?: number;
-                    /** @description Indica se o peso bruto e as dimensões (largura, altura e comprimento) informadas são unitárias. Em caso de caixa master, esse campo deve ser enviado como false. */
-                    peso_dimensoes_unitario?: boolean;
-                    /**
-                     * Format: double
-                     * @description Preço mínimo do produto para o recurso da Rentabilidade (apenas Plano Ouro).
-                     */
-                    preco_minimo?: number;
-                    /**
-                     * Format: double
-                     * @description Preço deste produto na tabela padrão.
-                     * @default 150
-                     */
-                    preco_tabela: number;
-                    /**
-                     * @description Identificador da representada. Opcional: quando não informado, o Mercos usa a representada associada à integração. Utilize este campo se a sua conta **não é** uma indústria com divisões. Se for, utilize `divisao_id` no lugar dele.
-                     * @example 987
-                     */
-                    representada_id?: number | null;
-                    /**
-                     * Format: double
-                     * @description Saldo de estoque do produto. Valor máximo suportado: 9999999.99.
-                     */
-                    saldo_estoque?: number;
-                    /**
-                     * Format: double
-                     * @description Percentual de Substituição Tributária do produto. Caso não possua ST ou se esse imposto deve ser calculado com base na regra vinculada ao NCM, informe null.
-                     */
-                    st?: number;
-                    /** @description Tipo do IPI do produto: "P" para percentual, "V" para valor fixo em Reais. */
-                    tipo_ipi?: string;
-                    /** @description Unidade de medida do produto, por exemplo "Kg" ou "Cx". Opcional. */
-                    unidade?: string;
-                };
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /**
-                         * @description Identificador único do produto.
-                         * @default 0
-                         * @example 20325471
-                         */
-                        id: number;
-                        /** @description Lista de produtos grade que o produto possui. */
-                        produtos_grade?: Record<string, never>[];
-                    };
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Too Many Requests */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-        };
-    };
-    put_v1_produtos_id_grade_v2: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": {
-                    /** @description Altura da embalagem em centímetros (até 5 casas decimais). */
-                    altura?: number;
-                    /** @description Indica se o produto está ativo. Produtos inativos podem ser atualizados, inclusive podendo voltar a ser ativos. */
-                    ativo?: boolean;
-                    /** @description Identificador único da categoria relacionada ao produto. */
-                    categoria_id?: number;
-                    /** @description Código de referência do produto. */
-                    codigo?: string;
-                    /** @description Código NCM (Nomenclatura Comum do Mercosul), utilizado para cálculo automático do ST. */
-                    codigo_ncm?: string;
-                    /** @description Comissão do produto. Ex: `5.0` para 5%. Informe `null` caso não queira calcular comissões pela Mercos. */
-                    comissao?: number | null;
-                    /** @description Comprimento da embalagem em centímetros (até 5 casas decimais). */
-                    comprimento?: number;
-                    /**
-                     * @description Identificador da divisão. Opcional: quando não informado, o Mercos usa a divisão associada à integração. Utilize este campo se a sua conta **é** uma indústria com divisões. Nas demais contas, utilize `representada_id`.
-                     * @example 987
-                     */
-                    divisao_id?: number | null;
-                    /** @description Indica se o produto está excluído. Produtos excluídos não poderão mais ser atualizados. Após excluir (`"excluido": true`), o processo não tem retorno — será necessário criar outro produto. */
-                    excluido?: boolean;
-                    /** @description Indica se o produto é exibido no e-commerce B2B. Por padrão é `true`. Para ocultar, envie `false`. */
-                    exibir_no_b2b?: boolean;
-                    /** @description Valor do IPI. Caso não possua, informe `null`. */
-                    ipi?: number;
-                    /** @description Largura da embalagem em centímetros (até 5 casas decimais). */
-                    largura?: number;
-                    /** @description Moeda do produto: Real (`"0"`), Dólar (`"1"`) ou Euro (`"2"`). */
-                    moeda?: string;
-                    /** @description Múltiplo de venda do produto. */
-                    multiplo?: number | null;
-                    /** @description Nome do produto. */
-                    nome: string;
-                    /** @description Utilize para guardar quaisquer informações que não tenham campos específicos. */
-                    observacoes?: string;
-                    /** @description Peso bruto do produto em kg (até 3 casas decimais). */
-                    peso_bruto?: number;
-                    /** @description Indica se o peso bruto e as dimensões são unitárias. Em caixa master, envie `false`. */
-                    peso_dimensoes_unitario?: boolean;
-                    /** @description Preço mínimo do produto para o recurso da Rentabilidade (apenas Plano Ouro). */
-                    preco_minimo?: number;
-                    /** @description Preço deste produto na tabela padrão. */
-                    preco_tabela: number;
-                    /** @description Indica se os produtos grade herdam do agregador as tabelas de preço ou se terão preços específicos. */
-                    precos_especificos?: boolean;
-                    /** @description Lista de produtos grade. Caso o produto possua grades e nada for informado, os produtos grade serão atualizados apenas com os dados herdados do produto agregador. */
-                    produtos_grade?: Record<string, never>[];
-                    /**
-                     * @description Identificador da representada. Opcional: quando não informado, o Mercos usa a representada associada à integração. Utilize este campo se a sua conta **não é** uma indústria com divisões. Se for, utilize `divisao_id` no lugar dele.
-                     * @example 987
-                     */
-                    representada_id?: number | null;
-                    /** @description Saldo de estoque do produto. Valor máximo suportado: `9999999.99` */
-                    saldo_estoque?: number;
-                    /** @description Percentual de Substituição Tributária. Caso não possua ST ou se o imposto deve ser calculado com base na regra vinculada ao NCM, informe `null`. */
-                    st?: number | null;
-                    /** @description Tipo do IPI do produto: `"P"` para percentual, `"V"` para valor fixo em Reais. */
-                    tipo_ipi?: string;
-                    /** @description Unidade de medida do produto. Ex: `"Kg"` ou `"Cx"`. Opcional. */
-                    unidade?: string;
-                };
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Too Many Requests */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-        };
-    };
-    put_v1_produtos_id_grade_v3: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description ID do produto no sistema Mercos. */
-                id: string;
-            };
-            cookie?: never;
-        };
-        /** @description Para requisições do tipo PUT, envie apenas os campos que deseja alterar. Não é possível alterar os itens de variação de um produto por este endpoint. */
-        requestBody?: {
-            content: {
-                "application/json": {
-                    /**
-                     * Format: double
-                     * @description Altura da embalagem do produto em centímetros, com até 5 casas decimais.
-                     */
-                    altura?: number;
-                    /** @description Indica se o produto está ativo. Os produtos inativos podem ser atualizados, inclusive podendo voltar a ser ativos. */
-                    ativo?: boolean;
-                    /** @description Identificador único da categoria relacionada ao produto. */
-                    categoria_id?: number;
-                    /** @description Código de referência do produto. */
-                    codigo?: string;
-                    /** @description Código do NCM - Nomenclatura Comum do Mercosul, utilizado para cálculo automático do ST. */
-                    codigo_ncm?: string;
-                    /** @description Comissão do produto. Exemplo: 5.0 para 5%. Informe null caso não queira calcular comissões pela Mercos. */
-                    comissao?: number;
-                    /**
-                     * Format: double
-                     * @description Comprimento da embalagem do produto em centímetros, com até 5 casas decimais.
-                     */
-                    comprimento?: number;
-                    /** @description Indica se o produto está excluído. Os produtos excluídos não poderão mais ser atualizados. Após excluir um produto com "excluido": true, este processo não tem retorno; será necessário criar outro produto. */
-                    excluido?: boolean;
-                    /** @description Indica se o produto é exibido no e-commerce B2B. Por padrão esse campo é verdadeiro; caso deseje que o produto não seja exibido no B2B, envie false. */
-                    exibir_b2b?: boolean;
-                    /**
-                     * Format: double
-                     * @description Valor do IPI do produto. Caso não possua IPI, informe null.
-                     */
-                    ipi?: number;
-                    /**
-                     * Format: double
-                     * @description Largura da embalagem do produto em centímetros, com até 5 casas decimais.
-                     */
-                    largura?: number;
-                    /** @description Moeda do produto: Real ("0"), Dólar ("1") ou Euro ("2"). */
-                    moeda?: string;
-                    /**
-                     * Format: double
-                     * @description Múltiplo de venda do produto.
-                     */
-                    multiplo?: number;
-                    /**
-                     * @description Nome do produto.
-                     * @default Produto Grade V3 Alterado
-                     */
-                    nome: string;
-                    /** @description Utilize para guardar quaisquer informações que não tenham campos específicos. */
-                    observacoes?: string;
-                    /**
-                     * Format: double
-                     * @description Peso bruto do produto em kg, com até 3 casas decimais.
-                     */
-                    peso_bruto?: number;
-                    /** @description Indica se o peso bruto e as dimensões (largura, altura e comprimento) informadas são unitárias. Em caso de caixa master, esse campo deve ser enviado como false. */
-                    peso_dimensoes_unitario?: boolean;
-                    /** @description Preço mínimo do produto para o recurso da Rentabilidade (apenas Plano Ouro). */
-                    preco_minimo?: string;
-                    /**
-                     * Format: double
-                     * @description Preço deste produto na tabela padrão.
-                     * @default 250
-                     */
-                    preco_tabela: number;
-                    /** @description Indica se os produtos grade vão herdar do agregador as tabelas de preço ou se terão preços específicos. */
-                    precos_especificos?: boolean;
-                    /** @description Lista de produtos grade que o produto possui. Caso o produto possua produtos grade e nada seja informado neste campo, os produtos grade serão atualizados apenas com os dados herdados do produto agregador. */
-                    produtos_grade: {
-                        /** @description Indica se o produto grade está ativo. Os produtos inativos podem ser atualizados, inclusive podendo voltar a ser ativos. */
-                        ativo?: boolean;
-                        /** @description Código de referência do produto grade. */
-                        codigo?: string;
-                        /** @description Indica se o produto grade está excluído. Os produtos excluídos não poderão mais ser atualizados. Após excluir um produto com "excluido": true, este processo não tem retorno; será necessário criar outro produto. */
-                        excluido?: boolean;
-                        /** @description Indica se o produto grade é exibido no e-commerce B2B. Por padrão esse campo é verdadeiro; caso deseje que o produto não seja exibido no B2B, envie false. */
-                        exibir_no_b2b?: boolean;
-                        /** @description Lista de IDs de itens de variação que devem ser vinculados ao produto grade. Não deve ser enviada junto com itens_variacoes_nomes no mesmo produto grade. */
-                        itens_variacoes_ids: number[];
-                        /** @description Lista de dicionários em que são apresentados os nomes das variações e dos itens de variação que devem ser vinculados ao produto grade. Não deve ser enviada junto com itens_variacoes_ids no mesmo produto grade. */
-                        itens_variacoes_nomes: {
-                            /**
-                             * @description Nome do item de variação associado à variação cor.
-                             * @default Preto
-                             */
-                            cor?: string;
-                        }[];
-                        /**
-                         * Format: double
-                         * @description Preço deste produto grade na tabela padrão. Deve ser enviado quando os produtos grade possuírem preços específicos de acordo com o produto agregador.
-                         */
-                        preco_tabela?: number;
-                    }[];
-                    /**
-                     * Format: double
-                     * @description Saldo de estoque do produto. Valor máximo suportado: 9999999.99.
-                     */
-                    saldo_estoque?: number;
-                    /**
-                     * Format: double
-                     * @description Percentual de Substituição Tributária do produto. Caso não possua ST ou se esse imposto deve ser calculado com base na regra vinculada ao NCM, informe null.
-                     */
-                    st?: number;
-                    /** @description Tipo do IPI do produto: "P" para percentual, "V" para valor fixo em Reais. */
-                    tipo_ipi?: string;
-                    /** @description Unidade de medida do produto, por exemplo "Kg" ou "Cx". Opcional. */
-                    unidade?: string;
-                };
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @description Identificador único do produto. */
-                        id?: number;
-                        /** @description Lista de produtos grade que o produto possui. */
-                        produtos_grade?: {
-                            /** @description Código de referência do produto grade. */
-                            codigo?: string;
-                            /** @description Identificador único do produto grade. */
-                            id?: number;
-                        }[];
-                    };
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Too Many Requests */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-        };
-    };
-    post_v1_produtos_grade_v2: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": {
-                    /**
-                     * Format: double
-                     * @description Altura da embalagem em centímetros (até 5 casas decimais).
-                     */
-                    altura?: number;
-                    /** @description Indica se o produto está ativo. Produtos inativos podem ser atualizados, inclusive podendo voltar a ser ativos. */
-                    ativo?: boolean;
-                    /** @description Identificador único da categoria relacionada ao produto. */
-                    categoria_id?: number;
-                    /** @description Código de referência do produto. */
-                    codigo?: string;
-                    /** @description Código NCM (Nomenclatura Comum do Mercosul), utilizado para cálculo automático do ST. */
-                    codigo_ncm?: string;
-                    /** @description Comissão do produto. Ex: `5.0` para 5%. Informe `null` caso não queira calcular comissões pela Mercos. */
-                    comissao?: number | null;
-                    /**
-                     * Format: double
-                     * @description Comprimento da embalagem em centímetros (até 5 casas decimais).
-                     */
-                    comprimento?: number;
-                    /**
-                     * @description Identificador da divisão. Opcional: quando não informado, o Mercos usa a divisão associada à integração. Utilize este campo se a sua conta **é** uma indústria com divisões. Nas demais contas, utilize `representada_id`.
-                     * @example 987
-                     */
-                    divisao_id?: number | null;
-                    /** @description Indica se o produto está excluído. Produtos excluídos não poderão mais ser atualizados. Após excluir (`"excluido": true`), o processo não tem retorno — será necessário criar outro produto. */
-                    excluido?: boolean;
-                    /** @description Indica se o produto é exibido no e-commerce B2B. Por padrão é `true`. Para ocultar, envie `false`. */
-                    exibir_no_b2b?: boolean;
-                    /** @description Depreciado. Lista de cores (String: 50) disponíveis. Caso não trabalhe com variação de cores, informe `null`. */
-                    grade_cores?: string;
-                    /** @description Lista de tamanhos (String: 50) disponíveis. Caso não trabalhe com variação de tamanhos, informe `null`. */
-                    grade_tamanhos?: string;
-                    /** @description Valor do IPI. Caso não possua, informe `null`. */
-                    ipi?: number;
-                    /**
-                     * Format: double
-                     * @description Largura da embalagem em centímetros (até 5 casas decimais).
-                     */
-                    largura?: number;
-                    /** @description Moeda do produto: Real (`"0"`), Dólar (`"1"`) ou Euro (`"2"`). */
-                    moeda?: string;
-                    /**
-                     * Format: double
-                     * @description Múltiplo de venda do produto.
-                     */
-                    multiplo?: number | null;
-                    /** @description Nome do produto. */
-                    nome: string;
-                    /** @description Utilize para guardar quaisquer informações que não tenham campos específicos. */
-                    observacoes?: string;
-                    /**
-                     * Format: double
-                     * @description Peso bruto do produto em kg (até 3 casas decimais).
-                     */
-                    peso_bruto?: number;
-                    /** @description Indica se o peso bruto e as dimensões são unitárias. Em caixa master, envie `false`. */
-                    peso_dimensoes_unitario?: boolean;
-                    /** @description Preço mínimo do produto para o recurso da Rentabilidade (apenas Plano Ouro). */
-                    preco_minimo?: number;
-                    /** @description Preço deste produto na tabela padrão. */
-                    preco_tabela: number;
-                    /** @description Indica se os produtos grade herdam do agregador as tabelas de preço ou se terão preços específicos. */
-                    precos_especificos?: boolean;
-                    /** @description Lista de produtos grade. Caso o produto possua grades e nada for informado, os produtos grade serão atualizados apenas com os dados herdados do produto agregador. */
-                    produtos_grade?: Record<string, never>[];
-                    /**
-                     * @description Identificador da representada. Opcional: quando não informado, o Mercos usa a representada associada à integração. Utilize este campo se a sua conta **não é** uma indústria com divisões. Se for, utilize `divisao_id` no lugar dele.
-                     * @example 987
-                     */
-                    representada_id?: number | null;
-                    /** @description Saldo de estoque do produto. Valor máximo suportado: `9999999.99` */
-                    saldo_estoque?: number;
-                    /** @description Percentual de Substituição Tributária. Caso não possua ST ou se o imposto deve ser calculado com base na regra vinculada ao NCM, informe `null`. */
-                    st?: number | null;
-                    /** @description Tipo do IPI do produto: `"P"` para percentual, `"V"` para valor fixo em Reais. */
-                    tipo_ipi?: string;
-                    /** @description Unidade de medida do produto. Ex: `"Kg"` ou `"Cx"`. Opcional. */
-                    unidade?: string;
-                };
-            };
-        };
-        responses: {
-            /** @description Created */
-            201: {
-                headers: {
-                    MeusPedidosID?: string;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Too Many Requests */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-        };
-    };
-    post_v1_produtos_grade_v3: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": {
+                } | {
                     /**
                      * Format: double
                      * @description Altura da embalagem do produto em centímetros, com até 5 casas decimais.
@@ -12323,6 +10750,86 @@ export interface operations {
                     tipo_ipi?: string;
                     /** @description Unidade de medida do produto, por exemplo "Kg" ou "Cx". Opcional. */
                     unidade?: string;
+                } | {
+                    /**
+                     * Format: double
+                     * @description Altura da embalagem em centímetros (até 5 casas decimais).
+                     */
+                    altura?: number;
+                    /** @description Indica se o produto está ativo. Produtos inativos podem ser atualizados, inclusive podendo voltar a ser ativos. */
+                    ativo?: boolean;
+                    /** @description Identificador único da categoria relacionada ao produto. */
+                    categoria_id?: number;
+                    /** @description Código de referência do produto. */
+                    codigo?: string;
+                    /** @description Código NCM (Nomenclatura Comum do Mercosul), utilizado para cálculo automático do ST. */
+                    codigo_ncm?: string;
+                    /** @description Comissão do produto. Ex: `5.0` para 5%. Informe `null` caso não queira calcular comissões pela Mercos. */
+                    comissao?: number | null;
+                    /**
+                     * Format: double
+                     * @description Comprimento da embalagem em centímetros (até 5 casas decimais).
+                     */
+                    comprimento?: number;
+                    /**
+                     * @description Identificador da divisão. Opcional: quando não informado, o Mercos usa a divisão associada à integração. Utilize este campo se a sua conta **é** uma indústria com divisões. Nas demais contas, utilize `representada_id`.
+                     * @example 987
+                     */
+                    divisao_id?: number | null;
+                    /** @description Indica se o produto está excluído. Produtos excluídos não poderão mais ser atualizados. Após excluir (`"excluido": true`), o processo não tem retorno — será necessário criar outro produto. */
+                    excluido?: boolean;
+                    /** @description Indica se o produto é exibido no e-commerce B2B. Por padrão é `true`. Para ocultar, envie `false`. */
+                    exibir_no_b2b?: boolean;
+                    /** @description Depreciado. Lista de cores (String: 50) disponíveis. Caso não trabalhe com variação de cores, informe `null`. */
+                    grade_cores?: string;
+                    /** @description Lista de tamanhos (String: 50) disponíveis. Caso não trabalhe com variação de tamanhos, informe `null`. */
+                    grade_tamanhos?: string;
+                    /** @description Valor do IPI. Caso não possua, informe `null`. */
+                    ipi?: number;
+                    /**
+                     * Format: double
+                     * @description Largura da embalagem em centímetros (até 5 casas decimais).
+                     */
+                    largura?: number;
+                    /** @description Moeda do produto: Real (`"0"`), Dólar (`"1"`) ou Euro (`"2"`). */
+                    moeda?: string;
+                    /**
+                     * Format: double
+                     * @description Múltiplo de venda do produto.
+                     */
+                    multiplo?: number | null;
+                    /** @description Nome do produto. */
+                    nome: string;
+                    /** @description Utilize para guardar quaisquer informações que não tenham campos específicos. */
+                    observacoes?: string;
+                    /**
+                     * Format: double
+                     * @description Peso bruto do produto em kg (até 3 casas decimais).
+                     */
+                    peso_bruto?: number;
+                    /** @description Indica se o peso bruto e as dimensões são unitárias. Em caixa master, envie `false`. */
+                    peso_dimensoes_unitario?: boolean;
+                    /** @description Preço mínimo do produto para o recurso da Rentabilidade (apenas Plano Ouro). */
+                    preco_minimo?: number;
+                    /** @description Preço deste produto na tabela padrão. */
+                    preco_tabela: number;
+                    /** @description Indica se os produtos grade herdam do agregador as tabelas de preço ou se terão preços específicos. */
+                    precos_especificos?: boolean;
+                    /** @description Lista de produtos grade. Caso o produto possua grades e nada for informado, os produtos grade serão atualizados apenas com os dados herdados do produto agregador. */
+                    produtos_grade?: Record<string, unknown>[];
+                    /**
+                     * @description Identificador da representada. Opcional: quando não informado, o Mercos usa a representada associada à integração. Utilize este campo se a sua conta **não é** uma indústria com divisões. Se for, utilize `divisao_id` no lugar dele.
+                     * @example 987
+                     */
+                    representada_id?: number | null;
+                    /** @description Saldo de estoque do produto. Valor máximo suportado: `9999999.99` */
+                    saldo_estoque?: number;
+                    /** @description Percentual de Substituição Tributária. Caso não possua ST ou se o imposto deve ser calculado com base na regra vinculada ao NCM, informe `null`. */
+                    st?: number | null;
+                    /** @description Tipo do IPI do produto: `"P"` para percentual, `"V"` para valor fixo em Reais. */
+                    tipo_ipi?: string;
+                    /** @description Unidade de medida do produto. Ex: `"Kg"` ou `"Cx"`. Opcional. */
+                    unidade?: string;
                 };
             };
         };
@@ -12335,25 +10842,10 @@ export interface operations {
                 content: {
                     "application/json": {
                         /**
-                         * @description Identificador único do produto criado.
                          * @default 0
                          * @example 20325477
                          */
                         id: number;
-                        /** @description Lista de produtos grade vinculados ao produto criado. */
-                        produtos_grade?: {
-                            /**
-                             * @description Código de referência do produto grade.
-                             * @example GV001
-                             */
-                            codigo?: string;
-                            /**
-                             * @description Identificador único do produto grade.
-                             * @default 0
-                             * @example 20325478
-                             */
-                            id: number;
-                        }[];
                     };
                 };
             };
@@ -12363,7 +10855,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -12372,7 +10864,898 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
+    get_v1_produtos_tabela_preco: {
+        parameters: {
+            query: {
+                /** @description Retorna os registros alterados após esta data. */
+                alterado_apos: string;
+                /** @description Filtra os registros de uma divisão. Disponível apenas nas contas de indústria com divisões. Sem este filtro, a consulta retorna os registros de todas as divisões. O valor precisa ser o `id` de uma divisão da sua conta. */
+                divisao_id?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /**
+                         * @description Indica se o preço está excluído.
+                         * @default true
+                         * @example true
+                         */
+                        excluido: boolean;
+                        /**
+                         * @description Identificador único.
+                         * @default 0
+                         * @example 80029033
+                         */
+                        id: number;
+                        /**
+                         * @description Preço do produto nesta tabela.
+                         * @default 0
+                         * @example 1287.34
+                         */
+                        preco: number;
+                        /**
+                         * @description ID do Produto. Este deve ser o ID cadastrado no Mercos, e não o ID do seu Sistema.
+                         * @default 0
+                         * @example 67396357
+                         */
+                        produto_id: number;
+                        /**
+                         * @description ID da Tabela de Preço. Este deve ser o ID cadastrado no Mercos, e não o ID do seu Sistema.
+                         * @default 0
+                         * @example 199213
+                         */
+                        tabela_id: number;
+                        /**
+                         * @description Data e hora da última modificação desta tabela de preço no Mercos.
+                         * @example 2018-07-12 14:53:39
+                         */
+                        ultima_alteracao: string;
+                    }[];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, unknown>;
+                };
+            };
+            /** @description Precondition Failed — `divisao_id` inválido, ou a requisição enviou o parâmetro antigo `representada_id`. */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        erros?: {
+                            campo?: string;
+                            mensagem?: string;
+                        }[];
+                        mensagem?: string;
+                    };
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, unknown>;
+                };
+            };
+        };
+    };
+    post_v1_produtos_tabela_preco: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * @description Identificador da divisão. Opcional: quando não informado, o Mercos usa a divisão associada à integração. Utilize este campo se a sua conta **é** uma indústria com divisões. Nas demais contas, utilize `representada_id`.
+                     * @example 987
+                     */
+                    divisao_id?: number | null;
+                    /**
+                     * @description Preço do produto nesta tabela.
+                     * @default 100
+                     */
+                    preco: number;
+                    /**
+                     * @description ID do Produto. Este deve ser o ID cadastrado no Mercos, e não o ID do seu Sistema.
+                     * @default 123
+                     */
+                    produto_id: number;
+                    /**
+                     * @description Identificador da representada. Opcional: quando não informado, o Mercos usa a representada associada à integração. Utilize este campo se a sua conta **não é** uma indústria com divisões. Se for, utilize `divisao_id` no lugar dele.
+                     * @example 987
+                     */
+                    representada_id?: number | null;
+                    /**
+                     * @description ID da Tabela de Preço. Este deve ser o ID cadastrado no Mercos, e não o ID do seu Sistema.
+                     * @default 23
+                     */
+                    tabela_id: number;
+                };
+            };
+        };
+        responses: {
+            /** @description Created */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, unknown>;
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, unknown>;
+                };
+            };
+        };
+    };
+    post_v1_produtos_tabela_preco_em_lote: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * @description Identificador da divisão dona do produto e da tabela de preço do vínculo. Disponível apenas nas contas de indústria com divisões: nas demais contas o campo responde `422`. Opcional: quando não informado, o Mercos usa a divisão associada à integração. Itens do mesmo lote podem informar divisões diferentes.
+                     * @example 987
+                     */
+                    divisao_id?: number | null;
+                    /**
+                     * @description ID do Vínculo do Produto com Tabela de Preço que será editado. Este deve ser o ID cadastrado no Mercos, e não o ID do seu Sistema.
+                     * @default 168
+                     */
+                    id: number;
+                    /**
+                     * @description Preço do produto nesta tabela.
+                     * @default 21
+                     */
+                    preco: number;
+                    /**
+                     * @description ID do Produto. Este deve ser o ID cadastrado no Mercos, e não o ID do seu Sistema.
+                     * @default 1336
+                     */
+                    produto_id: number;
+                    /**
+                     * @description ID da Tabela de Preço. Este deve ser o ID cadastrado no Mercos, e não o ID do seu Sistema. Informar o valor 0 para alterar a tabela de preço padrão do produto.
+                     * @default 61
+                     */
+                    tabela_id: number;
+                }[];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        id: number;
+                        preco: number;
+                        produto_id: number;
+                        tabela_id: number;
+                    }[];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, unknown>;
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        erros?: string[][];
+                        mensagem?: string;
+                        url?: string;
+                    };
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, unknown>;
+                };
+            };
+        };
+    };
+    get_v1_produtos_tabela_preco_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description ID do vínculo da tabela de preço com o produto */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    MeusPedidosID?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /**
+                         * @description Indica se o preço está excluído.
+                         * @default true
+                         * @example true
+                         */
+                        excluido: boolean;
+                        /**
+                         * @description Identificador único.
+                         * @default 0
+                         * @example 80029033
+                         */
+                        id: number;
+                        /**
+                         * @description Preço do produto nesta tabela.
+                         * @default 0
+                         * @example 1287.34
+                         */
+                        preco: number;
+                        /**
+                         * @description ID do Produto. Este deve ser o ID cadastrado no Mercos, e não o ID do seu Sistema.
+                         * @default 0
+                         * @example 67396357
+                         */
+                        produto_id: number;
+                        /**
+                         * @description ID da Tabela de Preço. Este deve ser o ID cadastrado no Mercos, e não o ID do seu Sistema.
+                         * @default 0
+                         * @example 199213
+                         */
+                        tabela_id: number;
+                        /**
+                         * @description Data e hora da última modificação desta tabela de preço no Mercos.
+                         * @example 2018-07-12 14:53:39
+                         */
+                        ultima_alteracao: string;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, unknown>;
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, unknown>;
+                };
+            };
+        };
+    };
+    put_v1_produtos_tabela_preco_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description ID do vínculo da tabela de preço com o produto */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * @description Identificador da divisão. Opcional: quando não informado, o Mercos usa a divisão associada à integração. Utilize este campo se a sua conta **é** uma indústria com divisões. Nas demais contas, utilize `representada_id`.
+                     * @example 987
+                     */
+                    divisao_id?: number | null;
+                    /** @description Preço do produto nesta tabela. */
+                    preco: number;
+                    /** @description ID do Produto. Este deve ser o ID cadastrado no Mercos, e não o ID do seu Sistema. */
+                    produto_id: number;
+                    /**
+                     * @description Identificador da representada. Opcional: quando não informado, o Mercos usa a representada associada à integração. Utilize este campo se a sua conta **não é** uma indústria com divisões. Se for, utilize `divisao_id` no lugar dele.
+                     * @example 987
+                     */
+                    representada_id?: number | null;
+                    /** @description ID da Tabela de Preço. Este deve ser o ID cadastrado no Mercos, e não o ID do seu Sistema. */
+                    tabela_id: number;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, unknown>;
+                };
+            };
+            /** @description Precondition Failed */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        erros?: {
+                            campo?: string;
+                            mensagem?: string;
+                        }[];
+                        mensagem?: string;
+                    };
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, unknown>;
+                };
+            };
+        };
+    };
+    get_v1_produtos_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description ID do produto no sistema Mercos. */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /**
+                         * Format: double
+                         * @description Altura da embalagem do produto em centímetros (com até 5 casas decimais).
+                         */
+                        altura?: number;
+                        /**
+                         * @description Indica se o produto está ativo. Os produtos inativos podem ser atualizados, inclusive podendo voltar a ser ativos.
+                         * @default false
+                         */
+                        ativo: boolean;
+                        /** @description Identificador único da categoria relacionada ao produto. */
+                        categoria_id?: number;
+                        /** @description Código de referência do produto */
+                        codigo?: string;
+                        /** @description Código do NCM - Nomenclatura Comum do Mercosul, utilizado para cálculo automático do ST. */
+                        codigo_ncm?: string;
+                        /**
+                         * Format: double
+                         * @description Comissão do produto. Ex: 5.0 para 5%. Informe null caso não queira calcular comissões pela Mercos.
+                         */
+                        comissao?: number;
+                        /**
+                         * Format: double
+                         * @description Comprimento da embalagem do produto em centímetros (com até 5 casas decimais).
+                         */
+                        comprimento?: number;
+                        /**
+                         * @description Identificador da divisão do registro. Retornado no lugar de `representada_id` quando a sua conta **é** uma indústria com divisões.
+                         * @example 987
+                         */
+                        divisao_id?: number;
+                        /**
+                         * @description Indica se o produto está excluído. Os produtos excluídos não poderão mais ser atualizados.  Após excluir um produto `"excluido": true`, este processo não tem retorno, será necessário criar outro produto.
+                         * @default false
+                         */
+                        excluido: boolean;
+                        /** @description Indica se o produto é exibido no e-commerce B2B. (`1 = Produto é exibido no e-commerce B2B` - `0 = Produto não é exibido no e-commerce B2B`) */
+                        exibir_no_b2b?: boolean;
+                        /** @description Identificador único */
+                        id: number;
+                        /**
+                         * Format: double
+                         * @description Caso não possua IPI, informe null.
+                         */
+                        ipi?: number;
+                        /**
+                         * Format: double
+                         * @description Largura da embalagem do produto em centímetros (com até 5 casas decimais).
+                         */
+                        largura?: number;
+                        /** @description Moeda do produto: Real ("0"), Dólar ("1") ou Euro ("2"). */
+                        moeda?: string;
+                        /**
+                         * Format: double
+                         * @description Múltiplo de venda do produto.
+                         */
+                        multiplo?: number;
+                        /** @description Nome do produto. */
+                        nome?: string;
+                        /** @description Utilize para guardar quaisquer informações que não tenham campos específicos. */
+                        observacoes?: string;
+                        /**
+                         * Format: double
+                         * @description Peso bruto do produto em kg (com até 3 casas decimais).
+                         */
+                        peso_bruto?: number;
+                        /** @description Indica se o peso bruto e as dimensões (Largura, Altura e Comprimento) informadas são unitárias. Em caso de caixa master esse campo deve ser enviado como falso = 0. (`1 = Peso e dimensões unitárias` - `0 = Peso e dimensões não são unitárias`) */
+                        peso_dimensoes_unitario?: boolean;
+                        /**
+                         * Format: double
+                         * @description Preço mínimo do produto para o recurso da Rentabilidade (apenas Plano Ouro)
+                         */
+                        preco_minimo?: number;
+                        /**
+                         * Format: double
+                         * @description Preço deste produto na tabela padrão.
+                         */
+                        preco_tabela?: number;
+                        /** @description Indica se os produtos grade vão herdar do agregador as tabelas de preço, ou se terão preços específicos. */
+                        precos_especificos?: boolean;
+                        /** @description Lista de produtos grade que o produto possui. */
+                        produtos_grade?: {
+                            /** @description Indica se o produto está ativo. Os produtos inativos podem ser atualizados, inclusive podendo voltar a ser ativos. */
+                            ativo?: boolean;
+                            /** @description Código de referência do produto */
+                            codigo?: string;
+                            /** @description Indica se o produto está excluído. Os produtos excluídos não poderão mais ser atualizados.  Após excluir um produto `"excluido": true`, este processo não tem retorno, será necessário criar outro produto. */
+                            excluido?: boolean;
+                            /** @description Indica se o produto é exibido no e-commerce B2B. Por padrão esse campo é verdadeiro, caso deseje que o produto não seja exibido no B2B, esse campo deve ser enviado como falso. */
+                            exibir_no_b2b?: boolean;
+                            /** @description Identificador único do produto grade. */
+                            id?: number;
+                            /** @description Lista de itens de variação IDs que devem ser vinculadas ao produto grade. */
+                            itens_variacoes_ids?: Record<string, unknown>[];
+                            /** @description Lista de dicionários, onde é apresentado o nome das variações e dos itens de variação que devem ser vinculadas ao produto grade. */
+                            itens_variacoes_nomes?: {
+                                cor?: string;
+                                tamanho?: string;
+                            }[];
+                            /**
+                             * Format: double
+                             * @description Preço deste produto na tabela padrão. Deve ser enviado este campo quando os produtos grade possuirem preços específicos de acordo com o produto agregador.
+                             */
+                            preco_tabela?: number;
+                            /** @description Saldo de estoque do produto. Valor máximo suportado: 9999999.99 */
+                            saldo_estoque?: number;
+                        }[];
+                        /**
+                         * @description Identificador da representada do registro. Retornado quando a sua conta **não é** uma indústria com divisões.
+                         * @example 987
+                         */
+                        representada_id?: number;
+                        /**
+                         * Format: double
+                         * @description Saldo de estoque do produto. Valor máximo suportado: 9999999.99
+                         */
+                        saldo_estoque?: number;
+                        /**
+                         * Format: double
+                         * @description Percentual de Substituição Tributária do produto. Caso não possua ST ou se esse imposto deve ser calculado com base na regra vinculada ao NCM, informe null.
+                         */
+                        st?: number;
+                        /** @description Tipo do IPI do produto: "P" para percentual, "V" para valor fixo em Reais. */
+                        tipo_ipi?: string;
+                        /**
+                         * Format: date-time
+                         * @description Data e hora da última modificação deste produto na Mercos.
+                         */
+                        ultima_alteracao: string;
+                        /** @description Unidade de medida do produto, por exemplo "Kg" ou "Cx". Opcional. */
+                        unidade?: string;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, unknown>;
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, unknown>;
+                };
+            };
+        };
+    };
+    put_v1_produtos_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description ID do produto no sistema Mercos. */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * Format: double
+                     * @description Altura da embalagem do produto em centímetros, com até 5 casas decimais.
+                     */
+                    altura?: number;
+                    /** @description Indica se o produto está ativo. Os produtos inativos podem ser atualizados, inclusive podendo voltar a ser ativos. */
+                    ativo?: boolean;
+                    /** @description Identificador único da categoria relacionada ao produto. */
+                    categoria_id?: number;
+                    /** @description Código de referência do produto. */
+                    codigo?: string;
+                    /** @description Código do NCM - Nomenclatura Comum do Mercosul, utilizado para cálculo automático do ST. */
+                    codigo_ncm?: string;
+                    /**
+                     * Format: double
+                     * @description Comissão do produto. Exemplo: 5.0 para 5%. Informe null caso não queira calcular comissões pela Mercos.
+                     */
+                    comissao?: number;
+                    /**
+                     * Format: double
+                     * @description Comprimento da embalagem do produto em centímetros, com até 5 casas decimais.
+                     */
+                    comprimento?: number;
+                    /**
+                     * @description Identificador da divisão. Opcional: quando não informado, o Mercos usa a divisão associada à integração. Utilize este campo se a sua conta **é** uma indústria com divisões. Nas demais contas, utilize `representada_id`.
+                     * @example 987
+                     */
+                    divisao_id?: number | null;
+                    /** @description Indica se o produto está excluído. Os produtos excluídos não poderão mais ser atualizados. Após excluir um produto com "excluido": true, este processo não tem retorno; será necessário criar outro produto. */
+                    excluido?: boolean;
+                    /** @description Indica se o produto é exibido no e-commerce B2B. Por padrão esse campo é verdadeiro; caso deseje que o produto não seja exibido no B2B, envie false. */
+                    exibir_b2b?: boolean;
+                    /**
+                     * Format: double
+                     * @description Valor do IPI do produto. Caso não possua IPI, informe null.
+                     */
+                    ipi?: number;
+                    /**
+                     * Format: double
+                     * @description Largura da embalagem do produto em centímetros, com até 5 casas decimais.
+                     */
+                    largura?: number;
+                    /** @description Moeda do produto: Real ("0"), Dólar ("1") ou Euro ("2"). */
+                    moeda?: string;
+                    /**
+                     * Format: double
+                     * @description Múltiplo de venda do produto.
+                     */
+                    multiplo?: number;
+                    /**
+                     * @description Nome do produto.
+                     * @default Produto Simples Alterado
+                     */
+                    nome: string;
+                    /** @description Utilize para guardar quaisquer informações que não tenham campos específicos. */
+                    observacoes?: string;
+                    /**
+                     * Format: double
+                     * @description Peso bruto do produto em kg, com até 3 casas decimais.
+                     */
+                    peso_bruto?: number;
+                    /** @description Indica se o peso bruto e as dimensões (largura, altura e comprimento) informadas são unitárias. Em caso de caixa master, esse campo deve ser enviado como false. */
+                    peso_dimensoes_unitario?: boolean;
+                    /**
+                     * Format: double
+                     * @description Preço mínimo do produto para o recurso da Rentabilidade (apenas Plano Ouro).
+                     */
+                    preco_minimo?: number;
+                    /**
+                     * Format: double
+                     * @description Preço deste produto na tabela padrão.
+                     * @default 150
+                     */
+                    preco_tabela: number;
+                    /**
+                     * @description Identificador da representada. Opcional: quando não informado, o Mercos usa a representada associada à integração. Utilize este campo se a sua conta **não é** uma indústria com divisões. Se for, utilize `divisao_id` no lugar dele.
+                     * @example 987
+                     */
+                    representada_id?: number | null;
+                    /**
+                     * Format: double
+                     * @description Saldo de estoque do produto. Valor máximo suportado: 9999999.99.
+                     */
+                    saldo_estoque?: number;
+                    /**
+                     * Format: double
+                     * @description Percentual de Substituição Tributária do produto. Caso não possua ST ou se esse imposto deve ser calculado com base na regra vinculada ao NCM, informe null.
+                     */
+                    st?: number;
+                    /** @description Tipo do IPI do produto: "P" para percentual, "V" para valor fixo em Reais. */
+                    tipo_ipi?: string;
+                    /** @description Unidade de medida do produto, por exemplo "Kg" ou "Cx". Opcional. */
+                    unidade?: string;
+                } | {
+                    /**
+                     * Format: double
+                     * @description Altura da embalagem do produto em centímetros, com até 5 casas decimais.
+                     */
+                    altura?: number;
+                    /** @description Indica se o produto está ativo. Os produtos inativos podem ser atualizados, inclusive podendo voltar a ser ativos. */
+                    ativo?: boolean;
+                    /** @description Identificador único da categoria relacionada ao produto. */
+                    categoria_id?: number;
+                    /** @description Código de referência do produto. */
+                    codigo?: string;
+                    /** @description Código do NCM - Nomenclatura Comum do Mercosul, utilizado para cálculo automático do ST. */
+                    codigo_ncm?: string;
+                    /** @description Comissão do produto. Exemplo: 5.0 para 5%. Informe null caso não queira calcular comissões pela Mercos. */
+                    comissao?: number;
+                    /**
+                     * Format: double
+                     * @description Comprimento da embalagem do produto em centímetros, com até 5 casas decimais.
+                     */
+                    comprimento?: number;
+                    /** @description Indica se o produto está excluído. Os produtos excluídos não poderão mais ser atualizados. Após excluir um produto com "excluido": true, este processo não tem retorno; será necessário criar outro produto. */
+                    excluido?: boolean;
+                    /** @description Indica se o produto é exibido no e-commerce B2B. Por padrão esse campo é verdadeiro; caso deseje que o produto não seja exibido no B2B, envie false. */
+                    exibir_b2b?: boolean;
+                    /**
+                     * Format: double
+                     * @description Valor do IPI do produto. Caso não possua IPI, informe null.
+                     */
+                    ipi?: number;
+                    /**
+                     * Format: double
+                     * @description Largura da embalagem do produto em centímetros, com até 5 casas decimais.
+                     */
+                    largura?: number;
+                    /** @description Moeda do produto: Real ("0"), Dólar ("1") ou Euro ("2"). */
+                    moeda?: string;
+                    /**
+                     * Format: double
+                     * @description Múltiplo de venda do produto.
+                     */
+                    multiplo?: number;
+                    /**
+                     * @description Nome do produto.
+                     * @default Produto Grade V3 Alterado
+                     */
+                    nome: string;
+                    /** @description Utilize para guardar quaisquer informações que não tenham campos específicos. */
+                    observacoes?: string;
+                    /**
+                     * Format: double
+                     * @description Peso bruto do produto em kg, com até 3 casas decimais.
+                     */
+                    peso_bruto?: number;
+                    /** @description Indica se o peso bruto e as dimensões (largura, altura e comprimento) informadas são unitárias. Em caso de caixa master, esse campo deve ser enviado como false. */
+                    peso_dimensoes_unitario?: boolean;
+                    /** @description Preço mínimo do produto para o recurso da Rentabilidade (apenas Plano Ouro). */
+                    preco_minimo?: string;
+                    /**
+                     * Format: double
+                     * @description Preço deste produto na tabela padrão.
+                     * @default 250
+                     */
+                    preco_tabela: number;
+                    /** @description Indica se os produtos grade vão herdar do agregador as tabelas de preço ou se terão preços específicos. */
+                    precos_especificos?: boolean;
+                    /** @description Lista de produtos grade que o produto possui. Caso o produto possua produtos grade e nada seja informado neste campo, os produtos grade serão atualizados apenas com os dados herdados do produto agregador. */
+                    produtos_grade: {
+                        /** @description Indica se o produto grade está ativo. Os produtos inativos podem ser atualizados, inclusive podendo voltar a ser ativos. */
+                        ativo?: boolean;
+                        /** @description Código de referência do produto grade. */
+                        codigo?: string;
+                        /** @description Indica se o produto grade está excluído. Os produtos excluídos não poderão mais ser atualizados. Após excluir um produto com "excluido": true, este processo não tem retorno; será necessário criar outro produto. */
+                        excluido?: boolean;
+                        /** @description Indica se o produto grade é exibido no e-commerce B2B. Por padrão esse campo é verdadeiro; caso deseje que o produto não seja exibido no B2B, envie false. */
+                        exibir_no_b2b?: boolean;
+                        /** @description Lista de IDs de itens de variação que devem ser vinculados ao produto grade. Não deve ser enviada junto com itens_variacoes_nomes no mesmo produto grade. */
+                        itens_variacoes_ids: number[];
+                        /** @description Lista de dicionários em que são apresentados os nomes das variações e dos itens de variação que devem ser vinculados ao produto grade. Não deve ser enviada junto com itens_variacoes_ids no mesmo produto grade. */
+                        itens_variacoes_nomes: {
+                            /**
+                             * @description Nome do item de variação associado à variação cor.
+                             * @default Preto
+                             */
+                            cor?: string;
+                        }[];
+                        /**
+                         * Format: double
+                         * @description Preço deste produto grade na tabela padrão. Deve ser enviado quando os produtos grade possuírem preços específicos de acordo com o produto agregador.
+                         */
+                        preco_tabela?: number;
+                    }[];
+                    /**
+                     * Format: double
+                     * @description Saldo de estoque do produto. Valor máximo suportado: 9999999.99.
+                     */
+                    saldo_estoque?: number;
+                    /**
+                     * Format: double
+                     * @description Percentual de Substituição Tributária do produto. Caso não possua ST ou se esse imposto deve ser calculado com base na regra vinculada ao NCM, informe null.
+                     */
+                    st?: number;
+                    /** @description Tipo do IPI do produto: "P" para percentual, "V" para valor fixo em Reais. */
+                    tipo_ipi?: string;
+                    /** @description Unidade de medida do produto, por exemplo "Kg" ou "Cx". Opcional. */
+                    unidade?: string;
+                } | {
+                    /** @description Altura da embalagem em centímetros (até 5 casas decimais). */
+                    altura?: number;
+                    /** @description Indica se o produto está ativo. Produtos inativos podem ser atualizados, inclusive podendo voltar a ser ativos. */
+                    ativo?: boolean;
+                    /** @description Identificador único da categoria relacionada ao produto. */
+                    categoria_id?: number;
+                    /** @description Código de referência do produto. */
+                    codigo?: string;
+                    /** @description Código NCM (Nomenclatura Comum do Mercosul), utilizado para cálculo automático do ST. */
+                    codigo_ncm?: string;
+                    /** @description Comissão do produto. Ex: `5.0` para 5%. Informe `null` caso não queira calcular comissões pela Mercos. */
+                    comissao?: number | null;
+                    /** @description Comprimento da embalagem em centímetros (até 5 casas decimais). */
+                    comprimento?: number;
+                    /**
+                     * @description Identificador da divisão. Opcional: quando não informado, o Mercos usa a divisão associada à integração. Utilize este campo se a sua conta **é** uma indústria com divisões. Nas demais contas, utilize `representada_id`.
+                     * @example 987
+                     */
+                    divisao_id?: number | null;
+                    /** @description Indica se o produto está excluído. Produtos excluídos não poderão mais ser atualizados. Após excluir (`"excluido": true`), o processo não tem retorno — será necessário criar outro produto. */
+                    excluido?: boolean;
+                    /** @description Indica se o produto é exibido no e-commerce B2B. Por padrão é `true`. Para ocultar, envie `false`. */
+                    exibir_no_b2b?: boolean;
+                    /** @description Valor do IPI. Caso não possua, informe `null`. */
+                    ipi?: number;
+                    /** @description Largura da embalagem em centímetros (até 5 casas decimais). */
+                    largura?: number;
+                    /** @description Moeda do produto: Real (`"0"`), Dólar (`"1"`) ou Euro (`"2"`). */
+                    moeda?: string;
+                    /** @description Múltiplo de venda do produto. */
+                    multiplo?: number | null;
+                    /** @description Nome do produto. */
+                    nome: string;
+                    /** @description Utilize para guardar quaisquer informações que não tenham campos específicos. */
+                    observacoes?: string;
+                    /** @description Peso bruto do produto em kg (até 3 casas decimais). */
+                    peso_bruto?: number;
+                    /** @description Indica se o peso bruto e as dimensões são unitárias. Em caixa master, envie `false`. */
+                    peso_dimensoes_unitario?: boolean;
+                    /** @description Preço mínimo do produto para o recurso da Rentabilidade (apenas Plano Ouro). */
+                    preco_minimo?: number;
+                    /** @description Preço deste produto na tabela padrão. */
+                    preco_tabela: number;
+                    /** @description Indica se os produtos grade herdam do agregador as tabelas de preço ou se terão preços específicos. */
+                    precos_especificos?: boolean;
+                    /** @description Lista de produtos grade. Caso o produto possua grades e nada for informado, os produtos grade serão atualizados apenas com os dados herdados do produto agregador. */
+                    produtos_grade?: Record<string, unknown>[];
+                    /**
+                     * @description Identificador da representada. Opcional: quando não informado, o Mercos usa a representada associada à integração. Utilize este campo se a sua conta **não é** uma indústria com divisões. Se for, utilize `divisao_id` no lugar dele.
+                     * @example 987
+                     */
+                    representada_id?: number | null;
+                    /** @description Saldo de estoque do produto. Valor máximo suportado: `9999999.99` */
+                    saldo_estoque?: number;
+                    /** @description Percentual de Substituição Tributária. Caso não possua ST ou se o imposto deve ser calculado com base na regra vinculada ao NCM, informe `null`. */
+                    st?: number | null;
+                    /** @description Tipo do IPI do produto: `"P"` para percentual, `"V"` para valor fixo em Reais. */
+                    tipo_ipi?: string;
+                    /** @description Unidade de medida do produto. Ex: `"Kg"` ou `"Cx"`. Opcional. */
+                    unidade?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /**
+                         * @description Identificador único do produto.
+                         * @default 0
+                         * @example 20325471
+                         */
+                        id: number;
+                        /** @description Lista de produtos grade que o produto possui. */
+                        produtos_grade?: Record<string, unknown>[];
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, unknown>;
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -12466,7 +11849,7 @@ export interface operations {
                          * @description Data e hora da última modificação desta promoção.
                          * @example 2019-08-29 11:03:30
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     }[];
                 };
             };
@@ -12476,7 +11859,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed — `divisao_id` inválido, ou a requisição enviou o parâmetro antigo `representada_id`. */
@@ -12500,7 +11883,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -12574,7 +11957,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -12598,7 +11981,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -12688,7 +12071,7 @@ export interface operations {
                          * @description Data e hora da última modificação desta promoção.
                          * @example 2019-08-29 11:03:30
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     };
                 };
             };
@@ -12698,7 +12081,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -12707,7 +12090,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -12786,7 +12169,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -12810,7 +12193,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -12855,7 +12238,7 @@ export interface operations {
                          * @description Data e hora da última modificação desta rede na Mercos.
                          * @example 2016-08-26 15:00:09
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     }[];
                 };
             };
@@ -12865,7 +12248,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -12874,7 +12257,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -12924,7 +12307,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -12948,7 +12331,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -12992,7 +12375,7 @@ export interface operations {
                          * @description Data e hora da última modificação desta rede na Mercos.
                          * @example 2016-08-26 15:00:09
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     };
                 };
             };
@@ -13002,7 +12385,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -13011,7 +12394,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -13061,7 +12444,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -13085,7 +12468,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -13118,7 +12501,7 @@ export interface operations {
                         /** @description Indica se a conta corrente está excluída. */
                         excluido?: boolean;
                         /** @description Identificador único. */
-                        id?: number;
+                        id: number;
                         /** @description Retornado quando a sua conta **não é** uma indústria com divisões. */
                         representada_id?: number;
                         /** @description Saldo atual da conta corrente do colaborador. */
@@ -13127,7 +12510,7 @@ export interface operations {
                          * Format: date-time
                          * @description Data e hora da última modificação da conta do colaborador.
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     }[];
                 };
             };
@@ -13137,7 +12520,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed — `divisao_id` inválido, ou a requisição enviou o parâmetro antigo `representada_id`. */
@@ -13161,7 +12544,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -13208,7 +12591,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -13232,7 +12615,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -13277,7 +12660,7 @@ export interface operations {
                          * @description Data e hora da última modificação deste segmento na Mercos.
                          * @example 2016-08-26 15:00:09
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     }[];
                 };
             };
@@ -13287,7 +12670,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -13296,7 +12679,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -13346,7 +12729,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -13373,7 +12756,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -13418,7 +12801,7 @@ export interface operations {
                          * @description Data e hora da última modificação deste segmento na Mercos.
                          * @example 2016-08-26 15:00:09
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     };
                 };
             };
@@ -13428,7 +12811,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -13437,7 +12820,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -13484,7 +12867,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -13508,7 +12891,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -13575,7 +12958,7 @@ export interface operations {
                          * @description Data e hora da última modificação desta tabela de preço no Mercos.
                          * @example 2018-07-12 14:48:49
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     }[];
                 };
             };
@@ -13585,7 +12968,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed — `divisao_id` inválido, ou a requisição enviou o parâmetro antigo `representada_id`. */
@@ -13609,7 +12992,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -13694,7 +13077,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -13740,8 +13123,8 @@ export interface operations {
                         /** @example P */
                         tipo?: string;
                         /** @example 2018-07-12 14:48:49 */
-                        ultima_alteracao?: string;
-                    }[];
+                        ultima_alteracao: string;
+                    };
                 };
             };
             /** @description Unauthorized */
@@ -13750,7 +13133,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -13759,7 +13142,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -13827,7 +13210,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -13836,7 +13219,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -13881,7 +13264,7 @@ export interface operations {
                          * @description Data e hora da última modificação desta tag na Mercos.
                          * @example 2016-08-26 15:00:09
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     }[];
                 };
             };
@@ -13891,7 +13274,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -13900,7 +13283,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -13944,7 +13327,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -13971,7 +13354,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -14016,7 +13399,7 @@ export interface operations {
                          * @description Data e hora da última modificação desta tag na Mercos.
                          * @example 2016-08-26 15:00:09
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     };
                 };
             };
@@ -14026,7 +13409,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -14035,7 +13418,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -14082,7 +13465,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -14109,7 +13492,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -14193,7 +13576,7 @@ export interface operations {
                          * @description Data e hora da última modificação deste título no Mercos.
                          * @example 2024-07-18 11:34:33
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                         /**
                          * @description Valor do título. Valor máximo suportado: 9999999.99
                          * @default 0
@@ -14209,7 +13592,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -14218,7 +13601,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -14275,7 +13658,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -14299,7 +13682,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -14379,7 +13762,7 @@ export interface operations {
                          * @description Data e hora da última modificação deste título no Mercos.
                          * @example ONLINE
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                         /**
                          * @description Valor do título. Valor máximo suportado: `9999999.99`
                          * @default 0
@@ -14395,7 +13778,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -14404,7 +13787,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -14464,7 +13847,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -14473,7 +13856,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -14552,7 +13935,7 @@ export interface operations {
                          * Format: date-time
                          * @description Data e hora da última modificação deste título no Mercos.
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                         /**
                          * @description Valor do título. Valor máximo suportado: `9999999.99`
                          * @default 0
@@ -14568,7 +13951,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -14577,7 +13960,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -14640,7 +14023,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -14649,7 +14032,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -14734,7 +14117,7 @@ export interface operations {
                          * @description Data e hora da última modificação deste título no Mercos.
                          * @example 2024-07-18 11:34:33
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                         /**
                          * Format: double
                          * @description Valor do título. Valor máximo suportado: 9999999.99
@@ -14751,7 +14134,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -14760,7 +14143,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -14822,7 +14205,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Unauthorized */
@@ -14831,7 +14214,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -14855,7 +14238,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -14886,7 +14269,7 @@ export interface operations {
                         /** @description Indica se a transportadora foi excluída do sistema. */
                         excluido?: boolean;
                         /** @description Identificador único da transportadora. */
-                        id?: number;
+                        id: number;
                         /** @description Campo livre para observações ou informações que não possuem campo específico. */
                         informacoes_adicionais?: string;
                         /** @description Nome da transportadora. */
@@ -14897,8 +14280,8 @@ export interface operations {
                          * Format: date-time
                          * @description Data e hora da última modificação do registro.
                          */
-                        ultima_alteracao?: string;
-                    };
+                        ultima_alteracao: string;
+                    }[];
                 };
             };
             /** @description Unauthorized */
@@ -14907,7 +14290,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -14916,7 +14299,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -14976,7 +14359,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -15000,7 +14383,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -15031,7 +14414,7 @@ export interface operations {
                         /** @description Indica se a transportadora foi excluída do sistema. */
                         excluido?: boolean;
                         /** @description Identificador único da transportadora. */
-                        id?: number;
+                        id: number;
                         /** @description Campo livre para observações ou informações que não possuem campo específico. */
                         informacoes_adicionais?: string;
                         /** @description Nome da transportadora. */
@@ -15042,7 +14425,7 @@ export interface operations {
                          * Format: date-time
                          * @description Data e hora da última modificação do registro.
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     };
                 };
             };
@@ -15052,7 +14435,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -15061,7 +14444,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -15115,7 +14498,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Unauthorized */
@@ -15124,7 +14507,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -15148,7 +14531,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -15216,8 +14599,8 @@ export interface operations {
                          * @description Data e hora da última modificação deste usuário no Mercos.
                          * @example 2017-02-20 09:15:37
                          */
-                        ultima_alteracao?: string;
-                    };
+                        ultima_alteracao: string;
+                    }[];
                 };
             };
             /** @description Unauthorized */
@@ -15226,7 +14609,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -15235,7 +14618,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -15276,7 +14659,7 @@ export interface operations {
                          * @description Data e hora da última modificação desta categoria no Mercos.
                          * @example 2014-06-14 18:38:43
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                         /**
                          * @description Identificador único do Usuário da Mercos.
                          * @default 0
@@ -15292,7 +14675,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -15301,7 +14684,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -15348,7 +14731,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -15372,7 +14755,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -15413,7 +14796,7 @@ export interface operations {
                          * @description Data e hora da última modificação desta categoria no Mercos.
                          * @example 2014-06-17 14:45:10
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                         /**
                          * @description Identificador único do Usuário da Mercos.
                          * @default 0
@@ -15429,7 +14812,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -15438,7 +14821,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -15479,7 +14862,7 @@ export interface operations {
                          * @description Data e hora da última modificação desta categoria no Mercos.
                          * @example 2014-06-14 18:38:43
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                         /**
                          * @description Identificador único do Usuário da Mercos.
                          * @default 0
@@ -15495,7 +14878,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -15504,7 +14887,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -15545,7 +14928,7 @@ export interface operations {
                          * @description Data e hora da última modificação desta categoria no Mercos.
                          * @example 2014-06-17 14:45:10
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                         /**
                          * @description Identificador único do Usuário da Mercos.
                          * @default 0
@@ -15561,7 +14944,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -15570,7 +14953,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -15637,7 +15020,7 @@ export interface operations {
                          * @description Data e hora da última modificação deste usuário no Mercos.
                          * @example 2017-02-20 09:15:37
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     };
                 };
             };
@@ -15647,7 +15030,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -15656,7 +15039,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -15749,7 +15132,7 @@ export interface operations {
                          * @description Data e hora da última modificação desta Variação no Mercos.
                          * @example 2025-04-09 15:55:41
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     }[];
                 };
             };
@@ -15759,7 +15142,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed — `divisao_id` inválido, ou a requisição enviou o parâmetro antigo `representada_id`. */
@@ -15783,7 +15166,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -15867,7 +15250,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Unprocessable Entity */
@@ -15894,7 +15277,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -15985,7 +15368,7 @@ export interface operations {
                          * @description Data e hora da última modificação desta Variação no Mercos.
                          * @example 2025-04-09 15:55:41
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                     };
                 };
             };
@@ -15995,7 +15378,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -16004,7 +15387,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -16088,7 +15471,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Unprocessable Entity */
@@ -16109,7 +15492,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -16161,7 +15544,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -16185,7 +15568,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -16281,7 +15664,7 @@ export interface operations {
                          * @description Data da última alteração da nota fiscal. Ex: 2023-07-12
                          * @example 2016-03-25
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                         /**
                          * @description Valor da nota fiscal. Ex: 9999999.99
                          * @default 0
@@ -16297,7 +15680,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -16306,7 +15689,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -16413,7 +15796,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -16422,7 +15805,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -16518,7 +15901,7 @@ export interface operations {
                          * @description Data da última alteração da nota fiscal. Ex: 2023-07-12
                          * @example 2016-03-25
                          */
-                        ultima_alteracao?: string;
+                        ultima_alteracao: string;
                         /**
                          * @description Valor da nota fiscal. Ex: 9999999.99
                          * @default 0
@@ -16534,7 +15917,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -16543,7 +15926,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -16601,7 +15984,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Too Many Requests */
@@ -16610,7 +15993,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -16713,13 +16096,13 @@ export interface operations {
                         /** @description ID da Divisão. Retornado no lugar de `representada_id` quando a sua conta **é** uma indústria com divisões. */
                         divisao_id?: number;
                         /** @description Lista com os endereços de entrega do pedido. */
-                        endereco_entrega?: Record<string, never>[];
+                        endereco_entrega?: Record<string, unknown>[];
                         /** @description Lista com os campos extras do pedido. */
-                        extras?: Record<string, never>[];
+                        extras?: Record<string, unknown>[];
                         /** @description ID da forma de pagamento. (se integrado) */
                         forma_pagamento_id?: number;
                         /** @description Identificador único do pedido. */
-                        id?: number;
+                        id: number;
                         /** @description Modalidade de entrega. (ex: Sedex) */
                         modalidade_entrega_nome?: string;
                         /** @description Nome do contato principal. */
@@ -16769,7 +16152,7 @@ export interface operations {
                          * @description Valor do frete.
                          */
                         valor_frete?: number;
-                    };
+                    }[];
                 };
             };
             /** @description Unauthorized */
@@ -16778,7 +16161,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed — `divisao_id` inválido, ou a requisição enviou o parâmetro antigo `representada_id`. */
@@ -16802,7 +16185,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
         };
@@ -16940,761 +16323,7 @@ export interface operations {
                      * @description Valor do frete aplicado ao pedido.
                      */
                     valor_frete?: number;
-                };
-            };
-        };
-        responses: {
-            /** @description Created */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        id?: number;
-                        itens?: {
-                            id: number;
-                        }[];
-                        numero?: number;
-                    };
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Precondition Failed */
-            412: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        erros?: unknown[][];
-                        mensagem?: string;
-                    };
-                };
-            };
-            /** @description Too Many Requests */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-        };
-    };
-    get_v2_pedidos_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description ID do Pedido no sistema Mercos. */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /**
-                         * @description ID do cliente no Mercos.
-                         * @default 0
-                         * @example 14
-                         */
-                        cliente_id: number;
-                        /**
-                         * @description Condição de pagamento em formato texto livre.
-                         * @example à vista
-                         */
-                        condicao_pagamento?: string;
-                        /**
-                         * @description ID da condição de pagamento. (se integrado)
-                         * @default 0
-                         * @example 0
-                         */
-                        condicao_pagamento_id: number;
-                        /**
-                         * @description ID do vendedor responsável.
-                         * @default 0
-                         * @example 16
-                         */
-                        criador_id: number;
-                        /**
-                         * @description Cupom de desconto aplicado no pedido.
-                         * @example NOVOCLIENTE
-                         */
-                        cupom_de_desconto?: string;
-                        /**
-                         * @description Data em que o pedido foi criado. Preenchida apenas se fornecida. Pode diferir de `data_emissao` (ex.: pedido criado ontem e emitido hoje)
-                         * @example 2017-02-20 08:19:45
-                         */
-                        data_criacao?: string;
-                        /**
-                         * @description Data de emissão do pedido. Pode ser `null`.
-                         * @example 2017-02-20
-                         */
-                        data_emissao?: string;
-                        /**
-                         * @description Identificador da divisão do registro. Retornado no lugar de `representada_id` quando a sua conta **é** uma indústria com divisões.
-                         * @example 987
-                         */
-                        divisao_id?: number;
-                        /** @description Lista com os endereços de entrega do pedido. */
-                        endereco_entrega?: {
-                            /** @example Bom Retiro */
-                            bairro?: string;
-                            /** @example 89223005 */
-                            cep?: string;
-                            /** @example Joinville */
-                            cidade?: string;
-                            /** @example Avenida */
-                            complemento?: string;
-                            /** @example Rolf Wiest */
-                            endereco?: string;
-                            /** @example SC */
-                            estado?: string;
-                            /**
-                             * @default 0
-                             * @example 5
-                             */
-                            id: number;
-                            /** @example 277 */
-                            numero?: string;
-                        };
-                        /** @description Lista com os campos extras do pedido. */
-                        extras?: {
-                            /**
-                             * @default 0
-                             * @example 1
-                             */
-                            campo_extra_id: number;
-                            /** @example Valor de frete */
-                            nome?: string;
-                            /** @example 2 */
-                            tipo?: string;
-                            /**
-                             * @default 0
-                             * @example 15
-                             */
-                            valor: number;
-                            /** @example 2001-01-01 */
-                            valor_data?: string;
-                            /**
-                             * @default 0
-                             * @example 15
-                             */
-                            valor_decimal: number;
-                            /** @example  */
-                            valor_hora?: string;
-                            valor_lista?: Record<string, never>[];
-                            /** @example  */
-                            valor_texto?: string;
-                        }[];
-                        /**
-                         * @description ID da forma de pagamento. (se integrado)
-                         * @default 0
-                         * @example 0
-                         */
-                        forma_pagamento_id: number;
-                        /**
-                         * @description Identificador único do pedido.
-                         * @default 0
-                         * @example 77
-                         */
-                        id: number;
-                        itens?: {
-                            /**
-                             * @default 0
-                             * @example 1
-                             */
-                            cotacao_moeda: number;
-                            /**
-                             * @default 0
-                             * @example 10
-                             */
-                            desconto_de_cupom: number;
-                            descontos_de_politicas?: {
-                                /**
-                                 * @default 0
-                                 * @example 1
-                                 */
-                                desconto: number;
-                                /**
-                                 * @default 0
-                                 * @example 3
-                                 */
-                                regra_id: number;
-                            }[];
-                            descontos_de_promocoes?: {
-                                /**
-                                 * @default 0
-                                 * @example 2
-                                 */
-                                desconto: number;
-                                /**
-                                 * @default 0
-                                 * @example 2
-                                 */
-                                regra_id: number;
-                            }[];
-                            descontos_do_vendedor?: number[];
-                            /**
-                             * @default true
-                             * @example false
-                             */
-                            excluido: boolean;
-                            /**
-                             * @default 0
-                             * @example 242
-                             */
-                            id: number;
-                            /**
-                             * @default 0
-                             * @example 0
-                             */
-                            ipi: number;
-                            /** @example Favor enviar em fardos fechados, o cliente tem esse requisito. */
-                            observacoes?: string;
-                            /**
-                             * @default 0
-                             * @example 2.08
-                             */
-                            preco_liquido: number;
-                            /**
-                             * @default 0
-                             * @example 2.21
-                             */
-                            preco_tabela: number;
-                            /**
-                             * @default 0
-                             * @example 130
-                             */
-                            produto_id: number;
-                            /**
-                             * @default 0
-                             * @example 10
-                             */
-                            quantidade: number;
-                            quantidade_grades?: Record<string, never>[];
-                            /**
-                             * @default 0
-                             * @example 0
-                             */
-                            st: number;
-                            /**
-                             * @default 0
-                             * @example 20.8
-                             */
-                            subtotal: number;
-                            /**
-                             * @default 0
-                             * @example 0
-                             */
-                            tabela_preco_id: number;
-                            /** @example P */
-                            tipo_ipi?: string;
-                        }[];
-                        /**
-                         * @description Nome do contato principal.
-                         * @example João da Silva [exemplo]
-                         */
-                        nome_contato?: string;
-                        /**
-                         * @description Número sequencial (auto-incremental).
-                         * @default 0
-                         * @example 1
-                         */
-                        numero: number;
-                        /**
-                         * @description Observações do pedido.
-                         * @example Envio após 1 dia útil.
-                         */
-                        observacoes?: string;
-                        /** @description Percentual total de comissão do pedido. */
-                        percentual_total_comissao_pedido?: {
-                            /** Format: double */
-                            percentual?: number;
-                            vendedor_id?: number;
-                        }[];
-                        /**
-                         * @description Código ou link para rastreamento.
-                         * @example BB000000000000BR
-                         */
-                        rastreamento?: string;
-                        /**
-                         * @description Identificador da representada do registro. Retornado quando a sua conta **não é** uma indústria com divisões.
-                         * @example 987
-                         */
-                        representada_id?: number;
-                        /**
-                         * @description Status do pedido: `0 = Cancelado`, `1 = Orçamento`, `2 = Pedido`
-                         * @example 2
-                         */
-                        status?: string;
-                        /**
-                         * @description `null = Não utiliza B2B`, `1 = Em aberto`, `2 = Concluído`
-                         * @default 0
-                         * @example 2
-                         */
-                        status_b2b: number;
-                        /** @description ID do status customizado. */
-                        status_custom_id?: string;
-                        /**
-                         * @description `0 = Não faturado`, `1 = Parcial`, `2 = Faturado`
-                         * @example 0
-                         */
-                        status_faturamento?: string;
-                        /**
-                         * @description Se integrado, é retornado o ID do tipo de pedido. Caso contrário, assume o tipo “venda” (padrão), retornado como `null`. Outros tipos cadastrados retornam seus respectivos IDs, mas **não geram métricas de faturamento.**
-                         * @default 0
-                         * @example 99
-                         */
-                        tipo_pedido_id: number;
-                        /**
-                         * @description Valor total do pedido.
-                         * @default 0
-                         * @example 76.25
-                         */
-                        total: number;
-                        /**
-                         * @description ID da transportadora. Será `null` se houver integração com a **Frenet**, só existindo o campo `transportadora_nome`e `valor_frete`.
-                         * @default 0
-                         * @example 8
-                         */
-                        transportadora_id: number;
-                        /**
-                         * @description Nome da transportadora.
-                         * @example FOB
-                         */
-                        transportadora_nome?: string;
-                        /** @example 2017-02-20 09:19:20 */
-                        ultima_alteracao?: string;
-                        /**
-                         * @description Valor do frete.
-                         * @default 0
-                         * @example 0
-                         */
-                        valor_frete: number;
-                    };
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Too Many Requests */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-        };
-    };
-    put_v2_pedidos_id: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description ID do Pedido no sistema Mercos. */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": {
-                    /**
-                     * @description Identificador único do cliente.
-                     * @default
-                     */
-                    cliente_id?: number;
-                    /** @description Descrição da condição de pagamento em texto livre. Deve ser informado **somente se não houver integração com a entidade `Condições de Pagamento`.** **Não deve ser utilizado junto com o campo `condicao_pagamento_id`.** */
-                    condicao_pagamento?: string;
-                    /** @description ID da condição de pagamento. Deve ser informado somente se houver integração com a entidade Condições de Pagamento. Não deve ser utilizado junto com o campo condicao_pagamento */
-                    condicao_pagamento_id?: number;
-                    /** @description ID do contato criado no Mercos. */
-                    contato_id?: number;
-                    /** @description ID do vendedor que responsável pelo pedido. */
-                    criador_id?: number;
-                    /** @description Data de criação do pedido. Pode ser diferente da `data_emissao`, já que um pedido pode ter sido criado em uma data e emitido em outra. Este campo somente será preenchido se for enviado no POST, pois representa a data em que o pedido foi criado (não confundir com a data de inserção no banco de dados). */
-                    data_criacao?: string;
-                    /**
-                     * @description Data de emissão do pedido.
-                     * @default
-                     */
-                    data_emissao?: string;
-                    /** @description ID do endereço de entrega. */
-                    endereco_entrega_id?: number;
-                    /** @description Lista de campos extras associados ao pedido. A estrutura esperada pode ser consultada na seção Estrutura de Retorno de Campos Extras do Pedido. */
-                    extras?: {
-                        /** @description Identificador único do campo extra. */
-                        id?: number;
-                        /** @description Valor do campo extra. O tipo depende do tipo de campo, conforme especificado na tabela abaixo. */
-                        valor?: string;
-                    }[];
-                    /** @description ID da forma de pagamento. Deve ser informado **somente se houver integração com a entidade `Formas de Pagamento`.** */
-                    forma_pagamento_id?: number;
-                    /** @description Lista de itens do pedido, conforme estrutura JSON definida na seção **Parâmetros do JSON de envio do Item do Pedido**. `Se informado, deve conter pelo menos um item` */
-                    itens?: {
-                        /**
-                         * Format: double
-                         * @description Cotação da moeda estrangeira. Deve ser informado apenas quando a moeda for diferente de Real.
-                         */
-                        cotacao_moeda?: number;
-                        /** @description Lista de acréscimos ou descontos decorrentes de políticas comerciais. Cada item deve seguir o formato: `{ "regra_id": Integer, "desconto": Double }` **Acréscimos são representados por valores negativos de desconto.** */
-                        descontos_de_politicas?: {
-                            /** Format: float */
-                            desconto?: number;
-                            regra_id?: number;
-                        }[];
-                        /** @description Lista de descontos promocionais aplicados ao item. Cada item deve seguir o formato:`{"regra_id": Integer, "desconto": Double}` */
-                        descontos_de_promocoes?: {
-                            /** Format: float */
-                            desconto?: number;
-                            regra_id?: number;
-                        }[];
-                        /** @description Lista de descontos aplicados pelo vendedor ao item. */
-                        descontos_do_vendedor?: number[];
-                        /** @description Se definido como `true`, o item será excluído durante a alteração. */
-                        excluido?: boolean;
-                        /**
-                         * Format: double
-                         * @description Valor ou percentual do IPI, conforme indicado no campo `tipo_ipi`.
-                         */
-                        ipi?: number;
-                        /** @description Tipo de moeda utilizada. Utilize os seguintes valores: <br /> `Real = '0'` (preenchimento automático, não precisa ser enviado) <br /> `Dólar = '1'` <br /> `Euro = '2'` <br /> `Outro = '3’` */
-                        moeda?: string;
-                        /** @description Informações adicionais registradas sobre o item. */
-                        observacoes?: string;
-                        /**
-                         * @description Preço padrão do produto no momento da venda. Corresponde ao campo `preco_tabela` da entidade `Produto` ou, se houver uma tabela de preço aplicada (`tabela_preco_id` diferente de `null`), representa o valor definido por essa tabela.
-                         * @default
-                         */
-                        preco_tabela: number;
-                        /**
-                         * @description ID do produto na Mercos. Campo obrigatório na criação de um novo item do pedido.
-                         * @default 19176097
-                         */
-                        produto_id?: number;
-                        /**
-                         * Format: double
-                         * @description Quantidade vendida do item. Se este campo for informado, o campo quantidade_grades não deve ser utilizado no mesmo item.
-                         * @default 29
-                         */
-                        quantidade?: number;
-                        /**
-                         * Format: double
-                         * @description Percentual da alíquota de ICMS-ST (Substituição Tributária). **Não deve ser preenchido se o campo `valor_unitario_st` for informado.**
-                         */
-                        st?: number;
-                        /** @description ID da tabela de preço utilizada no item. Caso o preço aplicado seja o padrão do produto (`preco_tabela` da entidade Produto), este campo será `null`. */
-                        tabela_preco_id?: number;
-                        /** @description Indica o tipo de IPI aplicado. Utilize: `'P'` para percentual e `'V'` para valor fixo **Deve ser preenchido somente se o campo `ipi` for informado.** */
-                        tipo_ipi?: string;
-                        /**
-                         * Format: double
-                         * @description Valor unitário, em reais, do ICMS-ST. **Não deve ser preenchido se o campo `st` for informado.**
-                         */
-                        valor_unitario_st?: number;
-                    }[];
-                    /** @description Informações adicionais registradas no pedido. */
-                    observacoes?: string;
-                    /** @description Código ou link de rastreamento do envio do pedido. */
-                    rastreamento?: string;
-                    /** @description ID do tipo de pedido. Deve ser informado **somente se houver integração com a entidade `Tipo de Pedido`.** */
-                    tipo_pedido_id?: number;
-                    /** @description ID da transportadora. */
-                    transportadora_id?: number;
-                    /**
-                     * Format: double
-                     * @description Valor do frete aplicado ao pedido.
-                     */
-                    valor_frete?: number;
-                };
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /**
-                         * @description O `id` do pedido criado ou alterado
-                         * @default 0
-                         * @example 10
-                         */
-                        id: number;
-                        /** @description A lista de `id`s dos itens do pedido, na **mesma ordem em que foram enviados** */
-                        itens?: {
-                            /**
-                             * @description Identificador único do item do pedido.
-                             * @default 0
-                             * @example 5
-                             */
-                            id: number;
-                        }[];
-                        /**
-                         * @description O `numero` do pedido
-                         * @default 0
-                         * @example 20
-                         */
-                        numero: number;
-                    };
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Precondition Failed */
-            412: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        erros?: unknown[][];
-                        mensagem?: string;
-                    };
-                };
-            };
-            /** @description Too Many Requests */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-        };
-    };
-    put_v2_pedidos_id_grade: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": {
-                    /**
-                     * @description Identificador único do cliente.
-                     * @default
-                     */
-                    cliente_id?: number;
-                    /** @description Descrição da condição de pagamento em texto livre. Deve ser informado **somente se não houver integração com a entidade `Condições de Pagamento`.** **Não deve ser utilizado junto com o campo `condicao_pagamento_id`.** */
-                    condicao_pagamento?: string;
-                    /** @description ID da condição de pagamento. Deve ser informado somente se houver integração com a entidade Condições de Pagamento. Não deve ser utilizado junto com o campo condicao_pagamento */
-                    condicao_pagamento_id?: number;
-                    /** @description ID do contato criado no Mercos. */
-                    contato_id?: number;
-                    /** @description ID do vendedor que responsável pelo pedido. */
-                    criador_id?: number;
-                    /** @description Data de criação do pedido. Pode ser diferente da `data_emissao`, já que um pedido pode ter sido criado em uma data e emitido em outra. Este campo somente será preenchido se for enviado no POST, pois representa a data em que o pedido foi criado (não confundir com a data de inserção no banco de dados). */
-                    data_criacao?: string;
-                    /**
-                     * @description Data de emissão do pedido.
-                     * @default
-                     */
-                    data_emissao?: string;
-                    /** @description ID do endereço de entrega. */
-                    endereco_entrega_id?: number;
-                    /** @description Lista com os campos extras do pedido. */
-                    extras?: {
-                        /** @description Identificador único do campo extra. */
-                        id?: number;
-                        /** @description Valor do campo extra. O tipo depende do tipo de campo, conforme especificado na tabela abaixo. */
-                        valor?: string;
-                    }[];
-                    /** @description ID da forma de pagamento. Deve ser informado **somente se houver integração com a entidade `Formas de Pagamento`.** */
-                    forma_pagamento_id?: number;
-                    /** @description Lista de itens do pedido, conforme estrutura JSON definida na seção **Parâmetros do JSON de envio do Item do Pedido**. `Se informado, deve conter pelo menos um item` */
-                    itens?: {
-                        /**
-                         * Format: double
-                         * @description Cotação da moeda estrangeira. Deve ser informado apenas quando a moeda for diferente de Real.
-                         */
-                        cotacao_moeda?: number;
-                        /** @description Lista de acréscimos ou descontos decorrentes de políticas comerciais. Cada item deve seguir o formato: `{ "regra_id": Integer, "desconto": Double }` **Acréscimos são representados por valores negativos de desconto.** */
-                        descontos_de_politicas?: {
-                            /** Format: float */
-                            desconto?: number;
-                            regra_id?: number;
-                        }[];
-                        /** @description Lista de descontos promocionais aplicados ao item. Cada item deve seguir o formato:`{"regra_id": Integer, "desconto": Double}` */
-                        descontos_de_promocoes?: {
-                            /** Format: float */
-                            desconto?: number;
-                            regra_id?: number;
-                        }[];
-                        /** @description Lista de descontos aplicados pelo vendedor ao item. */
-                        descontos_do_vendedor?: number[];
-                        /** @description Se definido como `true`, o item será excluído durante a alteração. */
-                        excluido?: boolean;
-                        /** @description Identificador do conjunto de produtos relacionados por grade. <br /> Itens com o mesmo `grupo_grades` são agrupados e exibidos como um único item no pedido. <br /> Todos os produtos do grupo devem compartilhar o mesmo produto agregador. <br /> **Produtos simples não devem preencher este campo.** */
-                        grupo_grades: string;
-                        /**
-                         * Format: double
-                         * @description Valor ou percentual do IPI, conforme indicado no campo `tipo_ipi`.
-                         */
-                        ipi?: number;
-                        /** @description Tipo de moeda utilizada. Utilize os seguintes valores: <br /> `Real = '0'` (preenchimento automático, não precisa ser enviado) <br /> `Dólar = '1'` <br /> `Euro = '2'` <br /> `Outro = '3’` */
-                        moeda?: string;
-                        /** @description Observações do item. */
-                        observacoes?: string;
-                        /**
-                         * @description Preço padrão do produto no momento da venda. Corresponde ao campo `preco_tabela` da entidade `Produto` ou, se houver uma tabela de preço aplicada (`tabela_preco_id` diferente de `null`), representa o valor definido por essa tabela.
-                         * @default
-                         */
-                        preco_tabela?: number;
-                        /**
-                         * @description ID do produto na Mercos. Campo obrigatório na criação de um novo item do pedido.
-                         * @default 19176097
-                         */
-                        produto_id?: number;
-                        /**
-                         * Format: double
-                         * @description Quantidade vendida do item. Se este campo for informado, o campo quantidade_grades não deve ser utilizado no mesmo item.
-                         * @default 29
-                         */
-                        quantidade?: number;
-                        /**
-                         * Format: double
-                         * @description Percentual da alíquota de ICMS-ST (Substituição Tributária). **Não deve ser preenchido se o campo `valor_unitario_st` for informado.**
-                         */
-                        st?: number;
-                        /** @description ID da tabela de preço utilizada no item. Caso o preço aplicado seja o padrão do produto (`preco_tabela` da entidade Produto), este campo será `null`. */
-                        tabela_preco_id?: number;
-                        /** @description Indica o tipo de IPI aplicado. Utilize: `'P'` para percentual e `'V'` para valor fixo **Deve ser preenchido somente se o campo `ipi` for informado.** */
-                        tipo_ipi?: string;
-                        /**
-                         * Format: double
-                         * @description Valor unitário, em reais, do ICMS-ST. **Não deve ser preenchido se o campo `st` for informado.**
-                         */
-                        valor_unitario_st?: number;
-                    }[];
-                    /** @description Observações do pedido. */
-                    observacoes?: string;
-                    /** @description Código ou link de rastreamento do envio do pedido. */
-                    rastreamento?: string;
-                    /** @description ID do tipo de pedido. Deve ser informado **somente se houver integração com a entidade `Tipo de Pedido`.** */
-                    tipo_pedido_id?: number;
-                    /** @description ID da transportadora. */
-                    transportadora_id?: number;
-                    /**
-                     * Format: double
-                     * @description Valor do frete.
-                     */
-                    valor_frete?: number;
-                };
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /**
-                         * @description Identificador único do pedido
-                         * @default 0
-                         * @example 10
-                         */
-                        id: number;
-                        /** @description A lista de `id`s dos itens do pedido, na **mesma ordem em que foram enviados** */
-                        itens?: {
-                            /**
-                             * @description Identificador único do item do pedido.
-                             * @default 0
-                             * @example 5
-                             */
-                            id: number;
-                        }[];
-                        /**
-                         * @description Número sequencial (auto-incremental).
-                         * @default 0
-                         * @example 20
-                         */
-                        numero: number;
-                    };
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            /** @description Precondition Failed */
-            412: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        erros?: unknown[][];
-                        mensagem?: string;
-                    };
-                };
-            };
-            /** @description Too Many Requests */
-            429: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-        };
-    };
-    post_v2_pedidos_grade: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": {
+                } | {
                     /**
                      * @description Identificador único do cliente.
                      * @default 7172892
@@ -17828,14 +16457,10 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        /** @description O `id` do pedido criado ou alterado */
                         id?: number;
-                        /** @description A lista de `id`s dos itens do pedido, na **mesma ordem em que foram enviados** */
                         itens?: {
-                            /** @description Identificador único do item do pedido. */
                             id: number;
                         }[];
-                        /** @description O `numero` do pedido */
                         numero?: number;
                     };
                 };
@@ -17846,7 +16471,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
                 };
             };
             /** @description Precondition Failed */
@@ -17867,7 +16492,625 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": Record<string, unknown>;
+                };
+            };
+        };
+    };
+    get_v2_pedidos_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description ID do Pedido no sistema Mercos. */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /**
+                         * @description ID do cliente no Mercos.
+                         * @default 0
+                         * @example 14
+                         */
+                        cliente_id: number;
+                        /**
+                         * @description Condição de pagamento em formato texto livre.
+                         * @example à vista
+                         */
+                        condicao_pagamento?: string;
+                        /**
+                         * @description ID da condição de pagamento. (se integrado)
+                         * @default 0
+                         * @example 0
+                         */
+                        condicao_pagamento_id: number;
+                        /**
+                         * @description ID do vendedor responsável.
+                         * @default 0
+                         * @example 16
+                         */
+                        criador_id: number;
+                        /**
+                         * @description Cupom de desconto aplicado no pedido.
+                         * @example NOVOCLIENTE
+                         */
+                        cupom_de_desconto?: string;
+                        /**
+                         * @description Data em que o pedido foi criado. Preenchida apenas se fornecida. Pode diferir de `data_emissao` (ex.: pedido criado ontem e emitido hoje)
+                         * @example 2017-02-20 08:19:45
+                         */
+                        data_criacao?: string;
+                        /**
+                         * @description Data de emissão do pedido. Pode ser `null`.
+                         * @example 2017-02-20
+                         */
+                        data_emissao?: string;
+                        /**
+                         * @description Identificador da divisão do registro. Retornado no lugar de `representada_id` quando a sua conta **é** uma indústria com divisões.
+                         * @example 987
+                         */
+                        divisao_id?: number;
+                        /** @description Lista com os endereços de entrega do pedido. */
+                        endereco_entrega?: {
+                            /** @example Bom Retiro */
+                            bairro?: string;
+                            /** @example 89223005 */
+                            cep?: string;
+                            /** @example Joinville */
+                            cidade?: string;
+                            /** @example Avenida */
+                            complemento?: string;
+                            /** @example Rolf Wiest */
+                            endereco?: string;
+                            /** @example SC */
+                            estado?: string;
+                            /**
+                             * @default 0
+                             * @example 5
+                             */
+                            id: number;
+                            /** @example 277 */
+                            numero?: string;
+                        };
+                        /** @description Lista com os campos extras do pedido. */
+                        extras?: {
+                            /**
+                             * @default 0
+                             * @example 1
+                             */
+                            campo_extra_id: number;
+                            /** @example Valor de frete */
+                            nome?: string;
+                            /** @example 2 */
+                            tipo?: string;
+                            /**
+                             * @default 0
+                             * @example 15
+                             */
+                            valor: number;
+                            /** @example 2001-01-01 */
+                            valor_data?: string;
+                            /**
+                             * @default 0
+                             * @example 15
+                             */
+                            valor_decimal: number;
+                            /** @example  */
+                            valor_hora?: string;
+                            valor_lista?: Record<string, unknown>[];
+                            /** @example  */
+                            valor_texto?: string;
+                        }[];
+                        /**
+                         * @description ID da forma de pagamento. (se integrado)
+                         * @default 0
+                         * @example 0
+                         */
+                        forma_pagamento_id: number;
+                        /**
+                         * @description Identificador único do pedido.
+                         * @default 0
+                         * @example 77
+                         */
+                        id: number;
+                        itens?: {
+                            /**
+                             * @default 0
+                             * @example 1
+                             */
+                            cotacao_moeda: number;
+                            /**
+                             * @default 0
+                             * @example 10
+                             */
+                            desconto_de_cupom: number;
+                            descontos_de_politicas?: {
+                                /**
+                                 * @default 0
+                                 * @example 1
+                                 */
+                                desconto: number;
+                                /**
+                                 * @default 0
+                                 * @example 3
+                                 */
+                                regra_id: number;
+                            }[];
+                            descontos_de_promocoes?: {
+                                /**
+                                 * @default 0
+                                 * @example 2
+                                 */
+                                desconto: number;
+                                /**
+                                 * @default 0
+                                 * @example 2
+                                 */
+                                regra_id: number;
+                            }[];
+                            descontos_do_vendedor?: number[];
+                            /**
+                             * @default true
+                             * @example false
+                             */
+                            excluido: boolean;
+                            /**
+                             * @default 0
+                             * @example 242
+                             */
+                            id: number;
+                            /**
+                             * @default 0
+                             * @example 0
+                             */
+                            ipi: number;
+                            /** @example Favor enviar em fardos fechados, o cliente tem esse requisito. */
+                            observacoes?: string;
+                            /**
+                             * @default 0
+                             * @example 2.08
+                             */
+                            preco_liquido: number;
+                            /**
+                             * @default 0
+                             * @example 2.21
+                             */
+                            preco_tabela: number;
+                            /**
+                             * @default 0
+                             * @example 130
+                             */
+                            produto_id: number;
+                            /**
+                             * @default 0
+                             * @example 10
+                             */
+                            quantidade: number;
+                            quantidade_grades?: Record<string, unknown>[];
+                            /**
+                             * @default 0
+                             * @example 0
+                             */
+                            st: number;
+                            /**
+                             * @default 0
+                             * @example 20.8
+                             */
+                            subtotal: number;
+                            /**
+                             * @default 0
+                             * @example 0
+                             */
+                            tabela_preco_id: number;
+                            /** @example P */
+                            tipo_ipi?: string;
+                        }[];
+                        /**
+                         * @description Nome do contato principal.
+                         * @example João da Silva [exemplo]
+                         */
+                        nome_contato?: string;
+                        /**
+                         * @description Número sequencial (auto-incremental).
+                         * @default 0
+                         * @example 1
+                         */
+                        numero: number;
+                        /**
+                         * @description Observações do pedido.
+                         * @example Envio após 1 dia útil.
+                         */
+                        observacoes?: string;
+                        /** @description Percentual total de comissão do pedido. */
+                        percentual_total_comissao_pedido?: {
+                            /** Format: double */
+                            percentual?: number;
+                            vendedor_id?: number;
+                        }[];
+                        /**
+                         * @description Código ou link para rastreamento.
+                         * @example BB000000000000BR
+                         */
+                        rastreamento?: string;
+                        /**
+                         * @description Identificador da representada do registro. Retornado quando a sua conta **não é** uma indústria com divisões.
+                         * @example 987
+                         */
+                        representada_id?: number;
+                        /**
+                         * @description Status do pedido: `0 = Cancelado`, `1 = Orçamento`, `2 = Pedido`
+                         * @example 2
+                         */
+                        status?: string;
+                        /**
+                         * @description `null = Não utiliza B2B`, `1 = Em aberto`, `2 = Concluído`
+                         * @default 0
+                         * @example 2
+                         */
+                        status_b2b: number;
+                        /** @description ID do status customizado. */
+                        status_custom_id?: string;
+                        /**
+                         * @description `0 = Não faturado`, `1 = Parcial`, `2 = Faturado`
+                         * @example 0
+                         */
+                        status_faturamento?: string;
+                        /**
+                         * @description Se integrado, é retornado o ID do tipo de pedido. Caso contrário, assume o tipo “venda” (padrão), retornado como `null`. Outros tipos cadastrados retornam seus respectivos IDs, mas **não geram métricas de faturamento.**
+                         * @default 0
+                         * @example 99
+                         */
+                        tipo_pedido_id: number;
+                        /**
+                         * @description Valor total do pedido.
+                         * @default 0
+                         * @example 76.25
+                         */
+                        total: number;
+                        /**
+                         * @description ID da transportadora. Será `null` se houver integração com a **Frenet**, só existindo o campo `transportadora_nome`e `valor_frete`.
+                         * @default 0
+                         * @example 8
+                         */
+                        transportadora_id: number;
+                        /**
+                         * @description Nome da transportadora.
+                         * @example FOB
+                         */
+                        transportadora_nome?: string;
+                        /** @example 2017-02-20 09:19:20 */
+                        ultima_alteracao: string;
+                        /**
+                         * @description Valor do frete.
+                         * @default 0
+                         * @example 0
+                         */
+                        valor_frete: number;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, unknown>;
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, unknown>;
+                };
+            };
+        };
+    };
+    put_v2_pedidos_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description ID do Pedido no sistema Mercos. */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    /**
+                     * @description Identificador único do cliente.
+                     * @default
+                     */
+                    cliente_id?: number;
+                    /** @description Descrição da condição de pagamento em texto livre. Deve ser informado **somente se não houver integração com a entidade `Condições de Pagamento`.** **Não deve ser utilizado junto com o campo `condicao_pagamento_id`.** */
+                    condicao_pagamento?: string;
+                    /** @description ID da condição de pagamento. Deve ser informado somente se houver integração com a entidade Condições de Pagamento. Não deve ser utilizado junto com o campo condicao_pagamento */
+                    condicao_pagamento_id?: number;
+                    /** @description ID do contato criado no Mercos. */
+                    contato_id?: number;
+                    /** @description ID do vendedor que responsável pelo pedido. */
+                    criador_id?: number;
+                    /** @description Data de criação do pedido. Pode ser diferente da `data_emissao`, já que um pedido pode ter sido criado em uma data e emitido em outra. Este campo somente será preenchido se for enviado no POST, pois representa a data em que o pedido foi criado (não confundir com a data de inserção no banco de dados). */
+                    data_criacao?: string;
+                    /**
+                     * @description Data de emissão do pedido.
+                     * @default
+                     */
+                    data_emissao?: string;
+                    /** @description ID do endereço de entrega. */
+                    endereco_entrega_id?: number;
+                    /** @description Lista de campos extras associados ao pedido. A estrutura esperada pode ser consultada na seção Estrutura de Retorno de Campos Extras do Pedido. */
+                    extras?: {
+                        /** @description Identificador único do campo extra. */
+                        id?: number;
+                        /** @description Valor do campo extra. O tipo depende do tipo de campo, conforme especificado na tabela abaixo. */
+                        valor?: string;
+                    }[];
+                    /** @description ID da forma de pagamento. Deve ser informado **somente se houver integração com a entidade `Formas de Pagamento`.** */
+                    forma_pagamento_id?: number;
+                    /** @description Lista de itens do pedido, conforme estrutura JSON definida na seção **Parâmetros do JSON de envio do Item do Pedido**. `Se informado, deve conter pelo menos um item` */
+                    itens?: {
+                        /**
+                         * Format: double
+                         * @description Cotação da moeda estrangeira. Deve ser informado apenas quando a moeda for diferente de Real.
+                         */
+                        cotacao_moeda?: number;
+                        /** @description Lista de acréscimos ou descontos decorrentes de políticas comerciais. Cada item deve seguir o formato: `{ "regra_id": Integer, "desconto": Double }` **Acréscimos são representados por valores negativos de desconto.** */
+                        descontos_de_politicas?: {
+                            /** Format: float */
+                            desconto?: number;
+                            regra_id?: number;
+                        }[];
+                        /** @description Lista de descontos promocionais aplicados ao item. Cada item deve seguir o formato:`{"regra_id": Integer, "desconto": Double}` */
+                        descontos_de_promocoes?: {
+                            /** Format: float */
+                            desconto?: number;
+                            regra_id?: number;
+                        }[];
+                        /** @description Lista de descontos aplicados pelo vendedor ao item. */
+                        descontos_do_vendedor?: number[];
+                        /** @description Se definido como `true`, o item será excluído durante a alteração. */
+                        excluido?: boolean;
+                        /**
+                         * Format: double
+                         * @description Valor ou percentual do IPI, conforme indicado no campo `tipo_ipi`.
+                         */
+                        ipi?: number;
+                        /** @description Tipo de moeda utilizada. Utilize os seguintes valores: <br /> `Real = '0'` (preenchimento automático, não precisa ser enviado) <br /> `Dólar = '1'` <br /> `Euro = '2'` <br /> `Outro = '3’` */
+                        moeda?: string;
+                        /** @description Informações adicionais registradas sobre o item. */
+                        observacoes?: string;
+                        /**
+                         * @description Preço padrão do produto no momento da venda. Corresponde ao campo `preco_tabela` da entidade `Produto` ou, se houver uma tabela de preço aplicada (`tabela_preco_id` diferente de `null`), representa o valor definido por essa tabela.
+                         * @default
+                         */
+                        preco_tabela: number;
+                        /**
+                         * @description ID do produto na Mercos. Campo obrigatório na criação de um novo item do pedido.
+                         * @default 19176097
+                         */
+                        produto_id?: number;
+                        /**
+                         * Format: double
+                         * @description Quantidade vendida do item. Se este campo for informado, o campo quantidade_grades não deve ser utilizado no mesmo item.
+                         * @default 29
+                         */
+                        quantidade?: number;
+                        /**
+                         * Format: double
+                         * @description Percentual da alíquota de ICMS-ST (Substituição Tributária). **Não deve ser preenchido se o campo `valor_unitario_st` for informado.**
+                         */
+                        st?: number;
+                        /** @description ID da tabela de preço utilizada no item. Caso o preço aplicado seja o padrão do produto (`preco_tabela` da entidade Produto), este campo será `null`. */
+                        tabela_preco_id?: number;
+                        /** @description Indica o tipo de IPI aplicado. Utilize: `'P'` para percentual e `'V'` para valor fixo **Deve ser preenchido somente se o campo `ipi` for informado.** */
+                        tipo_ipi?: string;
+                        /**
+                         * Format: double
+                         * @description Valor unitário, em reais, do ICMS-ST. **Não deve ser preenchido se o campo `st` for informado.**
+                         */
+                        valor_unitario_st?: number;
+                    }[];
+                    /** @description Informações adicionais registradas no pedido. */
+                    observacoes?: string;
+                    /** @description Código ou link de rastreamento do envio do pedido. */
+                    rastreamento?: string;
+                    /** @description ID do tipo de pedido. Deve ser informado **somente se houver integração com a entidade `Tipo de Pedido`.** */
+                    tipo_pedido_id?: number;
+                    /** @description ID da transportadora. */
+                    transportadora_id?: number;
+                    /**
+                     * Format: double
+                     * @description Valor do frete aplicado ao pedido.
+                     */
+                    valor_frete?: number;
+                } | {
+                    /**
+                     * @description Identificador único do cliente.
+                     * @default
+                     */
+                    cliente_id?: number;
+                    /** @description Descrição da condição de pagamento em texto livre. Deve ser informado **somente se não houver integração com a entidade `Condições de Pagamento`.** **Não deve ser utilizado junto com o campo `condicao_pagamento_id`.** */
+                    condicao_pagamento?: string;
+                    /** @description ID da condição de pagamento. Deve ser informado somente se houver integração com a entidade Condições de Pagamento. Não deve ser utilizado junto com o campo condicao_pagamento */
+                    condicao_pagamento_id?: number;
+                    /** @description ID do contato criado no Mercos. */
+                    contato_id?: number;
+                    /** @description ID do vendedor que responsável pelo pedido. */
+                    criador_id?: number;
+                    /** @description Data de criação do pedido. Pode ser diferente da `data_emissao`, já que um pedido pode ter sido criado em uma data e emitido em outra. Este campo somente será preenchido se for enviado no POST, pois representa a data em que o pedido foi criado (não confundir com a data de inserção no banco de dados). */
+                    data_criacao?: string;
+                    /**
+                     * @description Data de emissão do pedido.
+                     * @default
+                     */
+                    data_emissao?: string;
+                    /** @description ID do endereço de entrega. */
+                    endereco_entrega_id?: number;
+                    /** @description Lista com os campos extras do pedido. */
+                    extras?: {
+                        /** @description Identificador único do campo extra. */
+                        id?: number;
+                        /** @description Valor do campo extra. O tipo depende do tipo de campo, conforme especificado na tabela abaixo. */
+                        valor?: string;
+                    }[];
+                    /** @description ID da forma de pagamento. Deve ser informado **somente se houver integração com a entidade `Formas de Pagamento`.** */
+                    forma_pagamento_id?: number;
+                    /** @description Lista de itens do pedido, conforme estrutura JSON definida na seção **Parâmetros do JSON de envio do Item do Pedido**. `Se informado, deve conter pelo menos um item` */
+                    itens?: {
+                        /**
+                         * Format: double
+                         * @description Cotação da moeda estrangeira. Deve ser informado apenas quando a moeda for diferente de Real.
+                         */
+                        cotacao_moeda?: number;
+                        /** @description Lista de acréscimos ou descontos decorrentes de políticas comerciais. Cada item deve seguir o formato: `{ "regra_id": Integer, "desconto": Double }` **Acréscimos são representados por valores negativos de desconto.** */
+                        descontos_de_politicas?: {
+                            /** Format: float */
+                            desconto?: number;
+                            regra_id?: number;
+                        }[];
+                        /** @description Lista de descontos promocionais aplicados ao item. Cada item deve seguir o formato:`{"regra_id": Integer, "desconto": Double}` */
+                        descontos_de_promocoes?: {
+                            /** Format: float */
+                            desconto?: number;
+                            regra_id?: number;
+                        }[];
+                        /** @description Lista de descontos aplicados pelo vendedor ao item. */
+                        descontos_do_vendedor?: number[];
+                        /** @description Se definido como `true`, o item será excluído durante a alteração. */
+                        excluido?: boolean;
+                        /** @description Identificador do conjunto de produtos relacionados por grade. <br /> Itens com o mesmo `grupo_grades` são agrupados e exibidos como um único item no pedido. <br /> Todos os produtos do grupo devem compartilhar o mesmo produto agregador. <br /> **Produtos simples não devem preencher este campo.** */
+                        grupo_grades: string;
+                        /**
+                         * Format: double
+                         * @description Valor ou percentual do IPI, conforme indicado no campo `tipo_ipi`.
+                         */
+                        ipi?: number;
+                        /** @description Tipo de moeda utilizada. Utilize os seguintes valores: <br /> `Real = '0'` (preenchimento automático, não precisa ser enviado) <br /> `Dólar = '1'` <br /> `Euro = '2'` <br /> `Outro = '3’` */
+                        moeda?: string;
+                        /** @description Observações do item. */
+                        observacoes?: string;
+                        /**
+                         * @description Preço padrão do produto no momento da venda. Corresponde ao campo `preco_tabela` da entidade `Produto` ou, se houver uma tabela de preço aplicada (`tabela_preco_id` diferente de `null`), representa o valor definido por essa tabela.
+                         * @default
+                         */
+                        preco_tabela?: number;
+                        /**
+                         * @description ID do produto na Mercos. Campo obrigatório na criação de um novo item do pedido.
+                         * @default 19176097
+                         */
+                        produto_id?: number;
+                        /**
+                         * Format: double
+                         * @description Quantidade vendida do item. Se este campo for informado, o campo quantidade_grades não deve ser utilizado no mesmo item.
+                         * @default 29
+                         */
+                        quantidade?: number;
+                        /**
+                         * Format: double
+                         * @description Percentual da alíquota de ICMS-ST (Substituição Tributária). **Não deve ser preenchido se o campo `valor_unitario_st` for informado.**
+                         */
+                        st?: number;
+                        /** @description ID da tabela de preço utilizada no item. Caso o preço aplicado seja o padrão do produto (`preco_tabela` da entidade Produto), este campo será `null`. */
+                        tabela_preco_id?: number;
+                        /** @description Indica o tipo de IPI aplicado. Utilize: `'P'` para percentual e `'V'` para valor fixo **Deve ser preenchido somente se o campo `ipi` for informado.** */
+                        tipo_ipi?: string;
+                        /**
+                         * Format: double
+                         * @description Valor unitário, em reais, do ICMS-ST. **Não deve ser preenchido se o campo `st` for informado.**
+                         */
+                        valor_unitario_st?: number;
+                    }[];
+                    /** @description Observações do pedido. */
+                    observacoes?: string;
+                    /** @description Código ou link de rastreamento do envio do pedido. */
+                    rastreamento?: string;
+                    /** @description ID do tipo de pedido. Deve ser informado **somente se houver integração com a entidade `Tipo de Pedido`.** */
+                    tipo_pedido_id?: number;
+                    /** @description ID da transportadora. */
+                    transportadora_id?: number;
+                    /**
+                     * Format: double
+                     * @description Valor do frete.
+                     */
+                    valor_frete?: number;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /**
+                         * @description O `id` do pedido criado ou alterado
+                         * @default 0
+                         * @example 10
+                         */
+                        id: number;
+                        /** @description A lista de `id`s dos itens do pedido, na **mesma ordem em que foram enviados** */
+                        itens?: {
+                            /**
+                             * @description Identificador único do item do pedido.
+                             * @default 0
+                             * @example 5
+                             */
+                            id: number;
+                        }[];
+                        /**
+                         * @description O `numero` do pedido
+                         * @default 0
+                         * @example 20
+                         */
+                        numero: number;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, unknown>;
+                };
+            };
+            /** @description Precondition Failed */
+            412: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        erros?: unknown[][];
+                        mensagem?: string;
+                    };
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, unknown>;
                 };
             };
         };

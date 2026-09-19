@@ -14,4 +14,6 @@ First version.
 - A `MercosError` class with a `kind` field, which normalizes the four shapes of `erros`.
 - Resources: orders, customers, products, price tables, prices per table, payment conditions,
   carriers, users, and a token check.
-- Types for the 169 documented operations, generated from `spec/mercos-openapi.json`.
+- Types for the 169 documented operations, generated from `spec/mercos-openapi.json`. Grid
+  products and grid orders share the route, and the input type, of the plain ones.
+- A live test suite for the sandbox, `pnpm test:live`, that runs only when the tokens exist.

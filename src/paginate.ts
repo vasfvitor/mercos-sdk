@@ -1,14 +1,13 @@
 import { MercosError } from "./errors.ts";
-import type { Http, Query } from "./http.ts";
+import type { CallOptions, Http, Query } from "./http.ts";
 
 /** Starting point when the caller wants everything. The Mercos documentation uses this value. */
 const EPOCH = "2000-01-01T00:00:00";
 const LIMITED_HEADER = "MEUSPEDIDOS_LIMITOU_REGISTROS";
 
-export interface ListOptions {
+export interface ListOptions extends CallOptions {
   /** Only records changed after this instant, in the format Mercos returns in `ultima_alteracao`. */
   changedAfter?: string;
-  signal?: AbortSignal;
 }
 
 /** The little that pagination needs to see in a record, whatever resource it belongs to. */

@@ -135,8 +135,16 @@ o SDK o mascara antes de montar o erro.
 | `mercos.usuarios`            | `list`, `get`                                 |
 | `mercos.tokenStatus()`       | Confere os tokens.                            |
 
+Todo método recebe um objeto de opções como último argumento. Hoje ele tem `signal`, um
+`AbortSignal` que cancela a requisição mesmo enquanto ela espera na fila:
+`mercos.pedidos.get(55, { signal })`.
+
 Pedidos usam a versão 2 da API. `get` por ID só funciona no sandbox: em produção o Mercos
 bloqueia essa leitura, e o erro traz uma dica a respeito.
+
+`produtos.create`, `produtos.update`, `pedidos.create` e `pedidos.update` também aceitam os corpos
+de grade que o Mercos documenta nas mesmas rotas. `ProdutoInput` e `PedidoInput` são uniões do
+corpo simples com os de grade.
 
 Os tipos de **todas** as 169 operações documentadas estão disponíveis em `paths` e
 `operations`, mesmo para rotas que ainda não têm método no cliente.
@@ -147,14 +155,17 @@ Antes de liberar a produção, o Mercos revisa a integração. Os dois pontos qu
 tratamento do 429 e paginação completa, são comportamento padrão deste SDK. O processo está em
 [docs.mercos.com/reference/homologação](https://docs.mercos.com/reference/homologação).
 
-## Pontos em aberto
+## Verificado no sandbox
 
-Estas dúvidas só se resolvem com testes no sandbox usando um `CompanyToken` válido:
+Testado em 2026-09-19 contra `sandbox.mercos.com`, onde a documentação era ambígua:
 
-- Se um pedido criado pela API nasce como orçamento. O corpo de criação não tem campo `status`.
-- Se a condição de pagamento é obrigatória na criação. A prosa da documentação diz que sim, o
-  esquema diz que não.
-- Se o formato de data dos campos extras na documentação é um erro de digitação.
+- Um pedido criado pela API nasce como `StatusPedido.Gerado` (`"2"`), não como orçamento. O corpo
+  de criação não aceita `status`.
+- A condição de pagamento é obrigatória na criação: `condicao_pagamento_id` ou o texto livre
+  `condicao_pagamento`. Sem nenhum dos dois, a API responde 422, embora o esquema não marque
+  nenhum como obrigatório.
+- A data de um campo extra vai como `yyyy-mm-dd`. O `yyyy-dd-mm` da documentação é erro de
+  digitação: a API recusa com 422 e informa o formato `%Y-%m-%d`.
 
 ## Desenvolvimento
 
@@ -175,8 +186,19 @@ pnpm spec:fetch -- --refresh   # ignora o cache local em .cache/docs
 Correções manuais da especificação ficam em `spec/patches.json`, cada uma com o motivo. Rodar
 `pnpm spec` de novo e olhar o `git diff` mostra o que mudou na API.
 
+O script de junção também conserta dois defeitos que se repetem nas páginas. Quando a página
+declara um objeto e o próprio exemplo mostra uma lista, ou o contrário, vale o exemplo. Quando duas
+páginas documentam a mesma rota com corpos diferentes, os corpos viram um `oneOf` só.
+
 Os testes usam um `fetch` falso e um relógio falso, sem rede. Nenhum dado real de empresa entra
 no repositório: as fixtures vêm dos exemplos da documentação pública.
+
+Uma segunda suíte roda contra o sandbox de verdade. Ela se pula sozinha se as duas variáveis não
+existirem, e cancela o pedido que cria:
+
+```sh
+MERCOS_APPLICATION_TOKEN=... MERCOS_COMPANY_TOKEN=... pnpm test:live
+```
 
 ## Licença
 

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { type Pedido, type PedidoInput, StatusPedido } from "../src/index.ts";
+import { type Pedido, type PedidoInput, type ProdutoInput, StatusPedido } from "../src/index.ts";
 import { fake, fixture, rejectsWith } from "./helpers.ts";
 
 test("pedidos.create returns the MeusPedidosID header as a number, plus the item IDs", async () => {
@@ -46,6 +46,18 @@ test("pedidos.update uses PUT on v2, and pedidos.cancel uses the v1 route", asyn
   assert.deepEqual(calls[0]!.body, { observacoes: "novo texto" });
   assert.deepEqual([calls[1]!.method, calls[1]!.url.pathname], ["POST", "/api/v1/pedidos/cancelar/55"]);
   assert.equal(calls[1]!.body, undefined);
+});
+
+test("produtos.create takes the grid body on the same route as a plain product", async () => {
+  const example = fixture("post_v1_produtos_grade_v3");
+  const { mercos, calls } = fake([{ status: 201, headers: { MeusPedidosID: "31" } }]);
+
+  // No cast on the literal: the grid body is one of the shapes of `ProdutoInput`.
+  const grid: ProdutoInput = { nome: "Camiseta", preco_tabela: 50, produtos_grade: [{ codigo: "P-AZUL" }] };
+  assert.ok("produtos_grade" in grid);
+  assert.deepEqual(await mercos.produtos.create(example.request as ProdutoInput), { id: 31 });
+  assert.equal(calls[0]!.url.pathname, "/api/v1/produtos");
+  assert.deepEqual(calls[0]!.body, example.request);
 });
 
 test("each catalog resource lists on the right path", async () => {
