@@ -15,7 +15,7 @@ homologação do Mercos: paginação e throttling.
 npm install mercos-sdk
 ```
 
-Requer Node 20 ou mais recente. Também roda em Deno, Bun e Cloudflare Workers, porque depende
+Requer Node 22 ou mais recente. Também roda em Deno, Bun e Cloudflare Workers, porque depende
 apenas de `fetch`, `URLSearchParams` e `AbortSignal`.
 
 ## Uso
@@ -217,6 +217,14 @@ existirem, e cancela o pedido que cria:
 ```sh
 MERCOS_APPLICATION_TOKEN=... MERCOS_COMPANY_TOKEN=... pnpm test:live
 ```
+
+## Publicação
+
+1. Ajuste a versão no `package.json` e date a entrada no `CHANGELOG.md`.
+2. Publique uma release no GitHub com a tag `v` mais essa versão, por exemplo `v0.1.0`.
+
+O workflow de release publica no npm com atestado de procedência. Nenhum token do npm fica
+guardado: no npmjs.com, o pacote lista este repositório e o `release.yml` como publicador confiável.
 
 ## Licença
 

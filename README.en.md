@@ -16,7 +16,7 @@ pagination and throttling.
 npm install mercos-sdk
 ```
 
-The SDK requires Node 20 or later. It also runs on Deno, Bun, and Cloudflare Workers, because
+The SDK requires Node 22 or later. It also runs on Deno, Bun, and Cloudflare Workers, because
 it depends only on `fetch`, `URLSearchParams`, and `AbortSignal`.
 
 ## Usage
@@ -221,6 +221,15 @@ it cancels the order that it creates:
 ```sh
 MERCOS_APPLICATION_TOKEN=... MERCOS_COMPANY_TOKEN=... pnpm test:live
 ```
+
+## Releasing
+
+1. Set the version in `package.json` and date the entry in `CHANGELOG.md`.
+2. Publish a GitHub release whose tag is `v` plus that version, such as `v0.1.0`.
+
+The release workflow then publishes to npm with a provenance statement. It stores no npm
+token: on npmjs.com, the package lists this repository and `release.yml` as its trusted
+publisher.
 
 ## License
 

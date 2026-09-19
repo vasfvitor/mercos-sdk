@@ -3,16 +3,27 @@
   "version": "0.1.0",
   "description": "Unofficial TypeScript SDK for the Mercos integration API: native fetch, zero dependencies, pagination and throttling handled",
   "license": "MIT",
+  "author": "vasfvitor (https://github.com/vasfvitor)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vasfvitor/mercos-sdk.git"
+  },
+  "homepage": "https://github.com/vasfvitor/mercos-sdk#readme",
+  "bugs": "https://github.com/vasfvitor/mercos-sdk/issues",
   "type": "module",
   "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "files": [
     "dist",
+    "!dist/generated/*.map",
     "README.md",
     "README.en.md",
     "LICENSE",
@@ -27,7 +38,11 @@
     "b2b"
   ],
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "packageManager": "pnpm@10.22.0",
   "scripts": {

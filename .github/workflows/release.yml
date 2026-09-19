@@ -1,0 +1,29 @@
+name: Release
+
+# Publishing a GitHub release publishes the same version to npm. No npm token is stored: npm
+# trusts this workflow through OIDC ("trusted publishing"), and the package gets a provenance
+# statement that links it to this commit.
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          registry-url: https://registry.npmjs.org
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: The release tag must match the version in package.json
+        run: test "v$(node -p "require('./package.json').version")" = "${{ github.event.release.tag_name }}"
+      # `prepublishOnly` runs `pnpm verify` and `pnpm build` first.
+      - run: npm publish
