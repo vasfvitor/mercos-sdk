@@ -211,6 +211,7 @@ export function createHttp(config: HttpConfig): Http {
   }
 
   return {
-    request: (method, path, options = {}) => serialize(() => send(method, path, options), options.signal),
+    // Reads are recognized by an exact "GET", so a caller's lowercase method is normalized here.
+    request: (method, path, options = {}) => serialize(() => send(method.toUpperCase(), path, options), options.signal),
   };
 }

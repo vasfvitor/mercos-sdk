@@ -29,32 +29,28 @@ export interface CrudResource<T, Input, Update, Filters extends Query = never> e
 }
 
 /** The ID of a created record comes in the MeusPedidosID header. The body is only a fallback. */
-export function findCreatedId(response: MercosResponse<unknown>): number | undefined {
+function findCreatedId(response: MercosResponse<unknown>): number | undefined {
   const candidates = [response.headers.get("MeusPedidosID"), (response.data as { id?: unknown } | undefined)?.id];
   return candidates.map((value) => Number(value || Number.NaN)).find((value) => Number.isInteger(value) && value > 0);
 }
 
-function createdId(response: MercosResponse<unknown>, path: string): number {
-  const id = findCreatedId(response);
-  if (id === undefined) {
-    throw new MercosError(
-      "unexpected_response",
-      `POST ${path} returned no ID, neither in the MeusPedidosID header nor in the body.`,
-      {
-        status: response.status,
-        method: "POST",
-        path,
-        body: response.data,
-      },
-    );
-  }
-  return id;
+/** For routes that may create no single record: the ID is absent when the response carries none. */
+export async function tryPost<Data>(http: Http, path: string, body: unknown, options?: CallOptions) {
+  const response = await http.request<Data | undefined>("POST", path, { body, ...options });
+  return { id: findCreatedId(response), data: response.data, status: response.status };
 }
 
 /** Returns the body next to the ID, for callers that need more than the ID. */
 export async function post<Data>(http: Http, path: string, body: unknown, options?: CallOptions) {
-  const response = await http.request<Data | undefined>("POST", path, { body, ...options });
-  return { id: createdId(response, path), data: response.data };
+  const { id, data, status } = await tryPost<Data>(http, path, body, options);
+  if (id === undefined) {
+    throw new MercosError(
+      "unexpected_response",
+      `POST ${path} returned no ID, neither in the MeusPedidosID header nor in the body.`,
+      { status, method: "POST", path, body: data },
+    );
+  }
+  return { id, data };
 }
 
 export function readOnly<T extends object, Filters extends Query = never>(

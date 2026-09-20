@@ -2,9 +2,9 @@
 // typed as a plain `string` skips the types, which is the way around a wrong schema.
 import { MercosError } from "./errors.ts";
 import type { paths } from "./generated/mercos.ts";
-import type { CallOptions, Http, MercosResponse, Query } from "./http.ts";
+import type { CallOptions, Http, MercosResponse, Query, RequestOptions } from "./http.ts";
 import { type ListOptions, paginate } from "./paginate.ts";
-import { type CrudResource, crud, findCreatedId } from "./resources/base.ts";
+import { type CrudResource, crud, type ListWithFilters, tryPost } from "./resources/base.ts";
 
 export type KnownPath = keyof paths;
 /** `string & {}` keeps editor completion of the known paths, which a bare `string` would erase. */
@@ -41,18 +41,18 @@ type ParamsOption<P> = [ParamNames<P>] extends [never]
 /** The options argument is required only when one of its properties is. */
 type OptionsArg<T> = Record<string, never> extends T ? [options?: T] : [options: T];
 
-interface LooseRequestOptions extends CallOptions {
+interface LooseRequestOptions extends Omit<RequestOptions, "readById"> {
   params?: ParamValues;
-  query?: Query;
-  body?: unknown;
 }
 
+type TypedRequestOptions<P extends KnownPath, Op> = CallOptions &
+  ParamsOption<P> & {
+    query?: [QueryOf<Op>] extends [never] ? never : Partial<QueryOf<Op>>;
+    body?: BodyOf<Op>;
+  };
+
 export type RequestOptionsOf<P, M extends string> = P extends KnownPath
-  ? CallOptions &
-      ParamsOption<P> & {
-        query?: [QueryOf<OperationOf<P, M>>] extends [never] ? never : Partial<QueryOf<OperationOf<P, M>>>;
-        body?: BodyOf<OperationOf<P, M>>;
-      }
+  ? TypedRequestOptions<P, OperationOf<P, M>>
   : LooseRequestOptions;
 
 export type ResponseOf<P, M extends string> = MercosResponse<P extends KnownPath ? DataOf<OperationOf<P, M>> : unknown>;
@@ -64,31 +64,29 @@ export type ItemOf<P> = P extends KnownPath
   : Record<string, unknown>;
 
 /** `alterado_apos` is left out because `changedAfter` owns it. */
+type ListQuery<P extends KnownPath> = Omit<QueryOf<OperationOf<P, "get">>, "alterado_apos">;
+
 export type FiltersOf<P> = P extends KnownPath
-  ? keyof Omit<QueryOf<OperationOf<P, "get">>, "alterado_apos"> extends never
+  ? keyof ListQuery<P> extends never
     ? never
-    : Extract<Partial<Omit<QueryOf<OperationOf<P, "get">>, "alterado_apos">>, Query>
+    : Extract<Partial<ListQuery<P>>, Query>
   : Query;
 
-export type ListOptionsOf<P> = ListOptions &
-  (P extends KnownPath ? ParamsOption<P> : { params?: ParamValues }) &
-  ([FiltersOf<P>] extends [never] ? { filters?: never } : { filters?: FiltersOf<P> });
+export type ListOptionsOf<P> = ListWithFilters<FiltersOf<P>> &
+  (P extends KnownPath ? ParamsOption<P> : { params?: ParamValues });
 
 /** The by-ID sibling, whatever its parameter is called: `{id}`, `{tag_id}`, `{motivo_id}`. */
 type ByIdPath<P extends string> = Extract<KnownPath, `${P}/{${string}}`>;
 
-export type InputOf<P> = P extends KnownPath
-  ? [BodyOf<OperationOf<P, "post">>] extends [never]
-    ? unknown
-    : BodyOf<OperationOf<P, "post">>
-  : unknown;
+/** A route with no documented body still takes one: the specification may be the one that's wrong. */
+type OrUnknown<Body> = [Body] extends [never] ? unknown : Body;
+
+export type InputOf<P> = P extends KnownPath ? OrUnknown<BodyOf<OperationOf<P, "post">>> : unknown;
 
 export type UpdateOf<P> = P extends KnownPath
   ? [ByIdPath<P>] extends [never]
     ? unknown
-    : [BodyOf<OperationOf<ByIdPath<P>, "put">>] extends [never]
-      ? unknown
-      : BodyOf<OperationOf<ByIdPath<P>, "put">>
+    : OrUnknown<BodyOf<OperationOf<ByIdPath<P>, "put">>>
   : unknown;
 
 type Flat<P> = P extends `${string}{${string}` ? never : P;
@@ -131,13 +129,12 @@ function fillPath(path: string, params: ParamValues = {}): string {
 
 export function generic(http: Http): GenericAccess {
   const access = {
-    async request(rawMethod: string, path: string, options: LooseRequestOptions = {}) {
+    async request(method: string, path: string, options: LooseRequestOptions = {}) {
       const { params, ...rest } = options;
-      // The HTTP layer retries only "GET", spelled exactly so.
-      const method = rawMethod.toUpperCase();
+      const filled = fillPath(path, params);
       // The production block on reads by ID applies here too, so the error keeps its hint.
-      const readById = method === "GET" && /(\}|\/\d+)$/.test(path);
-      return await http.request<unknown>(method, fillPath(path, params), { ...rest, readById });
+      const readById = method.toUpperCase() === "GET" && /\/\d+$/.test(filled);
+      return await http.request<unknown>(method, filled, { ...rest, readById });
     },
     async *list(path: string, options: ListOptions & { params?: ParamValues; filters?: Query } = {}) {
       const { params, ...rest } = options;
@@ -146,8 +143,8 @@ export function generic(http: Http): GenericAccess {
     resource: (path: string) => ({
       ...crud<Record<string, unknown>, unknown, unknown, Query>(http, path),
       async create(body: unknown, options?: CallOptions) {
-        const response = await http.request<unknown>("POST", path, { body, ...options });
-        return { id: findCreatedId(response), data: response.data };
+        const { id, data } = await tryPost<unknown>(http, path, body, options);
+        return { id, data };
       },
     }),
   };
