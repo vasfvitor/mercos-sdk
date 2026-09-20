@@ -2,7 +2,7 @@
 
 This project follows [semantic versioning](https://semver.org/).
 
-## 0.3.1 - unreleased
+## 0.3.1 - 2026-09-20
 
 - Fixed: the `Pedido` type now has the customer fields that `pedidos.list` returns, such as
   `cliente_razao_social`. Before, it had only the fields of the read by ID.
