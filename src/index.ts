@@ -17,9 +17,16 @@ export type {
   ResponseOf,
   UpdateOf,
 } from "./generic.ts";
-export type { CallOptions, FetchLike, MercosResponse, Query, SleepLike } from "./http.ts";
+export type { CallOptions, FetchLike, MercosAttempt, MercosResponse, Query, SleepLike } from "./http.ts";
 export { collect, type ListOptions } from "./paginate.ts";
-export type { Created, CrudResource, DivisaoFilters, ListWithFilters, ReadOnlyResource } from "./resources/base.ts";
+export type {
+  Created,
+  CrudResource,
+  DivisaoFilters,
+  FindOptions,
+  ListWithFilters,
+  ReadOnlyResource,
+} from "./resources/base.ts";
 export type {
   CategoriasResource,
   ClienteFilters,

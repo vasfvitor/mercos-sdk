@@ -3,7 +3,7 @@
 import { MercosError } from "./errors.ts";
 import type { paths } from "./generated/mercos.ts";
 import type { CallOptions, Http, MercosResponse, Query, RequestOptions } from "./http.ts";
-import { type ListOptions, paginate } from "./paginate.ts";
+import { type ListOptions, paginate, paginatePages } from "./paginate.ts";
 import { type CrudResource, crud, type ListWithFilters, tryPost } from "./resources/base.ts";
 
 export type KnownPath = keyof paths;
@@ -118,6 +118,8 @@ export interface GenericAccess {
   ): Promise<ResponseOf<P, M>>;
   /** Walks any path whose GET returns a list, with the same pagination as the named resources. */
   list<P extends PathArg>(path: P, ...rest: OptionsArg<ListOptionsOf<P>>): AsyncGenerator<ItemOf<P>>;
+  /** The same walk as `list`, one array per request. */
+  listPages<P extends PathArg>(path: P, ...rest: OptionsArg<ListOptionsOf<P>>): AsyncGenerator<ItemOf<P>[]>;
   /** The methods of a named resource, for a path with no parameters. */
   resource<P extends PathArg>(path: P & Flat<P>): ResourceOf<P>;
 }
@@ -140,6 +142,10 @@ export function generic(http: Http): GenericAccess {
     async *list(path: string, options: ListOptions & { params?: ParamValues; filters?: Query } = {}) {
       const { params, ...rest } = options;
       yield* paginate<Record<string, unknown>>(http, fillPath(path, params), rest);
+    },
+    async *listPages(path: string, options: ListOptions & { params?: ParamValues; filters?: Query } = {}) {
+      const { params, ...rest } = options;
+      yield* paginatePages<Record<string, unknown>>(http, fillPath(path, params), rest);
     },
     resource: (path: string) => ({
       ...crud<Record<string, unknown>, unknown, unknown, Query>(http, path),

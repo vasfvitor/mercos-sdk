@@ -1,6 +1,13 @@
 import { MercosError } from "./errors.ts";
 import { type GenericAccess, generic } from "./generic.ts";
-import { type CallOptions, createHttp, defaultSleep, type FetchLike, type SleepLike } from "./http.ts";
+import {
+  type CallOptions,
+  createHttp,
+  defaultSleep,
+  type FetchLike,
+  type MercosAttempt,
+  type SleepLike,
+} from "./http.ts";
 import { crud, readOnly } from "./resources/base.ts";
 import type {
   CategoriasResource,
@@ -40,6 +47,13 @@ export interface MercosOptions {
   maxWaitSeconds?: number;
   /** Time limit for each attempt, in milliseconds. Defaults to 30000. Zero turns it off. */
   timeoutMs?: number;
+  /**
+   * Shortest time between the starts of two requests, in milliseconds. Defaults to 0. When the
+   * account's limit is one request per interval, this avoids a 429 on nearly every call.
+   */
+  minIntervalMs?: number;
+  /** Called after every HTTP attempt, retries included. For logs and metrics. What it throws is ignored. */
+  onAttempt?: (event: MercosAttempt) => void;
 }
 
 export interface Mercos extends GenericAccess {
@@ -93,6 +107,8 @@ export function createMercos(options: MercosOptions): Mercos {
     maxRetries: options.maxRetries ?? 5,
     maxWaitSeconds: options.maxWaitSeconds ?? 60,
     timeoutMs: options.timeoutMs ?? 30_000,
+    minIntervalMs: options.minIntervalMs ?? 0,
+    onAttempt: options.onAttempt,
   });
 
   const client: Mercos = {

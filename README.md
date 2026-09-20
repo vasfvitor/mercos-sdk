@@ -79,6 +79,35 @@ Dois limites devolvem o controle para você, com um `MercosError` de `kind` igua
 
 Use um cliente por par de tokens no processo. Dois clientes não dividem a fila.
 
+A opção `minIntervalMs` define o menor tempo entre o início de duas requisições. O padrão é 0. Em
+2026-09-20, a conta sandbox aceitava uma requisição a cada 5,5 segundos, mais ou menos. Seis
+leituras seguidas levaram cinco respostas 429 sem intervalo, e nenhuma com 5500 ms ou mais. A
+rodada espaçada também foi mais rápida, 28 segundos contra 33, e fez metade das requisições. O
+limite de uma conta de produção pode ser outro, então meça com o `onAttempt` antes de escolher
+um valor.
+
+### Observar as requisições
+
+A opção `onAttempt` é chamada depois de cada tentativa HTTP, repetições incluídas. Serve para o
+registro de requisições que a homologação do Mercos pede, ou para métricas.
+
+```ts
+const mercos = createMercos({
+  applicationToken,
+  companyToken,
+  minIntervalMs: 6000,
+  onAttempt({ method, route, status, attempt, durationMs, retryInSeconds }) {
+    console.log(method, route, status, `tentativa ${attempt}`, `${durationMs} ms`, retryInSeconds ?? "");
+  },
+});
+```
+
+O evento tem `method`, `path` como foi enviado, `route` com cada trecho numérico como `{id}`,
+`attempt` a partir de 1, `status`, `durationMs` e `retryInSeconds` quando outra tentativa vem
+depois. O `status` é `undefined` numa falha de rede ou num timeout. O evento não tem corpo, query
+nem header, então registrá-lo não vaza token nem dado de cliente. Um erro lançado pela função é
+ignorado.
+
 ### Timeout e falhas passageiras
 
 Cada tentativa tem um tempo limite, de 30 segundos por padrão. Sem isso, uma requisição que nunca
@@ -107,6 +136,9 @@ As listagens do Mercos são incrementais. O cursor é `alterado_apos`, e o heade
 
 Para sincronizar de forma incremental, guarde a maior `ultima_alteracao` que você recebeu e
 passe-a em `changedAfter` na próxima execução.
+
+`listPages` faz o mesmo percurso de `list` e entrega um array por requisição, já sem os
+repetidos. Serve para salvar o progresso a cada página.
 
 ### Erros
 
@@ -155,6 +187,15 @@ Todo método recebe um objeto de opções como último argumento. Ele tem `timeo
 
 Pedidos usam a versão 2 da API. `get` por ID só funciona no sandbox: em produção o Mercos
 bloqueia essa leitura, e o erro traz uma dica a respeito.
+
+Todo recurso também tem `listPages` e `find`. O `find` lê um registro pela listagem, então
+funciona em produção: `mercos.pedidos.find(55, { since: "2026-09-20T00:00:00" })`. Ele devolve
+`undefined` quando nenhum registro com esse ID mudou depois de `since`. As requisições são as
+mesmas nos dois ambientes, então o sandbox testa o que roda em produção.
+
+A resposta da criação de um pedido não traz o total, e o Mercos soma impostos que os itens
+enviados não mostram. `mercos.pedidos.createAndRead(pedido)` cria o pedido e o devolve como o
+Mercos gravou, achado pela listagem da última hora.
 
 `statusCustom` são os status personalizados de pedido, os valores do filtro `status_custom`.
 `estoque.adjust` define o saldo do produto como `novo_saldo`, não soma nem subtrai. Com o controle
@@ -210,6 +251,24 @@ Testado em 2026-09-19 contra `sandbox.mercos.com`, onde a documentação era amb
   nenhum como obrigatório.
 - A data de um campo extra vai como `yyyy-mm-dd`. O `yyyy-dd-mm` da documentação é erro de
   digitação: a API recusa com 422 e informa o formato `%Y-%m-%d`.
+- O Mercos soma o IPI do cadastro do produto a cada item do pedido, mesmo quando o item não
+  manda `ipi`. Medido em 2026-09-20 pelo app `estoque_fratini`:
+
+  | Item                     | Enviado                  | Subtotal no Mercos | Conta que fecha     |
+  | ------------------------ | ------------------------ | ------------------ | ------------------- |
+  | IPI 5%, tipo `P`         | 3 × 400, desconto 10%    | 1134               | 3 × 360 × 1,05      |
+  | IPI 12,50, tipo `V`      | 4 × 200, desconto 10%    | 770                | 4 × 180 + 4 × 12,50 |
+  | Sem IPI                  | 2 × 150                  | 300                | 2 × 150             |
+
+  O IPI percentual incide depois do desconto. O IPI em valor fixo é por unidade, e o desconto
+  não o reduz. O arredondamento para centavos acontece no subtotal do item. Uma tela que soma só
+  preço, quantidade e desconto mostra menos que o total real, então leia o pedido de volta.
+- O `st` do cadastro do produto não entrou no pedido: os itens voltaram com `st: 0`. O motivo é
+  desconhecido.
+- Na leitura, um valor ausente vem como `0` ou `""`, não como `null`: `tabela_preco_id: 0`,
+  `transportadora_id: 0`, `observacoes: ""`. O SDK nunca reescreve os dados da resposta, então
+  trate um `0` num campo de ID como ausência.
+- Quantidade fracionada, como 1,5, e item sem `tabela_preco_id` são aceitos.
 - Em 2026-09-20, a lista de pedidos e a leitura por ID devolveram os mesmos 47 campos. Cada
   esquema documentado deixa alguns de fora: a lista não tem `itens`, e a leitura por ID não tem os
   campos do cliente. O tipo `Pedido` junta os dois.

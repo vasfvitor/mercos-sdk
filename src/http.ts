@@ -15,6 +15,24 @@ interface HttpConfig {
   maxRetries: number;
   maxWaitSeconds: number;
   timeoutMs: number;
+  minIntervalMs: number;
+  onAttempt: ((event: MercosAttempt) => void) | undefined;
+}
+
+/** One HTTP attempt, as `onAttempt` sees it. It carries no body, query, or header, so a log of it can't leak data. */
+export interface MercosAttempt {
+  method: string;
+  /** The path as sent: "/v2/pedidos/55". */
+  path: string;
+  /** The path with each numeric segment as "{id}": "/v2/pedidos/{id}". */
+  route: string;
+  /** 1 for the first try of a call. */
+  attempt: number;
+  /** Absent for a network failure or a timeout. */
+  status: number | undefined;
+  durationMs: number;
+  /** The wait before the next attempt of the same call, when there is one. */
+  retryInSeconds: number | undefined;
 }
 
 /** Options that every client method takes as its last argument. */
@@ -117,6 +135,8 @@ export function createHttp(config: HttpConfig): Http {
   // while waiting leaves the queue at once, without spending a request. The next turn still
   // waits for the previous one to finish, and `tail` never holds on to anyone's response.
   let tail: Promise<void> = Promise.resolve();
+  // The queue runs one request at a time, so one timestamp is enough for `minIntervalMs`.
+  let lastAttemptAt = 0;
   function serialize<T>(task: () => Promise<T>, signal: AbortSignal | undefined): Promise<T> {
     const previous = tail;
     const result = abortable(previous, signal).then(task);
@@ -139,13 +159,32 @@ export function createHttp(config: HttpConfig): Http {
     // Only a read is safe to repeat. A POST that timed out may have created the order anyway.
     const transientRetries = method === "GET" ? Math.min(TRANSIENT_RETRIES, config.maxRetries) : 0;
     let transientFailures = 0;
-    const retryTransient = async () => {
-      if (transientFailures >= transientRetries) return false;
-      await config.sleep(1000 * 2 ** transientFailures++, options.signal);
-      return true;
-    };
+    /** The wait before the next try of a read, in seconds. Absent when the tries ran out. */
+    const transientWait = () => (transientFailures < transientRetries ? 2 ** transientFailures++ : undefined);
+    const route = path.replace(/\/\d+(?=\/|$)/g, "/{id}");
 
-    for (let retries = 0; ; ) {
+    for (let retries = 0, attempt = 1; ; attempt++) {
+      if (config.minIntervalMs > 0) {
+        const wait = lastAttemptAt + config.minIntervalMs - Date.now();
+        if (wait > 0) await config.sleep(wait, options.signal);
+      }
+      const startedAt = Date.now();
+      lastAttemptAt = startedAt;
+      const report = (status: number | undefined, retryInSeconds?: number) => {
+        try {
+          config.onAttempt?.({
+            method,
+            path,
+            route,
+            attempt,
+            status,
+            durationMs: Date.now() - startedAt,
+            retryInSeconds,
+          });
+        } catch {
+          // An observer must not break a request.
+        }
+      };
       // A fetch that never answers would hold the whole queue, so every attempt gets its own deadline.
       const deadline = timeoutMs > 0 ? AbortSignal.timeout(timeoutMs) : undefined;
       const signals = [options.signal, deadline].filter((signal) => signal !== undefined);
@@ -164,7 +203,12 @@ export function createHttp(config: HttpConfig): Http {
         if (!response.ok || looksLikeHtml(text)) text = redact(text);
       } catch (cause) {
         if (options.signal?.aborted) throw cause;
-        if (await retryTransient()) continue;
+        const wait = transientWait();
+        report(undefined, wait);
+        if (wait !== undefined) {
+          await config.sleep(wait * 1000, options.signal);
+          continue;
+        }
         throw deadline?.aborted
           ? new MercosError("timeout", `No response to ${method} ${path} within ${timeoutMs} ms.`, {
               method,
@@ -183,10 +227,16 @@ export function createHttp(config: HttpConfig): Http {
         retryAfterSeconds <= config.maxWaitSeconds
       ) {
         retries++;
+        report(response.status, retryAfterSeconds + RETRY_PADDING_SECONDS);
         await config.sleep((retryAfterSeconds + RETRY_PADDING_SECONDS) * 1000, options.signal);
         continue;
       }
-      if (TRANSIENT_STATUSES.has(response.status) && (await retryTransient())) continue;
+      const wait = TRANSIENT_STATUSES.has(response.status) ? transientWait() : undefined;
+      report(response.status, wait);
+      if (wait !== undefined) {
+        await config.sleep(wait * 1000, options.signal);
+        continue;
+      }
 
       if (!response.ok) {
         throw errorFromResponse({

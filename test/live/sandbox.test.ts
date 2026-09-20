@@ -65,12 +65,12 @@ test("an order goes from rejected to created to cancelled", { skip }, async (t) 
     );
   });
 
-  const created = await mercos.pedidos.create({ ...pedido, condicao_pagamento: "A vista" });
+  // The read goes through the list from an hour ago in Brazilian time, so this also checks that zone.
+  const created = await mercos.pedidos.createAndRead({ ...pedido, condicao_pagamento: "A vista" });
   try {
-    assert.equal(created.itens.length, 1);
-    const read = await mercos.pedidos.get(created.id);
-    assert.equal(read.status, StatusPedido.Gerado);
-    assert.equal(read.itens?.[0]?.produto_id, produto.id);
+    assert.equal(created.status, StatusPedido.Gerado);
+    assert.equal(created.itens?.[0]?.produto_id, produto.id);
+    assert.equal(typeof created.total, "number");
   } finally {
     await mercos.pedidos.cancel(created.id);
   }

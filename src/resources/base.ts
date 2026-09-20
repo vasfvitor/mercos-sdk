@@ -1,6 +1,6 @@
 import { MercosError } from "../errors.ts";
 import type { CallOptions, Http, MercosResponse, Query } from "../http.ts";
-import { type ListOptions, paginate } from "../paginate.ts";
+import { type ListOptions, paginate, paginatePages } from "../paginate.ts";
 
 export interface ListWithFilters<Filters extends Query> extends ListOptions {
   /** Route filters, spelled exactly as the Mercos documentation names them. */
@@ -19,8 +19,22 @@ export interface Created {
 }
 
 /** Without `Filters`, the list accepts only the common options. */
+export interface FindOptions extends CallOptions {
+  /** Where the search starts, in the format of `ultima_alteracao`. The record must have changed after it. */
+  since: string;
+}
+
+type ListArgument<Filters extends Query> = [Filters] extends [never] ? ListOptions : ListWithFilters<Filters>;
+
 export interface ReadOnlyResource<T, Filters extends Query = never> {
-  list(options?: [Filters] extends [never] ? ListOptions : ListWithFilters<Filters>): AsyncGenerator<T>;
+  list(options?: ListArgument<Filters>): AsyncGenerator<T>;
+  /** The same walk as `list`, one array per request. */
+  listPages(options?: ListArgument<Filters>): AsyncGenerator<T[]>;
+  /**
+   * One record by ID, through the list. It works in production, where Mercos blocks `get`, and it
+   * runs the same requests in both environments. It stops at the page that has the record.
+   */
+  find(id: number, options: FindOptions): Promise<T | undefined>;
   /** Read by ID. Mercos allows it only in the sandbox; in production the error carries a hint. */
   get(id: number, options?: CallOptions): Promise<T>;
 }
@@ -61,6 +75,13 @@ export function readOnly<T extends object, Filters extends Query = never>(
 ): ReadOnlyResource<T, Filters> {
   return {
     list: (options) => paginate<T>(http, path, options),
+    listPages: (options) => paginatePages<T>(http, path, options),
+    async find(id, { since, ...options }) {
+      for await (const record of paginate<T & { id?: unknown }>(http, path, { ...options, changedAfter: since })) {
+        if (record.id === id) return record;
+      }
+      return undefined;
+    },
     get: async (id, options) => (await http.request<T>("GET", `${path}/${id}`, options)).data,
   };
 }

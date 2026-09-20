@@ -2,8 +2,15 @@
 
 This project follows [semantic versioning](https://semver.org/).
 
-## 0.3.2 - unreleased
+## 0.4.0 - Unreleased
 
+- New `onAttempt` option: a function called after every HTTP attempt, with the method, the route,
+  the status, the duration, the attempt number, and the wait before the next attempt.
+- New `minIntervalMs` option: the shortest time between the starts of two requests.
+- New `listPages` on every resource and on the client: the same walk as `list`, one array per
+  request.
+- New `find` on every resource: one record by ID through the list, which works in production.
+- New `pedidos.createAndRead`: creates the order and returns it as Mercos saved it, with the total.
 - Fixed: the token mask no longer touches the data of a good response. It applies only to what
   feeds an error. Before, a field name or a value that contained the token text came back changed.
 - The client and its resources are now frozen. An assignment over a resource fails where it's

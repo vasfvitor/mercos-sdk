@@ -28,13 +28,14 @@ function recordKey(record: Paginated): string {
 /**
  * Walks an incremental Mercos list. The next cursor is an `ultima_alteracao` taken from the page
  * itself, sent back exactly as the server wrote it. The loop ends when the
- * MEUSPEDIDOS_LIMITOU_REGISTROS header stops arriving with a value of 1.
+ * MEUSPEDIDOS_LIMITOU_REGISTROS header stops arriving with a value of 1. Each page comes without
+ * the records that the page before it already brought.
  */
-export async function* paginate<T extends object>(
+export async function* paginatePages<T extends object>(
   http: Http,
   path: string,
   options: ListOptions & { filters?: Query } = {},
-): AsyncGenerator<T> {
+): AsyncGenerator<T[]> {
   let cursor = options.changedAfter ?? EPOCH;
   // Records already yielded that the next page brings back, because the cursor steps back.
   let seen = new Set<string>();
@@ -54,10 +55,8 @@ export async function* paginate<T extends object>(
     }
     const records = response.data as Paginated[];
 
-    for (const record of records) {
-      // In an async generator the yield type is Awaited<T>, which the compiler can't reduce for a generic T.
-      if (seen.size === 0 || !seen.has(recordKey(record))) yield record as Awaited<T>;
-    }
+    const repeats = seen;
+    yield (repeats.size === 0 ? records : records.filter((record) => !repeats.has(recordKey(record)))) as T[];
 
     if (response.headers.get(LIMITED_HEADER) !== "1") return;
 
@@ -98,6 +97,15 @@ export async function* paginate<T extends object>(
     );
     cursor = second.raw;
   }
+}
+
+export async function* paginate<T extends object>(
+  http: Http,
+  path: string,
+  options: ListOptions & { filters?: Query } = {},
+): AsyncGenerator<T> {
+  // In an async generator the yield type is Awaited<T>, which the compiler can't reduce for a generic T.
+  for await (const page of paginatePages<T>(http, path, options)) yield* page as Awaited<T>[];
 }
 
 export async function collect<T>(source: AsyncIterable<T>): Promise<T[]> {
