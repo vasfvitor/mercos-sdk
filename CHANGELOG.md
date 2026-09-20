@@ -2,6 +2,13 @@
 
 This project follows [semantic versioning](https://semver.org/).
 
+## 0.3.2 - unreleased
+
+- Fixed: the token mask no longer touches the data of a good response. It applies only to what
+  feeds an error. Before, a field name or a value that contained the token text came back changed.
+- The client and its resources are now frozen. An assignment over a resource fails where it's
+  written. To wrap the client, build a new object around it.
+
 ## 0.3.1 - 2026-09-20
 
 - Fixed: the `Pedido` type now has the customer fields that `pedidos.list` returns, such as

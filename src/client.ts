@@ -95,7 +95,7 @@ export function createMercos(options: MercosOptions): Mercos {
     timeoutMs: options.timeoutMs ?? 30_000,
   });
 
-  return {
+  const client: Mercos = {
     pedidos: pedidos(http),
     clientes: crud(http, PATHS.clientes),
     produtos: crud(http, PATHS.produtos),
@@ -111,4 +111,8 @@ export function createMercos(options: MercosOptions): Mercos {
     ...generic(http),
     tokenStatus: async (options) => (await http.request<unknown>("GET", PATHS.tokenStatus, options)).data,
   };
+  // A wrapper assigned over a resource, which then calls that same resource, recurses forever. Frozen,
+  // the assignment fails where it's written. To wrap the client, build a new object around it.
+  for (const resource of Object.values(client)) Object.freeze(resource);
+  return Object.freeze(client);
 }

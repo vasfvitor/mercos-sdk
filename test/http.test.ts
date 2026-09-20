@@ -166,6 +166,18 @@ test("a token echoed by the API never reaches the error", async () => {
   );
 });
 
+test("the token mask never touches the data of a good response", async () => {
+  // A one-letter token is the worst case: masked, `total` would come back as `tot***l`.
+  const { mercos } = fake([{ body: { total: 1396.24, observacoes: "a" } }], { companyToken: "a" });
+  assert.deepEqual(await mercos.tokenStatus(), { total: 1396.24, observacoes: "a" });
+});
+
+test("the client and its resources are frozen, so a wrapper can't replace a resource in place", () => {
+  const { mercos } = fake([]);
+  assert.throws(() => Object.assign(mercos, { pedidos: {} }), TypeError);
+  assert.throws(() => Object.assign(mercos.pedidos, { create: () => undefined }), TypeError);
+});
+
 test("an HTML body gets the wrong-host hint", async () => {
   const html = { status: 404, body: "<!DOCTYPE html><html></html>", headers: { "Content-Type": "text/html" } };
   const { mercos } = fake([html]);

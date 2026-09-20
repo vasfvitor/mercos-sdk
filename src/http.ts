@@ -107,7 +107,8 @@ function waitSeconds(body: unknown, headers: Headers): number {
 }
 
 export function createHttp(config: HttpConfig): Http {
-  // If the API echoes a token in a body, it must not reach error messages or logs.
+  // If the API echoes a token in a body, it must not reach error messages or logs. Only what feeds an
+  // error gets masked: the data of a good response goes out exactly as it came.
   const secrets = [config.applicationToken, config.companyToken];
   const redact = (text: string) => secrets.reduce((result, token) => result.replaceAll(token, "***"), text);
 
@@ -159,7 +160,8 @@ export function createHttp(config: HttpConfig): Http {
       let text: string;
       try {
         response = await config.fetch(url, init);
-        text = redact(await response.text());
+        text = await response.text();
+        if (!response.ok || looksLikeHtml(text)) text = redact(text);
       } catch (cause) {
         if (options.signal?.aborted) throw cause;
         if (await retryTransient()) continue;
