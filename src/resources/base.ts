@@ -29,11 +29,13 @@ export interface CrudResource<T, Input, Update, Filters extends Query = never> e
 }
 
 /** The ID of a created record comes in the MeusPedidosID header. The body is only a fallback. */
-function createdId(response: MercosResponse<unknown>, path: string): number {
+export function findCreatedId(response: MercosResponse<unknown>): number | undefined {
   const candidates = [response.headers.get("MeusPedidosID"), (response.data as { id?: unknown } | undefined)?.id];
-  const id = candidates
-    .map((value) => Number(value || Number.NaN))
-    .find((value) => Number.isInteger(value) && value > 0);
+  return candidates.map((value) => Number(value || Number.NaN)).find((value) => Number.isInteger(value) && value > 0);
+}
+
+function createdId(response: MercosResponse<unknown>, path: string): number {
+  const id = findCreatedId(response);
   if (id === undefined) {
     throw new MercosError(
       "unexpected_response",

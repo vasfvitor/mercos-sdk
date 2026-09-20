@@ -54,13 +54,39 @@ test("resource gives the four methods, and create reads the ID from the header",
   ]);
   const titulos = mercos.resource("/v1/titulos");
 
-  assert.deepEqual(await titulos.create(TITULO), { id: 77 });
+  assert.equal((await titulos.create(TITULO)).id, 77);
   await titulos.update(77, TITULO);
   await titulos.get(77);
 
   assert.deepEqual(
     calls.map((call) => `${call.method} ${call.url.pathname}`),
     ["POST /api/v1/titulos", "PUT /api/v1/titulos/77", "GET /api/v1/titulos/77"],
+  );
+});
+
+test("create on a route that answers with no ID returns the body and no ID", async () => {
+  const { mercos } = fake([{ body: [{ id: 1 }, { id: 2 }] }]);
+  const created = await mercos.resource("/v1/atendimentos").create([]);
+  assert.equal(created.id, undefined);
+  assert.deepEqual(created.data, [{ id: 1 }, { id: 2 }]);
+});
+
+test("two parameters in one path take two values", async () => {
+  const { mercos, calls } = fake([{ body: {} }]);
+  await mercos.request("GET", "/v1/usuarios_clientes/usuario/{usuario_id}/cliente/{cliente_id}", {
+    params: { usuario_id: 10, cliente_id: 99 },
+  });
+  assert.equal(calls[0]?.url.pathname, "/api/v1/usuarios_clientes/usuario/10/cliente/99");
+});
+
+test("a lowercase method on a loose path still reads like a GET: it retries a gateway error", async () => {
+  const { mercos, calls } = fake([{ status: 502, body: "" }, { body: { id: 55 } }]);
+  const path: string = "/v1/clientes/55";
+  const { data } = await mercos.request("get", path);
+  assert.deepEqual(data, { id: 55 });
+  assert.deepEqual(
+    calls.map((call) => call.method),
+    ["GET", "GET"],
   );
 });
 

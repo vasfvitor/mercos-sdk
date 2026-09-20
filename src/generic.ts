@@ -4,7 +4,7 @@ import { MercosError } from "./errors.ts";
 import type { paths } from "./generated/mercos.ts";
 import type { CallOptions, Http, MercosResponse, Query } from "./http.ts";
 import { type ListOptions, paginate } from "./paginate.ts";
-import { type CrudResource, crud } from "./resources/base.ts";
+import { type CrudResource, crud, findCreatedId } from "./resources/base.ts";
 
 export type KnownPath = keyof paths;
 /** `string & {}` keeps editor completion of the known paths, which a bare `string` would erase. */
@@ -93,7 +93,19 @@ export type UpdateOf<P> = P extends KnownPath
 
 type Flat<P> = P extends `${string}{${string}` ? never : P;
 
-export type ResourceOf<P> = CrudResource<ItemOf<P>, InputOf<P>, UpdateOf<P>, FiltersOf<P>>;
+export interface GenericCreated<Data> {
+  /** Absent on routes that create no single record, such as the batch and the link routes. */
+  id: number | undefined;
+  data: Data;
+}
+
+/** Like a named resource, except that `create` doesn't demand an ID from the response. */
+export type ResourceOf<P> = Omit<CrudResource<ItemOf<P>, InputOf<P>, UpdateOf<P>, FiltersOf<P>>, "create"> & {
+  create(
+    body: InputOf<P>,
+    options?: CallOptions,
+  ): Promise<GenericCreated<P extends KnownPath ? DataOf<OperationOf<P, "post">> : unknown>>;
+};
 
 export interface GenericAccess {
   /** Any route, through the same queue, retries, and errors as the named resources. */
@@ -119,17 +131,25 @@ function fillPath(path: string, params: ParamValues = {}): string {
 
 export function generic(http: Http): GenericAccess {
   const access = {
-    async request(method: string, path: string, options: LooseRequestOptions = {}) {
+    async request(rawMethod: string, path: string, options: LooseRequestOptions = {}) {
       const { params, ...rest } = options;
+      // The HTTP layer retries only "GET", spelled exactly so.
+      const method = rawMethod.toUpperCase();
       // The production block on reads by ID applies here too, so the error keeps its hint.
-      const readById = method === "GET" && path.endsWith("}");
+      const readById = method === "GET" && /(\}|\/\d+)$/.test(path);
       return await http.request<unknown>(method, fillPath(path, params), { ...rest, readById });
     },
     async *list(path: string, options: ListOptions & { params?: ParamValues; filters?: Query } = {}) {
       const { params, ...rest } = options;
       yield* paginate<Record<string, unknown>>(http, fillPath(path, params), rest);
     },
-    resource: (path: string) => crud<Record<string, unknown>, unknown, unknown, Query>(http, path),
+    resource: (path: string) => ({
+      ...crud<Record<string, unknown>, unknown, unknown, Query>(http, path),
+      async create(body: unknown, options?: CallOptions) {
+        const response = await http.request<unknown>("POST", path, { body, ...options });
+        return { id: findCreatedId(response), data: response.data };
+      },
+    }),
   };
   return access as unknown as GenericAccess;
 }

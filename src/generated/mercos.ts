@@ -1570,7 +1570,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/v1/usuarios_clientes/usuario/{id}/cliente/{id}": {
+    "/v1/usuarios_clientes/usuario/{usuario_id}/cliente/{cliente_id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -1578,7 +1578,7 @@ export interface paths {
             cookie?: never;
         };
         /** Obter a regra de um cliente para um usuário */
-        get: operations["get_v1_usuarios_clientes_usuario_id_cliente_id"];
+        get: operations["get_v1_usuarios_clientes_usuario_usuario_id_cliente_cliente_id"];
         put?: never;
         post?: never;
         delete?: never;
@@ -14892,13 +14892,15 @@ export interface operations {
             };
         };
     };
-    get_v1_usuarios_clientes_usuario_id_cliente_id: {
+    get_v1_usuarios_clientes_usuario_usuario_id_cliente_cliente_id: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                /** @description Primeiro o ID do usuário e depois o ID do cliente no sistema Mercos */
-                id: number;
+                /** @description ID do cliente no sistema Mercos */
+                cliente_id: number;
+                /** @description ID do usuário no sistema Mercos */
+                usuario_id: number;
             };
             cookie?: never;
         };

@@ -5,6 +5,7 @@ export type { operations, paths } from "./generated/mercos.ts";
 export type {
   FiltersOf,
   GenericAccess,
+  GenericCreated,
   InputOf,
   ItemOf,
   KnownPath,

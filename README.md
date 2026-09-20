@@ -158,7 +158,8 @@ bloqueia essa leitura, e o erro traz uma dica a respeito.
 
 `statusCustom` são os status personalizados de pedido, os valores do filtro `status_custom`.
 `estoque.adjust` define o saldo do produto como `novo_saldo`, não soma nem subtrai. Com o controle
-de estoque desligado na conta, o Mercos recusa o ajuste com 422.
+de estoque desligado na conta, o Mercos recusa o ajuste com 422. `estoque.adjustMany` aceita no
+máximo 300 ajustes, o limite do Mercos por requisição, e um ajuste com erro cancela o lote todo.
 
 `produtos.create`, `produtos.update`, `pedidos.create` e `pedidos.update` também aceitam os corpos
 de grade que o Mercos documenta nas mesmas rotas. `ProdutoInput` e `PedidoInput` são uniões do
@@ -186,7 +187,9 @@ const { data, headers } = await mercos.request("POST", "/v1/clientes_tabela_prec
 });
 ```
 
-- `resource(path)` devolve `list`, `get`, `create` e `update` para um caminho sem parâmetros.
+- `resource(path)` devolve `list`, `get`, `create` e `update` para um caminho sem parâmetros. O
+  `create` devolve `{ id, data }`, e o `id` é `undefined` nas rotas que não criam um registro
+  único, como as de lote.
 - `list(path)` percorre qualquer caminho cujo GET devolve uma lista. Aceita `changedAfter`,
   `filters` e `params`, para os trechos `{nome}` do caminho.
 - `request(method, path)` faz uma requisição e devolve `status`, `headers` e `data`.

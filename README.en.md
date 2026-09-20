@@ -163,6 +163,8 @@ Mercos blocks reads by identifier, and the error carries a hint about it.
 The `statusCustom` resource holds the custom order statuses, the values of the `status_custom`
 filter. The `estoque.adjust` method sets the product's balance to `novo_saldo`. It doesn't add or
 subtract. When the account has stock control turned off, Mercos refuses the adjustment with 422.
+The `estoque.adjustMany` method takes at most 300 adjustments, the Mercos limit for one request,
+and one bad adjustment cancels the whole batch.
 
 `produtos.create`, `produtos.update`, `pedidos.create`, and `pedidos.update` also take the grid
 bodies that Mercos documents on the same routes. `ProdutoInput` and `PedidoInput` are unions of
@@ -191,6 +193,8 @@ const { data, headers } = await mercos.request("POST", "/v1/clientes_tabela_prec
 ```
 
 - `resource(path)` returns `list`, `get`, `create`, and `update` for a path with no parameters.
+  Its `create` returns `{ id, data }`. The `id` is `undefined` on routes that create no single
+  record, such as the batch routes.
 - `list(path)` walks any path whose GET returns a list. It takes `changedAfter`, `filters`, and
   `params` for the `{name}` segments of the path.
 - `request(method, path)` sends one request and returns `status`, `headers`, and `data`.

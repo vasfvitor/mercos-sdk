@@ -7,6 +7,10 @@ This project follows [semantic versioning](https://semver.org/).
 - New `request`, `list`, and `resource` methods on the client. They reach any route, typed by the
   documented schemas, through the same queue, retries, pagination, and errors as the named
   resources.
+- `estoque.adjustMany` now refuses a batch of more than 300 adjustments before it sends anything.
+  That's the Mercos limit for one request.
+- Fixed in the types: the route that reads one user's rule for one customer named both of its
+  path parameters `id`. They're now `usuario_id` and `cliente_id`.
 
 ## 0.2.0 - 2026-09-20
 

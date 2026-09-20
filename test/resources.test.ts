@@ -130,3 +130,10 @@ test("StatusPedido compares directly with the status the API returns, which is a
   assert.equal(pedido!.status, StatusPedido.Gerado);
   assert.equal(StatusPedido.Orcamento, "1");
 });
+
+test("estoque.adjustMany refuses more than 300 adjustments before any request", async () => {
+  const { mercos, calls } = fake([]);
+  const ajustes = Array.from({ length: 301 }, (_, index) => ({ produto_id: index + 1, novo_saldo: 1 }));
+  await assert.rejects(mercos.estoque.adjustMany(ajustes), rejectsWith("config"));
+  assert.equal(calls.length, 0);
+});

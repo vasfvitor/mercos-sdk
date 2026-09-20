@@ -28008,7 +28008,7 @@
         }
       }
     },
-    "/v1/usuarios_clientes/usuario/{id}/cliente/{id}": {
+    "/v1/usuarios_clientes/usuario/{usuario_id}/cliente/{cliente_id}": {
       "get": {
         "responses": {
           "200": {
@@ -28101,14 +28101,23 @@
           }
         },
         "summary": "Obter a regra de um cliente para um usuário",
-        "operationId": "get_v1_usuarios_clientes_usuario_id_cliente_id",
+        "operationId": "get_v1_usuarios_clientes_usuario_usuario_id_cliente_cliente_id",
         "description": "",
         "tags": [],
         "parameters": [
           {
-            "name": "id",
+            "name": "usuario_id",
             "in": "path",
-            "description": "Primeiro o ID do usuário e depois o ID do cliente no sistema Mercos",
+            "description": "ID do usuário no sistema Mercos",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "cliente_id",
+            "in": "path",
+            "description": "ID do cliente no sistema Mercos",
             "required": true,
             "schema": {
               "type": "number"

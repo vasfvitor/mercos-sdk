@@ -4,7 +4,8 @@
     "alterar-um-produto-grade-v3": "/v1/produtos/{id}",
     "incluir-um-pedido-com-produtos-de-grade-2": "/v2/pedidos",
     "incluir-um-pedido-com-produtos-de-grade-1-1": "/v2/pedidos/{id}",
-    "obter-uma-rede": "/v1/redes/{id}"
+    "obter-uma-rede": "/v1/redes/{id}",
+    "obter-a-regra-de-um-cliente-para-um-usuário": "/v1/usuarios_clientes/usuario/{usuario_id}/cliente/{cliente_id}"
   },
   "variants": {
     "incluir-um-produto-grade-v3": "grade-v3",
@@ -32,6 +33,30 @@
       ],
       "value": "number",
       "reason": "The documentation declares a string, but the official example on the same page sends a number (48.6)."
+    },
+    {
+      "pointers": ["/paths/~1v1~1usuarios_clientes~1usuario~1{usuario_id}~1cliente~1{cliente_id}/get/parameters"],
+      "value": [
+        {
+          "name": "usuario_id",
+          "in": "path",
+          "description": "ID do usuário no sistema Mercos",
+          "required": true,
+          "schema": {
+            "type": "number"
+          }
+        },
+        {
+          "name": "cliente_id",
+          "in": "path",
+          "description": "ID do cliente no sistema Mercos",
+          "required": true,
+          "schema": {
+            "type": "number"
+          }
+        }
+      ],
+      "reason": "The page names both path parameters `{id}`: first the user, then the customer. Two parameters with one name can't carry two values."
     }
   ]
 }
