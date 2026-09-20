@@ -28,8 +28,6 @@ export interface CallOptions {
 export interface RequestOptions extends CallOptions {
   query?: Query;
   body?: unknown;
-  /** Read by ID: Mercos blocks it in production, so the error carries a hint about that. */
-  readById?: boolean;
 }
 
 export interface MercosResponse<T> {
@@ -176,13 +174,15 @@ export function createHttp(config: HttpConfig): Http {
 
       const data = parseBody(text);
 
-      if (response.status === 429) {
-        const seconds = waitSeconds(data, response.headers);
-        if (retries < config.maxRetries && seconds <= config.maxWaitSeconds) {
-          retries++;
-          await config.sleep((seconds + RETRY_PADDING_SECONDS) * 1000, options.signal);
-          continue;
-        }
+      const retryAfterSeconds = response.status === 429 ? waitSeconds(data, response.headers) : undefined;
+      if (
+        retryAfterSeconds !== undefined &&
+        retries < config.maxRetries &&
+        retryAfterSeconds <= config.maxWaitSeconds
+      ) {
+        retries++;
+        await config.sleep((retryAfterSeconds + RETRY_PADDING_SECONDS) * 1000, options.signal);
+        continue;
       }
       if (TRANSIENT_STATUSES.has(response.status) && (await retryTransient())) continue;
 
@@ -193,8 +193,9 @@ export function createHttp(config: HttpConfig): Http {
           path,
           text,
           body: data,
-          readByIdInProduction: config.production && options.readById === true,
-          ...(response.status === 429 ? { retryAfterSeconds: waitSeconds(data, response.headers) } : {}),
+          // Mercos blocks the read of one record in production, so the error carries a hint about that.
+          readByIdInProduction: config.production && method === "GET" && /\/\d+$/.test(path),
+          ...(retryAfterSeconds === undefined ? {} : { retryAfterSeconds }),
           limits: { maxRetries: config.maxRetries, maxWaitSeconds: config.maxWaitSeconds },
         });
       }

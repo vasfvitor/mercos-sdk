@@ -13,14 +13,14 @@ export type PathArg = KnownPath | (string & {});
 type Verb = "get" | "post" | "put" | "delete";
 type Json<T> = T extends { content: { "application/json": infer Body } } ? Body : unknown;
 
-type OperationOf<P extends KnownPath, M extends string> =
+export type OperationOf<P extends KnownPath, M extends string> =
   Lowercase<M> extends keyof paths[P] ? paths[P][Lowercase<M>] : never;
 
 export type MethodOf<P> = P extends KnownPath
   ? { [V in Verb]: [paths[P][V]] extends [undefined] ? never : Uppercase<V> }[Verb]
   : string;
 
-type DataOf<Op> = Op extends { responses: infer R }
+export type DataOf<Op> = Op extends { responses: infer R }
   ? R extends { 200: infer Ok }
     ? Json<Ok>
     : R extends { 201: infer Created }
@@ -28,7 +28,11 @@ type DataOf<Op> = Op extends { responses: infer R }
       : unknown
   : unknown;
 
-type BodyOf<Op> = Op extends { requestBody?: infer B } ? ([NonNullable<B>] extends [never] ? never : Json<B>) : never;
+export type BodyOf<Op> = Op extends { requestBody?: infer B }
+  ? [NonNullable<B>] extends [never]
+    ? never
+    : Json<B>
+  : never;
 
 type QueryOf<Op> = Op extends { parameters: { query?: infer Q } } ? NonNullable<Q> : never;
 
@@ -41,7 +45,7 @@ type ParamsOption<P> = [ParamNames<P>] extends [never]
 /** The options argument is required only when one of its properties is. */
 type OptionsArg<T> = Record<string, never> extends T ? [options?: T] : [options: T];
 
-interface LooseRequestOptions extends Omit<RequestOptions, "readById"> {
+interface LooseRequestOptions extends RequestOptions {
   params?: ParamValues;
 }
 
@@ -131,10 +135,7 @@ export function generic(http: Http): GenericAccess {
   const access = {
     async request(method: string, path: string, options: LooseRequestOptions = {}) {
       const { params, ...rest } = options;
-      const filled = fillPath(path, params);
-      // The production block on reads by ID applies here too, so the error keeps its hint.
-      const readById = method.toUpperCase() === "GET" && /\/\d+$/.test(filled);
-      return await http.request<unknown>(method, filled, { ...rest, readById });
+      return await http.request<unknown>(method, fillPath(path, params), rest);
     },
     async *list(path: string, options: ListOptions & { params?: ParamValues; filters?: Query } = {}) {
       const { params, ...rest } = options;

@@ -1,57 +1,40 @@
-// Readable names for the generated types. The data shapes come from src/generated. This file only
-// picks which operation each type comes from, because the documentation describes the same record
-// several times and not every description is complete.
-import type { operations } from "./generated/mercos.ts";
-
-type Operation = keyof operations;
-
-type Ok<O extends Operation> = operations[O] extends {
-  responses: { 200: { content: { "application/json": infer Body } } };
-}
-  ? Body
-  : never;
-
-type Input<O extends Operation> = operations[O] extends {
-  requestBody?: { content: { "application/json": infer Body } };
-}
-  ? Body
-  : never;
-
-type Listed<O extends Operation> = Ok<O> extends readonly (infer Record)[] ? Record : never;
+// Readable names for the generated types. The data shapes come from src/generated, through the
+// path-based helpers of generic.ts. This file only picks which route each type comes from.
+import type { BodyOf, DataOf, InputOf, ItemOf, OperationOf, UpdateOf } from "./generic.ts";
 
 // Neither order schema is whole: the read by ID leaves out the customer fields, and the list leaves
 // out `itens`. The sandbox sent the same 47 fields from both routes on 2026-09-20.
-type PedidoById = Ok<"get_v2_pedidos_id">;
-export type Pedido = PedidoById & Omit<Listed<"get_v2_pedidos">, keyof PedidoById>;
+type PedidoById = DataOf<OperationOf<"/v2/pedidos/{id}", "get">>;
+export type Pedido = PedidoById & Omit<ItemOf<"/v2/pedidos">, keyof PedidoById>;
 export type PedidoItem = NonNullable<Pedido["itens"]>[number];
-export type PedidoInput = Input<"post_v2_pedidos">;
+export type PedidoInput = InputOf<"/v2/pedidos">;
 export type PedidoItemInput = NonNullable<PedidoInput["itens"]>[number];
-export type PedidoUpdate = Input<"put_v2_pedidos_id">;
+export type PedidoUpdate = UpdateOf<"/v2/pedidos">;
 
-export type Cliente = Listed<"get_v1_clientes">;
-export type ClienteInput = Input<"post_v1_clientes">;
-export type ClienteUpdate = Input<"put_v1_clientes_id">;
+export type Cliente = ItemOf<"/v1/clientes">;
+export type ClienteInput = InputOf<"/v1/clientes">;
+export type ClienteUpdate = UpdateOf<"/v1/clientes">;
 
-export type Produto = Listed<"get_v1_produtos">;
-export type ProdutoInput = Input<"post_v1_produtos">;
-export type ProdutoUpdate = Input<"put_v1_produtos_id">;
+export type Produto = ItemOf<"/v1/produtos">;
+export type ProdutoInput = InputOf<"/v1/produtos">;
+export type ProdutoUpdate = UpdateOf<"/v1/produtos">;
 
-export type TabelaPreco = Listed<"get_v1_tabelas_preco">;
-export type ProdutoTabelaPreco = Listed<"get_v1_produtos_tabela_preco">;
-export type CondicaoPagamento = Listed<"get_v1_condicoes_pagamento">;
-export type Transportadora = Listed<"get_v1_transportadoras">;
-export type Usuario = Listed<"get_v1_usuarios">;
+export type TabelaPreco = ItemOf<"/v1/tabelas_preco">;
+export type ProdutoTabelaPreco = ItemOf<"/v1/produtos_tabela_preco">;
+export type CondicaoPagamento = ItemOf<"/v1/condicoes_pagamento">;
+export type Transportadora = ItemOf<"/v1/transportadoras">;
+export type Usuario = ItemOf<"/v1/usuarios">;
 
-export type Categoria = Listed<"get_v1_categorias">;
-export type CategoriaInput = Input<"post_v1_categorias">;
-export type CategoriaUpdate = Input<"put_v1_categorias_id">;
+export type Categoria = ItemOf<"/v1/categorias">;
+export type CategoriaInput = InputOf<"/v1/categorias">;
+export type CategoriaUpdate = UpdateOf<"/v1/categorias">;
 
-export type FormaPagamento = Listed<"get_v1_formas_pagamento">;
-export type FormaPagamentoInput = Input<"post_v1_formas_pagamento">;
-export type FormaPagamentoUpdate = Input<"put_v1_formas_pagamento_id">;
+export type FormaPagamento = ItemOf<"/v1/formas_pagamento">;
+export type FormaPagamentoInput = InputOf<"/v1/formas_pagamento">;
+export type FormaPagamentoUpdate = UpdateOf<"/v1/formas_pagamento">;
 
-export type StatusCustom = Listed<"get_v1_pedidos_status">;
-export type StatusCustomInput = Input<"post_v1_pedidos_status">;
-export type StatusCustomUpdate = Input<"put_v1_pedidos_status_id">;
+export type StatusCustom = ItemOf<"/v1/pedidos/status">;
+export type StatusCustomInput = InputOf<"/v1/pedidos/status">;
+export type StatusCustomUpdate = UpdateOf<"/v1/pedidos/status">;
 
-export type AjusteEstoque = Input<"put_v1_ajustar_estoque">;
+export type AjusteEstoque = BodyOf<OperationOf<"/v1/ajustar_estoque", "put">>;

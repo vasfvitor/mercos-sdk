@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { createMercos } from "../src/index.ts";
-import { fake, rejectsWith, THROTTLED, TOKENS } from "./helpers.ts";
+import { fake, rejectsWith, THROTTLED, TOKENS, trackConcurrency } from "./helpers.ts";
 
 test("sends both tokens and defaults to the sandbox host", async () => {
   const { mercos, calls } = fake([{ body: { ok: true } }]);
@@ -56,19 +56,11 @@ test("429 with an unreadable body uses the fallback wait", async () => {
 });
 
 test("concurrent calls are serialized, never two in flight", async () => {
-  let inFlight = 0;
-  let peak = 0;
-  const slow = async () => {
-    inFlight++;
-    peak = Math.max(peak, inFlight);
-    await new Promise((resolve) => setImmediate(resolve));
-    inFlight--;
-    return { body: {} };
-  };
+  const { slow, peak } = trackConcurrency();
   const { mercos, calls } = fake([slow, slow, slow, slow]);
   await Promise.all([mercos.tokenStatus(), mercos.tokenStatus(), mercos.tokenStatus(), mercos.tokenStatus()]);
   assert.equal(calls.length, 4);
-  assert.equal(peak, 1);
+  assert.equal(peak(), 1);
 });
 
 test("a failure doesn't block the queue for the next call", async () => {
@@ -333,15 +325,7 @@ test("abort rejects at once, even with the queue paused on another call's 429", 
 });
 
 test("aborting a queued call doesn't let the next one jump ahead of the one in flight", async () => {
-  let inFlight = 0;
-  let peak = 0;
-  const slow = async () => {
-    inFlight++;
-    peak = Math.max(peak, inFlight);
-    await new Promise((resolve) => setImmediate(resolve));
-    inFlight--;
-    return { body: {} };
-  };
+  const { slow, peak } = trackConcurrency();
   const { mercos, calls } = fake([slow, slow]);
   const controller = new AbortController();
 
@@ -353,7 +337,7 @@ test("aborting a queued call doesn't let the next one jump ahead of the one in f
   await assert.rejects(second, /gave up/);
   await Promise.all([first, third]);
   assert.equal(calls.length, 2);
-  assert.equal(peak, 1);
+  assert.equal(peak(), 1);
 });
 
 test("a missing token fails when the client is created, before any request", () => {

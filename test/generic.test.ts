@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { collect, type ItemOf, type UpdateOf } from "../src/index.ts";
-import { fake, LIMITED, rejectsWith } from "./helpers.ts";
+import { fake, LIMITED, rejectsWith, trackConcurrency } from "./helpers.ts";
 
 const TITULO = { cliente_id: 7, data_vencimento: "2026-01-31", numero_documento: "A-1", valor: 10.5 };
 
@@ -91,22 +91,14 @@ test("a lowercase method on a loose path still reads like a GET: it retries a ga
 });
 
 test("generic and named calls share one queue", async () => {
-  let inFlight = 0;
-  let peak = 0;
-  const slow = async () => {
-    inFlight++;
-    peak = Math.max(peak, inFlight);
-    await new Promise((resolve) => setImmediate(resolve));
-    inFlight--;
-    return { body: [] };
-  };
+  const { slow, peak } = trackConcurrency({ body: [] });
   const { mercos } = fake([slow, slow, slow]);
   await Promise.all([
     mercos.request("GET", "/v1/segmentos"),
     collect(mercos.clientes.list()),
     collect(mercos.list("/v1/redes")),
   ]);
-  assert.equal(peak, 1);
+  assert.equal(peak(), 1);
 });
 
 test("a path typed as a plain string skips the schema", async () => {

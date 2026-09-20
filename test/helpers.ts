@@ -61,6 +61,20 @@ export function fake(replies: Handler[], options: Partial<MercosOptions> = {}): 
   return { mercos, calls, sleeps };
 }
 
+/** A reply that takes one turn of the event loop, and the most replies that were ever pending at once. */
+export function trackConcurrency(reply: Reply = { body: {} }) {
+  let inFlight = 0;
+  let peak = 0;
+  const slow = async () => {
+    inFlight++;
+    peak = Math.max(peak, inFlight);
+    await new Promise((resolve) => setImmediate(resolve));
+    inFlight--;
+    return reply;
+  };
+  return { slow, peak: () => peak };
+}
+
 export function rejectsWith(kind: string, check?: (error: MercosError) => void) {
   return (error: unknown) => {
     assert.ok(error instanceof MercosError, `expected a MercosError, got ${String(error)}`);

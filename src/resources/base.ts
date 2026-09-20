@@ -61,7 +61,7 @@ export function readOnly<T extends object, Filters extends Query = never>(
 ): ReadOnlyResource<T, Filters> {
   return {
     list: (options) => paginate<T>(http, path, options),
-    get: async (id, options) => (await http.request<T>("GET", `${path}/${id}`, { ...options, readById: true })).data,
+    get: async (id, options) => (await http.request<T>("GET", `${path}/${id}`, options)).data,
   };
 }
 
