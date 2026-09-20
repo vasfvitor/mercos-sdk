@@ -2,7 +2,7 @@
 
 This project follows [semantic versioning](https://semver.org/).
 
-## 0.4.0 - Unreleased
+## 0.4.0 - 2026-09-20
 
 - New `onAttempt` option: a function called after every HTTP attempt, with the method, the route,
   the status, the duration, the attempt number, and the wait before the next attempt.
