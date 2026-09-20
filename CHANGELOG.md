@@ -2,7 +2,7 @@
 
 This project follows [semantic versioning](https://semver.org/).
 
-## 0.3.0 - unreleased
+## 0.3.0 - 2026-09-20
 
 - New `request`, `list`, and `resource` methods on the client. They reach any route, typed by the
   documented schemas, through the same queue, retries, pagination, and errors as the named
