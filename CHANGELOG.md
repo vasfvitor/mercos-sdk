@@ -2,7 +2,7 @@
 
 This project follows [semantic versioning](https://semver.org/).
 
-## 0.2.0 - unreleased
+## 0.2.0 - 2026-09-20
 
 - New resources: `categorias`, `formasPagamento`, and `statusCustom`, each with `list`, `get`,
   `create`, and `update`.
