@@ -164,8 +164,37 @@ de estoque desligado na conta, o Mercos recusa o ajuste com 422.
 de grade que o Mercos documenta nas mesmas rotas. `ProdutoInput` e `PedidoInput` são uniões do
 corpo simples com os de grade.
 
-Os tipos `paths` e `operations` cobrem as 169 operações documentadas, inclusive rotas que ainda
-não têm método no cliente.
+Os tipos `paths` e `operations` cobrem as 169 operações documentadas.
+
+## Outras rotas
+
+Três métodos genéricos alcançam as rotas que não têm recurso com nome. Eles passam pela mesma
+fila, pelas mesmas repetições, pela mesma paginação e pelos mesmos erros dos recursos com nome.
+
+```ts
+const titulos = mercos.resource("/v1/titulos");
+const titulo = { cliente_id: 7, data_vencimento: "2026-01-31", numero_documento: "A-1", valor: 10.5 };
+const { id } = await titulos.create(titulo);
+await titulos.update(id, { ...titulo, valor: 12 });
+
+for await (const etapa of mercos.list("/v1/funil/{funil_id}/etapas", { params: { funil_id: 3 } })) {
+  console.log(etapa.titulo);
+}
+
+const { data, headers } = await mercos.request("POST", "/v1/clientes_tabela_preco/liberar_todas", {
+  body: { cliente_id: 7 },
+});
+```
+
+- `resource(path)` devolve `list`, `get`, `create` e `update` para um caminho sem parâmetros.
+- `list(path)` percorre qualquer caminho cujo GET devolve uma lista. Aceita `changedAfter`,
+  `filters` e `params`, para os trechos `{nome}` do caminho.
+- `request(method, path)` faz uma requisição e devolve `status`, `headers` e `data`.
+
+Um caminho documentado aparece no autocompletar, e o esquema dele tipa os parâmetros, o corpo e
+o resultado. Os esquemas são uma reconstrução da documentação e podem estar errados. Para
+ignorá-los, passe o caminho como `string`: `mercos.request("PUT", path as string, { body })`. O
+mesmo vale para uma rota que o Mercos criar depois.
 
 ## Verificado no sandbox
 

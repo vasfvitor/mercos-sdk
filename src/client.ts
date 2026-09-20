@@ -1,4 +1,5 @@
 import { MercosError } from "./errors.ts";
+import { type GenericAccess, generic } from "./generic.ts";
 import { type CallOptions, createHttp, defaultSleep, type FetchLike, type SleepLike } from "./http.ts";
 import { crud, readOnly } from "./resources/base.ts";
 import type {
@@ -41,7 +42,7 @@ export interface MercosOptions {
   timeoutMs?: number;
 }
 
-export interface Mercos {
+export interface Mercos extends GenericAccess {
   pedidos: PedidosResource;
   clientes: ClientesResource;
   produtos: ProdutosResource;
@@ -107,6 +108,7 @@ export function createMercos(options: MercosOptions): Mercos {
     formasPagamento: crud(http, PATHS.formasPagamento),
     statusCustom: crud(http, PATHS.statusCustom),
     estoque: estoque(http),
+    ...generic(http),
     tokenStatus: async (options) => (await http.request<unknown>("GET", PATHS.tokenStatus, options)).data,
   };
 }

@@ -86,6 +86,13 @@ test("the new catalog lists answer with arrays of records", { skip }, async () =
   }
 });
 
+test("a route with no named resource answers through the generic list", { skip }, async () => {
+  for await (const segmento of mercos.list("/v1/segmentos")) {
+    assert.equal(typeof segmento.id, "number");
+    break;
+  }
+});
+
 test("a stock adjustment sets the balance, and the old balance goes back", { skip }, async (t) => {
   const produto = await firstLive<Produto>(mercos.produtos.list(), "products");
   const before = produto.saldo_estoque ?? 0;

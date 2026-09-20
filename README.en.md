@@ -168,8 +168,37 @@ subtract. When the account has stock control turned off, Mercos refuses the adju
 bodies that Mercos documents on the same routes. `ProdutoInput` and `PedidoInput` are unions of
 the plain body and the grid ones.
 
-The `paths` and `operations` types cover the 169 documented operations, including routes
-that don't have a client method yet.
+The `paths` and `operations` types cover the 169 documented operations.
+
+## Other routes
+
+Three generic methods reach the routes that have no named resource. They go through the same
+queue, retries, pagination, and errors as the named resources.
+
+```ts
+const titulos = mercos.resource("/v1/titulos");
+const titulo = { cliente_id: 7, data_vencimento: "2026-01-31", numero_documento: "A-1", valor: 10.5 };
+const { id } = await titulos.create(titulo);
+await titulos.update(id, { ...titulo, valor: 12 });
+
+for await (const etapa of mercos.list("/v1/funil/{funil_id}/etapas", { params: { funil_id: 3 } })) {
+  console.log(etapa.titulo);
+}
+
+const { data, headers } = await mercos.request("POST", "/v1/clientes_tabela_preco/liberar_todas", {
+  body: { cliente_id: 7 },
+});
+```
+
+- `resource(path)` returns `list`, `get`, `create`, and `update` for a path with no parameters.
+- `list(path)` walks any path whose GET returns a list. It takes `changedAfter`, `filters`, and
+  `params` for the `{name}` segments of the path.
+- `request(method, path)` sends one request and returns `status`, `headers`, and `data`.
+
+A documented path completes in the editor, and its schema types the parameters, the body, and
+the result. The schemas are a reconstruction of the documentation and can be wrong. To skip
+them, type the path as a `string`: `mercos.request("PUT", path as string, { body })`. The same
+goes for a route that Mercos adds later.
 
 ## Verified in the sandbox
 

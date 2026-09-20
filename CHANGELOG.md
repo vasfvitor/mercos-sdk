@@ -2,6 +2,12 @@
 
 This project follows [semantic versioning](https://semver.org/).
 
+## 0.3.0 - unreleased
+
+- New `request`, `list`, and `resource` methods on the client. They reach any route, typed by the
+  documented schemas, through the same queue, retries, pagination, and errors as the named
+  resources.
+
 ## 0.2.0 - 2026-09-20
 
 - New resources: `categorias`, `formasPagamento`, and `statusCustom`, each with `list`, `get`,
