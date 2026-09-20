@@ -30,7 +30,12 @@ export type ClienteFilters = {
 
 export type ClientesResource = CrudResource<Cliente, ClienteInput, ClienteUpdate, ClienteFilters>;
 /** `create` and `update` take a plain product or a grid one: both bodies share the route. */
-export type ProdutosResource = CrudResource<Produto, ProdutoInput, ProdutoUpdate, DivisaoFilters>;
+export type ProdutoFilters = DivisaoFilters & {
+  /** Whether the list includes deleted products. */
+  excluido?: boolean;
+};
+
+export type ProdutosResource = CrudResource<Produto, ProdutoInput, ProdutoUpdate, ProdutoFilters>;
 export type TabelasPrecoResource = ReadOnlyResource<TabelaPreco, DivisaoFilters>;
 export type ProdutosTabelaPrecoResource = ReadOnlyResource<ProdutoTabelaPreco, DivisaoFilters>;
 export type CondicoesPagamentoResource = ReadOnlyResource<CondicaoPagamento, DivisaoFilters>;

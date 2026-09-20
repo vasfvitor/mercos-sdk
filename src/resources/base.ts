@@ -10,6 +10,8 @@ export interface ListWithFilters<Filters extends Query> extends ListOptions {
 export type DivisaoFilters = {
   /** Only for manufacturer accounts with divisions. Without it, records from every division come back. */
   divisao_id?: number;
+  /** The same filter for accounts with no divisions. Mercos answers 412 when an account sends the wrong one. */
+  representada_id?: number;
 };
 
 export interface Created {

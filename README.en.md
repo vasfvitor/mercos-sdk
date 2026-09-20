@@ -215,6 +215,9 @@ Tested on 2026-09-19 against `sandbox.mercos.com`, where the documentation was a
   neither as required.
 - The date of an extra field goes as `yyyy-mm-dd`. The `yyyy-dd-mm` in the documentation is a
   typo: the API rejects it with 422 and names the format `%Y-%m-%d`.
+- On 2026-09-20, the order list and the read by ID returned the same 47 fields. Each documented
+  schema leaves some out: the list has no `itens`, and the read by ID has no customer fields. The
+  `Pedido` type joins the two.
 
 ## Development
 

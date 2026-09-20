@@ -19,8 +19,10 @@ type Input<O extends Operation> = operations[O] extends {
 
 type Listed<O extends Operation> = Ok<O> extends readonly (infer Record)[] ? Record : never;
 
-// The order list schema has no `itens`; the read-by-ID schema describes the whole record.
-export type Pedido = Ok<"get_v2_pedidos_id">;
+// Neither order schema is whole: the read by ID leaves out the customer fields, and the list leaves
+// out `itens`. The sandbox sent the same 47 fields from both routes on 2026-09-20.
+type PedidoById = Ok<"get_v2_pedidos_id">;
+export type Pedido = PedidoById & Omit<Listed<"get_v2_pedidos">, keyof PedidoById>;
 export type PedidoItem = NonNullable<Pedido["itens"]>[number];
 export type PedidoInput = Input<"post_v2_pedidos">;
 export type PedidoItemInput = NonNullable<PedidoInput["itens"]>[number];

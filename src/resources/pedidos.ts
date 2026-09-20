@@ -10,6 +10,8 @@ export type PedidoFilters = {
   /** Accepts several values. Use 0 for orders with no custom status. */
   status_custom?: readonly (string | number)[];
   divisao_id?: number;
+  /** For accounts with no divisions, in place of `divisao_id`. */
+  representada_id?: number;
   registros_por_pagina?: number;
 };
 

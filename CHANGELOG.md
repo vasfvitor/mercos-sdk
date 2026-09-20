@@ -2,6 +2,15 @@
 
 This project follows [semantic versioning](https://semver.org/).
 
+## 0.3.1 - unreleased
+
+- Fixed: the `Pedido` type now has the customer fields that `pedidos.list` returns, such as
+  `cliente_razao_social`. Before, it had only the fields of the read by ID.
+- New filters: `representada_id` wherever `divisao_id` exists, for accounts with no divisions, and
+  `excluido` on `produtos.list`.
+- Fixed in the types of the generic methods: `/v2/pedidos` now takes `registros_por_pagina`, a list
+  in `status_custom`, and a text or a number in `status` and `status_faturamento`.
+
 ## 0.3.0 - 2026-09-20
 
 - New `request`, `list`, and `resource` methods on the client. They reach any route, typed by the

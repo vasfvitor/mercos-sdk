@@ -210,6 +210,9 @@ Testado em 2026-09-19 contra `sandbox.mercos.com`, onde a documentação era amb
   nenhum como obrigatório.
 - A data de um campo extra vai como `yyyy-mm-dd`. O `yyyy-dd-mm` da documentação é erro de
   digitação: a API recusa com 422 e informa o formato `%Y-%m-%d`.
+- Em 2026-09-20, a lista de pedidos e a leitura por ID devolveram os mesmos 47 campos. Cada
+  esquema documentado deixa alguns de fora: a lista não tem `itens`, e a leitura por ID não tem os
+  campos do cliente. O tipo `Pedido` junta os dois.
 
 ## Desenvolvimento
 

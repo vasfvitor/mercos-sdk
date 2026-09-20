@@ -2903,6 +2903,8 @@ export interface operations {
                 alterado_apos: string;
                 /** @description Filtra os registros de uma divisão. Disponível apenas nas contas de indústria com divisões. Sem este filtro, a consulta retorna os registros de todas as divisões. O valor precisa ser o `id` de uma divisão da sua conta. */
                 divisao_id?: number;
+                /** @description Para contas sem divisões, no lugar de `divisao_id`. */
+                representada_id?: number;
             };
             header?: never;
             path?: never;
@@ -5167,6 +5169,8 @@ export interface operations {
                 alterado_apos: string;
                 /** @description Filtra os registros de uma divisão. Disponível apenas nas contas de indústria com divisões. Sem este filtro, a consulta retorna os registros de todas as divisões. O valor precisa ser o `id` de uma divisão da sua conta. */
                 divisao_id?: number;
+                /** @description Para contas sem divisões, no lugar de `divisao_id`. */
+                representada_id?: number;
             };
             header?: never;
             path?: never;
@@ -5513,6 +5517,8 @@ export interface operations {
                 alterado_apos: string;
                 /** @description Filtra os registros de uma divisão. Disponível apenas nas contas de indústria com divisões. Sem este filtro, a consulta retorna os registros de todas as divisões. O valor precisa ser o `id` de uma divisão da sua conta. */
                 divisao_id?: number;
+                /** @description Para contas sem divisões, no lugar de `divisao_id`. */
+                representada_id?: number;
             };
             header?: never;
             path?: never;
@@ -6036,6 +6042,8 @@ export interface operations {
                 cliente_id?: number;
                 /** @description Filtra os vínculos de uma divisão. A divisão precisa pertencer à sua conta. */
                 divisao_id?: number;
+                /** @description Para contas sem divisões, no lugar de `divisao_id`. */
+                representada_id?: number;
                 /** @description Retorna apenas os registros com `id` maior que o informado. Usado para paginar consultas grandes. */
                 ultimo_id?: number;
             };
@@ -8717,6 +8725,8 @@ export interface operations {
                 alterado_apos: string;
                 /** @description Filtra os registros de uma divisão. Disponível apenas nas contas de indústria com divisões. Sem este filtro, a consulta retorna os registros de todas as divisões. O valor precisa ser o `id` de uma divisão da sua conta. */
                 divisao_id?: number;
+                /** @description Para contas sem divisões, no lugar de `divisao_id`. */
+                representada_id?: number;
             };
             header?: never;
             path?: never;
@@ -10111,6 +10121,8 @@ export interface operations {
                 alterado_apos: string;
                 /** @description Filtra os registros de uma divisão. Disponível apenas nas contas de indústria com divisões. Sem este filtro, a consulta retorna os registros de todas as divisões. O valor precisa ser o `id` de uma divisão da sua conta. */
                 divisao_id?: number;
+                /** @description Para contas sem divisões, no lugar de `divisao_id`. */
+                representada_id?: number;
             };
             header?: never;
             path?: never;
@@ -10321,6 +10333,10 @@ export interface operations {
                 alterado_apos: string;
                 /** @description Filtra os registros de uma divisão. Disponível apenas nas contas de indústria com divisões. Sem este filtro, a consulta retorna os registros de todas as divisões. O valor precisa ser o `id` de uma divisão da sua conta. */
                 divisao_id?: number;
+                /** @description Filtra pelos produtos excluídos ou não. */
+                excluido?: boolean;
+                /** @description Para contas sem divisões, no lugar de `divisao_id`. */
+                representada_id?: number;
             };
             header?: never;
             path?: never;
@@ -10876,6 +10892,8 @@ export interface operations {
                 alterado_apos: string;
                 /** @description Filtra os registros de uma divisão. Disponível apenas nas contas de indústria com divisões. Sem este filtro, a consulta retorna os registros de todas as divisões. O valor precisa ser o `id` de uma divisão da sua conta. */
                 divisao_id?: number;
+                /** @description Para contas sem divisões, no lugar de `divisao_id`. */
+                representada_id?: number;
             };
             header?: never;
             path?: never;
@@ -11767,6 +11785,8 @@ export interface operations {
                 alterado_apos: string;
                 /** @description Filtra os registros de uma divisão. Disponível apenas nas contas de indústria com divisões. Sem este filtro, a consulta retorna os registros de todas as divisões. O valor precisa ser o `id` de uma divisão da sua conta. */
                 divisao_id?: number;
+                /** @description Para contas sem divisões, no lugar de `divisao_id`. */
+                representada_id?: number;
             };
             header?: never;
             path?: never;
@@ -12480,6 +12500,8 @@ export interface operations {
                 alterado_apos: string;
                 /** @description Filtra as contas correntes de uma divisão. Nas contas de indústria com divisões este filtro é **obrigatório**: sem ele a consulta responde `422`. O valor precisa ser o `id` de uma divisão da sua conta. */
                 divisao_id?: number;
+                /** @description Para contas sem divisões, no lugar de `divisao_id`. */
+                representada_id?: number;
             };
             header?: never;
             path?: never;
@@ -12903,6 +12925,8 @@ export interface operations {
                 alterado_apos: string;
                 /** @description Filtra os registros de uma divisão. Disponível apenas nas contas de indústria com divisões. Sem este filtro, a consulta retorna os registros de todas as divisões. O valor precisa ser o `id` de uma divisão da sua conta. */
                 divisao_id?: number;
+                /** @description Para contas sem divisões, no lugar de `divisao_id`. */
+                representada_id?: number;
             };
             header?: never;
             path?: never;
@@ -15053,6 +15077,8 @@ export interface operations {
                 alterado_apos: string;
                 /** @description Filtra os registros de uma divisão. Disponível apenas nas contas de indústria com divisões. Sem este filtro, a consulta retorna os registros de todas as divisões. O valor precisa ser o `id` de uma divisão da sua conta. */
                 divisao_id?: number;
+                /** @description Para contas sem divisões, no lugar de `divisao_id`. */
+                representada_id?: number;
             };
             header?: never;
             path?: never;
@@ -16007,26 +16033,30 @@ export interface operations {
                 alterado_apos: string;
                 /** @description Filtra os registros de uma divisão. Disponível apenas nas contas de indústria com divisões. Sem este filtro, a consulta retorna os registros de todas as divisões. O valor precisa ser o `id` de uma divisão da sua conta. */
                 divisao_id?: number;
+                /** @description Quantidade de registros por página. Sugestão: no máximo 20. */
+                registros_por_pagina?: number;
+                /** @description Para contas sem divisões, no lugar de `divisao_id`. */
+                representada_id?: number;
                 /**
                  * @description Status do pedido:
                  *     1 = Orçamento
                  *     2 = Pedido gerados
                  *     0 = Cancelado
                  */
-                status?: number;
+                status?: number | string;
                 /**
                  * @description Permite filtrar por status de pedido customizados.
                  *     Para consultar pedidos sem status customizado, utilize o valor 0.
                  *     É possível enviar múltiplos valores: ?status=2&status_custom=0&status_custom=4&status_custom=10
                  */
-                status_custom?: string;
+                status_custom?: (number | string)[];
                 /**
                  * @description Status_faturamento:
                  *     0 = Não faturado
                  *     1 = Parcialmente faturado
                  *     2 = Faturado
                  */
-                status_faturamento?: number;
+                status_faturamento?: number | string;
             };
             header?: never;
             path?: never;

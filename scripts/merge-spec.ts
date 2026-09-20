@@ -177,6 +177,21 @@ for (const page of readIndex()) {
 // The pointers in patches.json name the variant keys, so the fixes go in before the variants fold.
 for (const patch of patches.set) for (const pointer of patch.pointers) setPointer({ paths }, pointer, patch.value);
 
+// The divisions page says that accounts with no divisions send `representada_id` wherever the others
+// send `divisao_id`. The route pages document only the second one. This runs after the patches,
+// because some of them append to a parameter list by index.
+for (const item of Object.values(paths)) {
+  const parameters = (item.get as Json | undefined)?.parameters as Json[] | undefined;
+  const divisao = parameters?.find((parameter) => parameter.name === "divisao_id" && parameter.in === "query");
+  if (parameters && divisao && !parameters.some((parameter) => parameter.name === "representada_id")) {
+    parameters.push({
+      ...divisao,
+      name: "representada_id",
+      description: "Para contas sem divisões, no lugar de `divisao_id`.",
+    });
+  }
+}
+
 for (const key of Object.keys(paths).filter((path) => path.includes("#"))) {
   const [path, name] = key.split("#") as [string, string];
   for (const [method, variant] of Object.entries(paths[key]!))

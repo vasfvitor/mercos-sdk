@@ -26,6 +26,7 @@ export type {
   ClientesResource,
   CondicoesPagamentoResource,
   FormasPagamentoResource,
+  ProdutoFilters,
   ProdutosResource,
   ProdutosTabelaPrecoResource,
   StatusCustomResource,

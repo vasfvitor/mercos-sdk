@@ -57,6 +57,61 @@
         }
       ],
       "reason": "The page names both path parameters `{id}`: first the user, then the customer. Two parameters with one name can't carry two values."
+    },
+    {
+      "pointers": ["/paths/~1v2~1pedidos/get/parameters/1/schema", "/paths/~1v2~1pedidos/get/parameters/2/schema"],
+      "value": {
+        "oneOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "string"
+          }
+        ]
+      },
+      "reason": "The `status` and `status_faturamento` filters go in the query string, where the text 2 and the number 2 are the same. The pages declare only a number."
+    },
+    {
+      "pointers": ["/paths/~1v2~1pedidos/get/parameters/3/schema"],
+      "value": {
+        "type": "array",
+        "items": {
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "reason": "The prose of the orders page says `status_custom` takes several values: `?status_custom=0&status_custom=4`. The schema declares one string."
+    },
+    {
+      "pointers": ["/paths/~1v2~1pedidos/get/parameters/5"],
+      "value": {
+        "name": "registros_por_pagina",
+        "in": "query",
+        "description": "Quantidade de registros por página. Sugestão: no máximo 20.",
+        "schema": {
+          "type": "integer"
+        }
+      },
+      "reason": "The prose of the orders page documents `registros_por_pagina`, and the schema leaves it out. Index 5 is the end of the list that the page declares."
+    },
+    {
+      "pointers": ["/paths/~1v1~1produtos/get/parameters/2"],
+      "value": {
+        "name": "excluido",
+        "in": "query",
+        "description": "Filtra pelos produtos excluídos ou não.",
+        "schema": {
+          "type": "boolean"
+        }
+      },
+      "reason": "The prose of the products page documents the `excluido` filter, and the schema leaves it out. The sandbox accepted it on 2026-09-20. Index 2 is the end of the list that the page declares."
     }
   ]
 }

@@ -129,6 +129,16 @@ export async function typeChecks() {
   const { data } = await mercos.request("GET", "/v1/titulos/{id}", { params: { id: 1 } });
   const documento: string | undefined = data.numero_documento;
 
+  // The spec patches: the prose of the pages documents these filters, and the schemas left them out.
+  mercos.list("/v2/pedidos", { filters: { status_custom: [0, 4], registros_por_pagina: 15, status: "2" } });
+  mercos.list("/v1/produtos", { filters: { excluido: false, representada_id: 1 } });
+  mercos.produtos.list({ filters: { excluido: false, representada_id: 1 } });
+  for await (const pedido of mercos.pedidos.list({ filters: { representada_id: 1 } })) {
+    // The list schema has the customer fields, and the read-by-ID schema has the items.
+    const merged: [string | undefined, number] = [pedido.cliente_razao_social, pedido.itens?.length ?? 0];
+    return merged;
+  }
+
   // @ts-expect-error: the update type resolved to the schema, not to `unknown`.
   const notATag: UpdateOf<"/v1/tags_de_clientes"> = 5;
   // @ts-expect-error: the path has a parameter, so `params` is required.

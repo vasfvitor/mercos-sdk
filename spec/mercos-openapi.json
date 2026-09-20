@@ -2501,6 +2501,15 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "name": "representada_id",
+            "in": "query",
+            "description": "Para contas sem divisões, no lugar de `divisao_id`.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "x-readme": {},
@@ -7594,6 +7603,15 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "name": "representada_id",
+            "in": "query",
+            "description": "Para contas sem divisões, no lugar de `divisao_id`.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "externalDocs": {
@@ -8340,6 +8358,15 @@
             "name": "divisao_id",
             "in": "query",
             "description": "Filtra os registros de uma divisão. Disponível apenas nas contas de indústria com divisões. Sem este filtro, a consulta retorna os registros de todas as divisões. O valor precisa ser o `id` de uma divisão da sua conta.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "representada_id",
+            "in": "query",
+            "description": "Para contas sem divisões, no lugar de `divisao_id`.",
             "required": false,
             "schema": {
               "type": "integer"
@@ -9180,6 +9207,15 @@
             "name": "ultimo_id",
             "in": "query",
             "description": "Retorna apenas os registros com `id` maior que o informado. Usado para paginar consultas grandes.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "representada_id",
+            "in": "query",
+            "description": "Para contas sem divisões, no lugar de `divisao_id`.",
             "required": false,
             "schema": {
               "type": "integer"
@@ -15688,6 +15724,15 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "name": "representada_id",
+            "in": "query",
+            "description": "Para contas sem divisões, no lugar de `divisao_id`.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "externalDocs": {
@@ -18390,6 +18435,15 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "name": "representada_id",
+            "in": "query",
+            "description": "Para contas sem divisões, no lugar de `divisao_id`.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "externalDocs": {
@@ -19117,6 +19171,23 @@
             "name": "divisao_id",
             "in": "query",
             "description": "Filtra os registros de uma divisão. Disponível apenas nas contas de indústria com divisões. Sem este filtro, a consulta retorna os registros de todas as divisões. O valor precisa ser o `id` de uma divisão da sua conta.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "excluido",
+            "in": "query",
+            "description": "Filtra pelos produtos excluídos ou não.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "representada_id",
+            "in": "query",
+            "description": "Para contas sem divisões, no lugar de `divisao_id`.",
             "required": false,
             "schema": {
               "type": "integer"
@@ -20044,6 +20115,15 @@
             "name": "divisao_id",
             "in": "query",
             "description": "Filtra os registros de uma divisão. Disponível apenas nas contas de indústria com divisões. Sem este filtro, a consulta retorna os registros de todas as divisões. O valor precisa ser o `id` de uma divisão da sua conta.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "representada_id",
+            "in": "query",
+            "description": "Para contas sem divisões, no lugar de `divisao_id`.",
             "required": false,
             "schema": {
               "type": "integer"
@@ -22131,6 +22211,15 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "name": "representada_id",
+            "in": "query",
+            "description": "Para contas sem divisões, no lugar de `divisao_id`.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "externalDocs": {
@@ -23673,6 +23762,15 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "name": "representada_id",
+            "in": "query",
+            "description": "Para contas sem divisões, no lugar de `divisao_id`.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "externalDocs": {
@@ -24552,6 +24650,15 @@
             "name": "divisao_id",
             "in": "query",
             "description": "Filtra os registros de uma divisão. Disponível apenas nas contas de indústria com divisões. Sem este filtro, a consulta retorna os registros de todas as divisões. O valor precisa ser o `id` de uma divisão da sua conta.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "representada_id",
+            "in": "query",
+            "description": "Para contas sem divisões, no lugar de `divisao_id`.",
             "required": false,
             "schema": {
               "type": "integer"
@@ -28615,6 +28722,15 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "name": "representada_id",
+            "in": "query",
+            "description": "Para contas sem divisões, no lugar de `divisao_id`.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "externalDocs": {
@@ -30843,7 +30959,14 @@
             "in": "query",
             "name": "status",
             "schema": {
-              "type": "number"
+              "oneOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "string"
+                }
+              ]
             },
             "description": "Status do pedido: \n1 = Orçamento\n2 = Pedido gerados\n0 = Cancelado"
           },
@@ -30851,7 +30974,14 @@
             "in": "query",
             "name": "status_faturamento",
             "schema": {
-              "type": "number"
+              "oneOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "string"
+                }
+              ]
             },
             "description": "Status_faturamento:\n0 = Não faturado\n1 = Parcialmente faturado\n2 = Faturado"
           },
@@ -30859,7 +30989,17 @@
             "in": "query",
             "name": "status_custom",
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
             },
             "description": "Permite filtrar por status de pedido customizados.\nPara consultar pedidos sem status customizado, utilize o valor 0.\nÉ possível enviar múltiplos valores: ?status=2&status_custom=0&status_custom=4&status_custom=10"
           },
@@ -30867,6 +31007,23 @@
             "name": "divisao_id",
             "in": "query",
             "description": "Filtra os registros de uma divisão. Disponível apenas nas contas de indústria com divisões. Sem este filtro, a consulta retorna os registros de todas as divisões. O valor precisa ser o `id` de uma divisão da sua conta.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "registros_por_pagina",
+            "in": "query",
+            "description": "Quantidade de registros por página. Sugestão: no máximo 20.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "representada_id",
+            "in": "query",
+            "description": "Para contas sem divisões, no lugar de `divisao_id`.",
             "required": false,
             "schema": {
               "type": "integer"
