@@ -2,7 +2,7 @@
 
 This project follows [semantic versioning](https://semver.org/).
 
-## 0.4.1 - Unreleased
+## 0.4.1 - 2026-09-20
 
 - When `pedidos.createAndRead` creates the order and then fails to read it, the error now has the
   order's ID in the new `createdId` field of `MercosError`. Before, a failed read lost the ID.
