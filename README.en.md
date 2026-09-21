@@ -264,6 +264,14 @@ Tested on 2026-09-19 against `sandbox.mercos.com`, where the documentation was a
   neither as required.
 - The date of an extra field goes as `yyyy-mm-dd`. The `yyyy-dd-mm` in the documentation is a
   typo: the API rejects it with 422 and names the format `%Y-%m-%d`.
+- The API never creates a quote. An order created through it starts as `StatusPedido.Gerado`,
+  and both `/v2/pedidos` and `/v1/pedidos` answer 422 to a `status` field. That holds for the
+  create and for the update. A quote, status `"1"`, comes only from the Mercos screens. Measured on 2026-09-21.
+- In an order update, an item with its `id` changes that item, and an item with no `id` is added,
+  even when the product is already in the order. The documented schema of the update leaves the
+  item `id` out, and the `PedidoUpdate` type has it. An item with `id` and `excluido: true` is
+  removed, and still comes back on a read, marked `excluido: true`. The update is partial: an
+  item that the body doesn't name stays as it is. Measured by the `estoque_fratini` app.
 - Mercos adds the IPI of the product record to each order item, even when the item sends no
   `ipi`. Measured on 2026-09-20 by the `estoque_fratini` app:
 

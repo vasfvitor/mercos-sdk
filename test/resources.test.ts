@@ -55,6 +55,17 @@ test("pedidos.update uses PUT on v2, and pedidos.cancel uses the v1 route", asyn
   assert.equal(calls[1]!.body, undefined);
 });
 
+test("pedidos.update takes the item ID, which is what makes it a change and not a new item", async () => {
+  const { mercos, calls } = fake([{ body: {} }]);
+  // With no `id`, Mercos adds the item again, even when the product is already in the order.
+  const itens = [
+    { id: 901, produto_id: 7, preco_tabela: 400, quantidade: 5 },
+    { id: 902, preco_tabela: 200, excluido: true },
+  ];
+  await mercos.pedidos.update(55, { itens });
+  assert.deepEqual(calls[0]!.body, { itens });
+});
+
 test("produtos.create takes the grid body on the same route as a plain product", async () => {
   const example = fixture("post_v1_produtos_grade_v3");
   // The documented example of the grid page. The fixture of this route keeps an example with an empty list.

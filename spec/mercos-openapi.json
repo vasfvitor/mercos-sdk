@@ -32724,6 +32724,10 @@
                               "type": "number",
                               "default": "",
                               "description": "Preço padrão do produto no momento da venda. Corresponde ao campo `preco_tabela` da entidade `Produto` ou, se houver uma tabela de preço aplicada (`tabela_preco_id` diferente de `null`), representa o valor definido por essa tabela."
+                            },
+                            "id": {
+                              "type": "integer",
+                              "description": "ID do item do pedido. Com ele o item existente é alterado. Sem ele um item novo é incluído."
                             }
                           },
                           "required": [
@@ -32919,6 +32923,10 @@
                             "grupo_grades": {
                               "type": "string",
                               "description": "Identificador do conjunto de produtos relacionados por grade. <br /> Itens com o mesmo `grupo_grades` são agrupados e exibidos como um único item no pedido. <br /> Todos os produtos do grupo devem compartilhar o mesmo produto agregador. <br /> **Produtos simples não devem preencher este campo.**"
+                            },
+                            "id": {
+                              "type": "integer",
+                              "description": "ID do item do pedido. Com ele o item existente é alterado. Sem ele um item novo é incluído."
                             }
                           },
                           "required": [

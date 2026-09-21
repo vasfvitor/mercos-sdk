@@ -260,6 +260,14 @@ Testado em 2026-09-19 contra `sandbox.mercos.com`, onde a documentação era amb
   nenhum como obrigatório.
 - A data de um campo extra vai como `yyyy-mm-dd`. O `yyyy-dd-mm` da documentação é erro de
   digitação: a API recusa com 422 e informa o formato `%Y-%m-%d`.
+- A API nunca cria orçamento. O pedido criado por ela nasce `StatusPedido.Gerado`, e tanto a
+  `/v2/pedidos` quanto a `/v1/pedidos` respondem 422 a um campo `status`, na criação e na
+  alteração. Orçamento, status `"1"`, só sai das telas do Mercos. Medido em 2026-09-21.
+- Na alteração de um pedido, o item com `id` altera aquele item, e o item sem `id` é incluído,
+  mesmo que o produto já esteja no pedido. O esquema documentado da alteração não traz o `id` do
+  item, e o tipo `PedidoUpdate` traz. O item com `id` e `excluido: true` é excluído, e continua
+  vindo na leitura, marcado `excluido: true`. A alteração é parcial: o item que o corpo não cita
+  fica como está. Medido pelo app `estoque_fratini`.
 - O Mercos soma o IPI do cadastro do produto a cada item do pedido, mesmo quando o item não
   manda `ipi`. Medido em 2026-09-20 pelo app `estoque_fratini`:
 

@@ -2,6 +2,11 @@
 
 This project follows [semantic versioning](https://semver.org/).
 
+## Unreleased
+
+- Fixed in the types: an item of `PedidoUpdate` now takes `id`. With it, Mercos changes that item.
+  Without it, Mercos adds the item again, so the missing field led to doubled items.
+
 ## 0.4.2 - 2026-09-20
 
 - Fixed: the list cursor now goes out as `2000-01-01 00:00:00`, with a space. The `T` form of the

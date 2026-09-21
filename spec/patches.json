@@ -112,6 +112,17 @@
         }
       },
       "reason": "The prose of the products page documents the `excluido` filter, and the schema leaves it out. The sandbox accepted it on 2026-09-20. Index 2 is the end of the list that the page declares."
+    },
+    {
+      "pointers": [
+        "/paths/~1v2~1pedidos~1{id}/put/requestBody/content/application~1json/schema/properties/itens/items/properties/id",
+        "/paths/~1v2~1pedidos~1{id}#grade/put/requestBody/content/application~1json/schema/properties/itens/items/properties/id"
+      ],
+      "value": {
+        "type": "integer",
+        "description": "ID do item do pedido. Com ele o item existente é alterado. Sem ele um item novo é incluído."
+      },
+      "reason": "The field table of the orders page says that the item `id` goes only in a PUT, to update an existing item. The schema of the PUT leaves it out. The sandbox showed on 2026-09-21 that an item with no `id` is added, even when the product is already in the order."
     }
   ]
 }

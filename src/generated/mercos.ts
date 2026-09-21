@@ -16917,6 +16917,8 @@ export interface operations {
                         descontos_do_vendedor?: number[];
                         /** @description Se definido como `true`, o item será excluído durante a alteração. */
                         excluido?: boolean;
+                        /** @description ID do item do pedido. Com ele o item existente é alterado. Sem ele um item novo é incluído. */
+                        id?: number;
                         /**
                          * Format: double
                          * @description Valor ou percentual do IPI, conforme indicado no campo `tipo_ipi`.
@@ -17027,6 +17029,8 @@ export interface operations {
                         excluido?: boolean;
                         /** @description Identificador do conjunto de produtos relacionados por grade. <br /> Itens com o mesmo `grupo_grades` são agrupados e exibidos como um único item no pedido. <br /> Todos os produtos do grupo devem compartilhar o mesmo produto agregador. <br /> **Produtos simples não devem preencher este campo.** */
                         grupo_grades: string;
+                        /** @description ID do item do pedido. Com ele o item existente é alterado. Sem ele um item novo é incluído. */
+                        id?: number;
                         /**
                          * Format: double
                          * @description Valor ou percentual do IPI, conforme indicado no campo `tipo_ipi`.
