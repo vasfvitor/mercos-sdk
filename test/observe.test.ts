@@ -109,7 +109,7 @@ test("find lists from `since`, and stops at the page that has the record", async
 
   assert.equal(found?.id, 3);
   assert.equal(calls.length, 2);
-  assert.equal(calls[0]?.url.searchParams.get("alterado_apos"), "2024-01-01T00:00:00");
+  assert.equal(calls[0]?.url.searchParams.get("alterado_apos"), "2024-01-01 00:00:00");
   assert.equal(calls[0]?.url.pathname, "/api/v1/produtos");
 });
 
@@ -131,7 +131,7 @@ test("createAndRead posts the order, then finds it in the list of the last hour"
     calls.map((call) => `${call.method} ${call.url.pathname}`),
     ["POST /api/v2/pedidos", "GET /api/v2/pedidos"],
   );
-  assert.match(calls[1]?.url.searchParams.get("alterado_apos") ?? "", /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/);
+  assert.match(calls[1]?.url.searchParams.get("alterado_apos") ?? "", /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/);
 });
 
 test("createAndRead says that the order exists when the list doesn't have it", async () => {
@@ -162,13 +162,13 @@ test("createAndRead keeps the order's ID when the read itself fails", async () =
 test("a Date in `since` and in `changedAfter` goes out in Brazilian time, as Mercos writes it", async () => {
   // 00:12 UTC on the 21st is 21:12 on the 20th in Brazil, which is what the sandbox stamped.
   const instant = new Date("2026-09-21T00:12:36Z");
-  assert.equal(mercosTimestamp(instant), "2026-09-20T21:12:36");
+  assert.equal(mercosTimestamp(instant), "2026-09-20 21:12:36");
 
   const { mercos, calls } = fake([{ body: [] }, { body: [] }]);
   await mercos.produtos.find(1, { since: instant });
   await collect(mercos.clientes.list({ changedAfter: instant }));
   assert.deepEqual(
     calls.map((call) => call.url.searchParams.get("alterado_apos")),
-    ["2026-09-20T21:12:36", "2026-09-20T21:12:36"],
+    ["2026-09-20 21:12:36", "2026-09-20 21:12:36"],
   );
 });

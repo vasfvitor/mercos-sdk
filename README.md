@@ -190,7 +190,7 @@ Pedidos usam a versão 2 da API. `get` por ID só funciona no sandbox: em produ�
 bloqueia essa leitura, e o erro traz uma dica a respeito.
 
 Todo recurso também tem `listPages` e `find`. O `find` lê um registro pela listagem, então
-funciona em produção: `mercos.pedidos.find(55, { since: "2026-09-20T00:00:00" })`. Ele devolve
+funciona em produção: `mercos.pedidos.find(55, { since: "2026-09-20 00:00:00" })`. Ele devolve
 `undefined` quando nenhum registro com esse ID mudou depois de `since`. As requisições são as
 mesmas nos dois ambientes, então o sandbox testa o que roda em produção.
 
@@ -277,6 +277,13 @@ Testado em 2026-09-19 contra `sandbox.mercos.com`, onde a documentação era amb
 - Na leitura, um valor ausente vem como `0` ou `""`, não como `null`: `tabela_preco_id: 0`,
   `transportadora_id: 0`, `observacoes: ""`. O SDK nunca reescreve os dados da resposta, então
   trate um `0` num campo de ID como ausência.
+- A documentação escreve `alterado_apos` como `2024-04-10T15:45:00`. A maioria das rotas aceita, e
+  a `/v1/divisoes` responde 422: ela exige o espaço, `2024-04-10 15:45:00`. Todas as rotas que o
+  sandbox tem aceitaram o espaço, então o SDK sempre manda assim, e troca o `T` do seu texto por
+  um espaço.
+- A API não tem rota para os dados da própria empresa, como logotipo ou CNPJ. O pedido traz
+  `representada_id`, `representada_nome_fantasia` e `representada_razao_social`, e o
+  `token_auth_status` responde com o corpo vazio.
 - O Mercos grava `ultima_alteracao` no horário do Brasil. Em 2026-09-20, uma alteração feita
   às 00:12 UTC voltou marcada como 21:12.
 - Quantidade fracionada, como 1,5, e item sem `tabela_preco_id` são aceitos.

@@ -2,14 +2,14 @@ import { MercosError } from "./errors.ts";
 import type { CallOptions, Http, Query } from "./http.ts";
 import { mercosTimestamp } from "./time.ts";
 
-/** Starting point when the caller wants everything. The Mercos documentation uses this value. */
-const EPOCH = "2000-01-01T00:00:00";
+/** Starting point when the caller wants everything. */
+const EPOCH = "2000-01-01 00:00:00";
 const LIMITED_HEADER = "MEUSPEDIDOS_LIMITOU_REGISTROS";
 
 export interface ListOptions extends CallOptions {
   /**
-   * Only records changed after this instant. A string goes as it is, in the format and the time zone
-   * that Mercos returns in `ultima_alteracao`. A `Date` is converted to Brazilian time.
+   * Only records changed after this instant. A string is in the time zone that Mercos returns in
+   * `ultima_alteracao`, and a `Date` is converted to it. Both go out as "2024-04-10 15:45:00".
    */
   changedAfter?: string | Date;
 }
@@ -41,7 +41,12 @@ export async function* paginatePages<T extends object>(
   options: ListOptions & { filters?: Query } = {},
 ): AsyncGenerator<T[]> {
   const { changedAfter = EPOCH } = options;
-  let cursor = typeof changedAfter === "string" ? changedAfter : mercosTimestamp(changedAfter);
+  // The documentation writes the instant with a "T", and `/v1/divisoes` answers 422 to it. Every
+  // route that the sandbox has took the space, which is also how the server writes it.
+  let cursor =
+    typeof changedAfter === "string"
+      ? changedAfter.replace(/^(\d{4}-\d{2}-\d{2})T/, "$1 ")
+      : mercosTimestamp(changedAfter);
   // Records already yielded that the next page brings back, because the cursor steps back.
   let seen = new Set<string>();
 

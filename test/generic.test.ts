@@ -43,7 +43,8 @@ test("list walks the pages of a path with no named resource, and drops the repea
     [1, 2, 3],
   );
   assert.equal(calls[0]?.url.pathname, "/api/v1/titulos");
-  assert.equal(calls[0]?.url.searchParams.get("alterado_apos"), "2023-12-31T00:00:00");
+  // The "T" of the documentation goes out as the space that every route takes.
+  assert.equal(calls[0]?.url.searchParams.get("alterado_apos"), "2023-12-31 00:00:00");
 });
 
 test("resource gives the four methods, and create reads the ID from the header", async () => {

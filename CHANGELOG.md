@@ -2,6 +2,12 @@
 
 This project follows [semantic versioning](https://semver.org/).
 
+## 0.4.2 - Unreleased
+
+- Fixed: the list cursor now goes out as `2000-01-01 00:00:00`, with a space. The `T` form of the
+  documentation made `/v1/divisoes` answer 422, and every route takes the space. A `T` in a
+  `changedAfter` or `since` string becomes a space, and `mercosTimestamp` returns the space form.
+
 ## 0.4.1 - 2026-09-20
 
 - When `pedidos.createAndRead` creates the order and then fails to read it, the error now has the

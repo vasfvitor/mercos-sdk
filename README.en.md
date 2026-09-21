@@ -193,7 +193,7 @@ Orders use version 2 of the API. The `get` method works only in the sandbox. In 
 Mercos blocks reads by identifier, and the error carries a hint about it.
 
 Every resource also has `listPages` and `find`. The `find` method reads one record through the
-list, so it works in production: `mercos.pedidos.find(55, { since: "2026-09-20T00:00:00" })`. It
+list, so it works in production: `mercos.pedidos.find(55, { since: "2026-09-20 00:00:00" })`. It
 returns `undefined` when no record with that ID changed after `since`. It sends the same
 requests in both environments, so the sandbox tests what production runs.
 
@@ -281,6 +281,13 @@ Tested on 2026-09-19 against `sandbox.mercos.com`, where the documentation was a
 - On a read, an absent value comes as `0` or `""`, not as `null`: `tabela_preco_id: 0`,
   `transportadora_id: 0`, `observacoes: ""`. The SDK never rewrites response data, so treat a
   `0` in an ID field as absent.
+- The documentation writes `alterado_apos` as `2024-04-10T15:45:00`. Most routes take that, and
+  `/v1/divisoes` answers 422 to it: it demands the space, `2024-04-10 15:45:00`. Every route that
+  the sandbox has took the space, so the SDK always sends it, and turns a `T` in your string into
+  one.
+- The API has no route for the company's own data: no logo and no CNPJ. An order carries
+  `representada_id`, `representada_nome_fantasia`, and `representada_razao_social`, and
+  `token_auth_status` answers with an empty body.
 - Mercos writes `ultima_alteracao` in Brazilian time. On 2026-09-20 a change made at 00:12 UTC
   came back stamped 21:12.
 - A fractional quantity, such as 1.5, and an item with no `tabela_preco_id` are accepted.

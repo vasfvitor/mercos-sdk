@@ -25,7 +25,7 @@ test("three pages: an unsorted page, repeats dropped, and the server's exact cur
   );
   assert.deepEqual(
     calls.map((call) => call.url.searchParams.get("alterado_apos")),
-    ["2000-01-01T00:00:00", "2024-01-02 10:00:00", "2024-01-03 10:00:00"],
+    ["2000-01-01 00:00:00", "2024-01-02 10:00:00", "2024-01-03 10:00:00"],
   );
 });
 
