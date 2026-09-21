@@ -2,7 +2,7 @@
 
 This project follows [semantic versioning](https://semver.org/).
 
-## Unreleased
+## 0.4.3 - 2026-09-20
 
 - Fixed in the types: an item of `PedidoUpdate` now takes `id`. With it, Mercos changes that item.
   Without it, Mercos adds the item again, so the missing field led to doubled items.
