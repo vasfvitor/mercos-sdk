@@ -2,7 +2,7 @@
 
 This project follows [semantic versioning](https://semver.org/).
 
-## 0.4.2 - Unreleased
+## 0.4.2 - 2026-09-20
 
 - Fixed: the list cursor now goes out as `2000-01-01 00:00:00`, with a space. The `T` form of the
   documentation made `/v1/divisoes` answer 422, and every route takes the space. A `T` in a
