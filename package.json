@@ -61,6 +61,7 @@
     "spec:lint": "node scripts/lint-spec.ts",
     "spec:check": "node scripts/check-spec.ts",
     "spec": "pnpm spec:fetch && pnpm spec:merge && pnpm spec:types && pnpm spec:fixtures && pnpm spec:check --update",
+    "release": "node scripts/release.ts",
     "prepublishOnly": "pnpm verify && pnpm build"
   },
   "devDependencies": {

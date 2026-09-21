@@ -331,12 +331,14 @@ MERCOS_APPLICATION_TOKEN=... MERCOS_COMPANY_TOKEN=... pnpm test:live
 
 ## Publicação
 
-1. Ajuste a versão no `package.json` e date a entrada no `CHANGELOG.md`.
-2. Publique uma release no GitHub com a tag `v` mais essa versão, por exemplo `v0.1.0`.
+1. Escreva as mudanças sob um título `## 0.4.2 - Unreleased` no `CHANGELOG.md`, e faça o commit.
+2. Rode `pnpm release 0.4.2`. Ele ajusta a versão, data o título, roda o `pnpm verify`, faz o
+   commit, cria a tag e envia o branch e a tag juntos. Com `--dry-run` ele só mostra os passos.
+3. Aprove a versão no npmjs.com, na fila de staging do pacote. Com duas versões na fila, aprove
+   na ordem das versões: a `latest` segue a última aprovação.
 
-3. Aprove a versão no npmjs.com, na fila de staging do pacote.
-
-O workflow de release envia a versão para o staging do npm, com atestado de procedência. Ela só
+A tag enviada dispara o workflow de release. Ele envia a versão para o staging do npm, com
+atestado de procedência, e cria a release no GitHub a partir da entrada do changelog. Ela só
 fica instalável depois da aprovação, que exige 2FA. Nenhum token do npm fica guardado: no
 npmjs.com, o pacote lista este repositório e o `release.yml` como publicador confiável.
 
