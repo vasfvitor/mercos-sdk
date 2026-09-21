@@ -1,5 +1,5 @@
 import type { StatusFaturamento, StatusPedido } from "../enums.ts";
-import { MercosError } from "../errors.ts";
+import { MercosError, type MercosErrorKind } from "../errors.ts";
 import type { CallOptions, Http } from "../http.ts";
 import type { Pedido, PedidoInput, PedidoUpdate } from "../types.ts";
 import { type CrudResource, crud, type DivisaoFilters, post } from "./base.ts";
@@ -25,26 +25,11 @@ export interface PedidosResource
   create(pedido: PedidoInput, options?: CallOptions): Promise<PedidoCreated>;
   /**
    * Creates the order and reads it back through the list. The response to the create has no total,
-   * and Mercos adds taxes that the sent items don't show.
+   * and Mercos adds taxes that the sent items don't show. When the order is created and the read
+   * fails, the error has the order's ID in `createdId`.
    */
   createAndRead(pedido: PedidoInput, options?: CallOptions): Promise<Pedido>;
   cancel(id: number, options?: CallOptions): Promise<void>;
-}
-
-/** Mercos keeps `ultima_alteracao` in Brazilian time. The hour of slack covers a caller's clock that runs ahead. */
-function anHourAgoInBrazil(): string {
-  const parts = new Intl.DateTimeFormat("en-CA", {
-    timeZone: "America/Sao_Paulo",
-    hourCycle: "h23",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  }).formatToParts(Date.now() - 3_600_000);
-  const part = (type: string) => parts.find((each) => each.type === type)?.value;
-  return `${part("year")}-${part("month")}-${part("day")}T${part("hour")}:${part("minute")}:${part("second")}`;
 }
 
 export function pedidos(http: Http): PedidosResource {
@@ -52,17 +37,24 @@ export function pedidos(http: Http): PedidosResource {
   return {
     ...base,
     async createAndRead(pedido, options) {
-      const since = anHourAgoInBrazil();
+      // The hour of slack covers a caller's clock that runs ahead of the one at Mercos.
+      const since = new Date(Date.now() - 3_600_000);
       // `post` and not `this.create`: a method taken off the resource has no `this`.
       const { id } = await post(http, PATHS.pedidos, pedido, options);
-      const read = await base.find(id, { ...options, since });
-      if (read === undefined) {
-        throw new MercosError(
-          "unexpected_response",
-          `Order ${id} was created, but the list of orders changed after ${since} doesn't have it. Don't create it again.`,
-          { method: "GET", path: PATHS.pedidos },
-        );
+      const failed = (kind: MercosErrorKind, reason: string, cause?: unknown) =>
+        new MercosError(kind, `Order ${id} was created, but ${reason}. Don't create it again: read it with find.`, {
+          method: "GET",
+          path: PATHS.pedidos,
+          createdId: id,
+          cause,
+        });
+      let read: Pedido | undefined;
+      try {
+        read = await base.find(id, { ...options, since });
+      } catch (cause) {
+        throw failed(cause instanceof MercosError ? cause.kind : "network", "reading it back failed", cause);
       }
+      if (read === undefined) throw failed("unexpected_response", "the list of the last hour doesn't have it");
       return read;
     },
     async create(pedido, options) {

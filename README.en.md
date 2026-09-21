@@ -107,7 +107,8 @@ const mercos = createMercos({
 
 The event has `method`, `path` as sent, `route` with each numeric segment as `{id}`, `attempt`
 starting at 1, `status`, `durationMs`, and `retryInSeconds` when another attempt follows. The
-`status` is `undefined` for a network failure or a timeout. The event has no body, query, or
+`status` is `undefined` for a network failure or a timeout, and `error` says which of the two
+it was. The event has no body, query, or
 header, so logging it can't leak a token or customer data. An error that the function throws is
 ignored.
 
@@ -196,9 +197,15 @@ list, so it works in production: `mercos.pedidos.find(55, { since: "2026-09-20T0
 returns `undefined` when no record with that ID changed after `since`. It sends the same
 requests in both environments, so the sandbox tests what production runs.
 
+`since` and `changedAfter` take a string or a `Date`. A string goes out as it is. Mercos writes
+`ultima_alteracao` in Brazilian time, so a `Date` is converted to that zone. The
+`mercosTimestamp(date)` function does the same conversion for your own use.
+
 The response to an order create has no total, and Mercos adds taxes that the sent items don't
 show. `mercos.pedidos.createAndRead(pedido)` creates the order and returns it as Mercos saved
-it, found through the list of the last hour.
+it, found through the list of the last hour. When the order is created and the read fails, the
+`MercosError` has the order's ID in `createdId`. The order exists, so read it with `find` and
+don't create it again.
 
 The `statusCustom` resource holds the custom order statuses, the values of the `status_custom`
 filter. The `estoque.adjust` method sets the product's balance to `novo_saldo`. It doesn't add or
@@ -208,7 +215,9 @@ and one bad adjustment cancels the whole batch.
 
 `produtos.create`, `produtos.update`, `pedidos.create`, and `pedidos.update` also take the grid
 bodies that Mercos documents on the same routes. `ProdutoInput` and `PedidoInput` are unions of
-the plain body and the grid ones.
+the plain body and the grid ones. For a grid product, `produtos.create` also returns
+`produtos_grade`. That list has each child's ID and code. Mercos refuses a stock adjustment on
+the parent, so those are the IDs that `estoque.adjust` takes.
 
 The `paths` and `operations` types cover the 169 documented operations.
 
@@ -272,6 +281,8 @@ Tested on 2026-09-19 against `sandbox.mercos.com`, where the documentation was a
 - On a read, an absent value comes as `0` or `""`, not as `null`: `tabela_preco_id: 0`,
   `transportadora_id: 0`, `observacoes: ""`. The SDK never rewrites response data, so treat a
   `0` in an ID field as absent.
+- Mercos writes `ultima_alteracao` in Brazilian time. On 2026-09-20 a change made at 00:12 UTC
+  came back stamped 21:12.
 - A fractional quantity, such as 1.5, and an item with no `tabela_preco_id` are accepted.
 - On 2026-09-20, the order list and the read by ID returned the same 47 fields. Each documented
   schema leaves some out: the list has no `itens`, and the read by ID has no customer fields. The

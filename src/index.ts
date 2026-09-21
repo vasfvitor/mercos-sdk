@@ -33,8 +33,6 @@ export type {
   ClientesResource,
   CondicoesPagamentoResource,
   FormasPagamentoResource,
-  ProdutoFilters,
-  ProdutosResource,
   ProdutosTabelaPrecoResource,
   StatusCustomResource,
   TabelasPrecoResource,
@@ -43,6 +41,8 @@ export type {
 } from "./resources/catalogo.ts";
 export type { EstoqueResource } from "./resources/estoque.ts";
 export type { PedidoCreated, PedidoFilters, PedidosResource } from "./resources/pedidos.ts";
+export type { ProdutoCreated, ProdutoFilters, ProdutosResource } from "./resources/produtos.ts";
+export { mercosTimestamp } from "./time.ts";
 export type {
   AjusteEstoque,
   Categoria,

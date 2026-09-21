@@ -20,8 +20,8 @@ export interface Created {
 
 /** Without `Filters`, the list accepts only the common options. */
 export interface FindOptions extends CallOptions {
-  /** Where the search starts, in the format of `ultima_alteracao`. The record must have changed after it. */
-  since: string;
+  /** Where the search starts: the record must have changed after it. It takes what `changedAfter` takes. */
+  since: string | Date;
 }
 
 type ListArgument<Filters extends Query> = [Filters] extends [never] ? ListOptions : ListWithFilters<Filters>;

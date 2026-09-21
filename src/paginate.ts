@@ -1,13 +1,17 @@
 import { MercosError } from "./errors.ts";
 import type { CallOptions, Http, Query } from "./http.ts";
+import { mercosTimestamp } from "./time.ts";
 
 /** Starting point when the caller wants everything. The Mercos documentation uses this value. */
 const EPOCH = "2000-01-01T00:00:00";
 const LIMITED_HEADER = "MEUSPEDIDOS_LIMITOU_REGISTROS";
 
 export interface ListOptions extends CallOptions {
-  /** Only records changed after this instant, in the format Mercos returns in `ultima_alteracao`. */
-  changedAfter?: string;
+  /**
+   * Only records changed after this instant. A string goes as it is, in the format and the time zone
+   * that Mercos returns in `ultima_alteracao`. A `Date` is converted to Brazilian time.
+   */
+  changedAfter?: string | Date;
 }
 
 /** The little that pagination needs to see in a record, whatever resource it belongs to. */
@@ -36,7 +40,8 @@ export async function* paginatePages<T extends object>(
   path: string,
   options: ListOptions & { filters?: Query } = {},
 ): AsyncGenerator<T[]> {
-  let cursor = options.changedAfter ?? EPOCH;
+  const { changedAfter = EPOCH } = options;
+  let cursor = typeof changedAfter === "string" ? changedAfter : mercosTimestamp(changedAfter);
   // Records already yielded that the next page brings back, because the cursor steps back.
   let seen = new Set<string>();
 

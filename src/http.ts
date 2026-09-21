@@ -30,6 +30,8 @@ export interface MercosAttempt {
   attempt: number;
   /** Absent for a network failure or a timeout. */
   status: number | undefined;
+  /** Why there was no response. Absent when there was one. */
+  error: "network" | "timeout" | undefined;
   durationMs: number;
   /** The wait before the next attempt of the same call, when there is one. */
   retryInSeconds: number | undefined;
@@ -170,7 +172,7 @@ export function createHttp(config: HttpConfig): Http {
       }
       const startedAt = Date.now();
       lastAttemptAt = startedAt;
-      const report = (status: number | undefined, retryInSeconds?: number) => {
+      const report = (status: number | undefined, retryInSeconds?: number, error?: "network" | "timeout") => {
         try {
           config.onAttempt?.({
             method,
@@ -178,6 +180,7 @@ export function createHttp(config: HttpConfig): Http {
             route,
             attempt,
             status,
+            error,
             durationMs: Date.now() - startedAt,
             retryInSeconds,
           });
@@ -204,7 +207,7 @@ export function createHttp(config: HttpConfig): Http {
       } catch (cause) {
         if (options.signal?.aborted) throw cause;
         const wait = transientWait();
-        report(undefined, wait);
+        report(undefined, wait, deadline?.aborted ? "timeout" : "network");
         if (wait !== undefined) {
           await config.sleep(wait * 1000, options.signal);
           continue;

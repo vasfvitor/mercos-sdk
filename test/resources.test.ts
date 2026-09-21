@@ -57,14 +57,22 @@ test("pedidos.update uses PUT on v2, and pedidos.cancel uses the v1 route", asyn
 
 test("produtos.create takes the grid body on the same route as a plain product", async () => {
   const example = fixture("post_v1_produtos_grade_v3");
-  const { mercos, calls } = fake([{ status: 201, headers: { MeusPedidosID: "31" } }]);
+  // The documented example of the grid page. The fixture of this route keeps an example with an empty list.
+  const created = { id: 20325477, produtos_grade: [{ id: 20325478, codigo: "GV001" }] };
+  const { mercos, calls } = fake([
+    { status: 201, headers: { MeusPedidosID: String(created.id) }, body: created },
+    { status: 201, headers: { MeusPedidosID: "31" } },
+  ]);
 
   // No cast on the literal: the grid body is one of the shapes of `ProdutoInput`.
   const grid: ProdutoInput = { nome: "Camiseta", preco_tabela: 50, produtos_grade: [{ codigo: "P-AZUL" }] };
   assert.ok("produtos_grade" in grid);
-  assert.deepEqual(await mercos.produtos.create(example.request as ProdutoInput), { id: 31 });
+  // The children's IDs are the ones that take a stock adjustment, so `create` keeps them.
+  assert.deepEqual(await mercos.produtos.create(example.request as ProdutoInput), created);
   assert.equal(calls[0]!.url.pathname, "/api/v1/produtos");
   assert.deepEqual(calls[0]!.body, example.request);
+  // A plain product answers with no body, and gets an empty list.
+  assert.deepEqual(await mercos.produtos.create({ nome: "Caneta", preco_tabela: 2 }), { id: 31, produtos_grade: [] });
 });
 
 test("each catalog resource lists on the right path", async () => {

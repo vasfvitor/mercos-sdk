@@ -2,6 +2,16 @@
 
 This project follows [semantic versioning](https://semver.org/).
 
+## 0.4.1 - Unreleased
+
+- When `pedidos.createAndRead` creates the order and then fails to read it, the error now has the
+  order's ID in the new `createdId` field of `MercosError`. Before, a failed read lost the ID.
+- `since` and `changedAfter` now also take a `Date`, converted to Brazilian time, which is the zone
+  of `ultima_alteracao`. The new `mercosTimestamp` function does the same conversion.
+- The `onAttempt` event has a new `error` field: `"network"` or `"timeout"` when no response came.
+- `produtos.create` now returns `produtos_grade`, a list with the ID and the code of each child of
+  a grid product. Those are the IDs that take a stock adjustment. The list is empty for a plain product.
+
 ## 0.4.0 - 2026-09-20
 
 - New `onAttempt` option: a function called after every HTTP attempt, with the method, the route,

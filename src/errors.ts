@@ -24,6 +24,7 @@ export interface MercosErrorDetails {
   fieldErrors?: MercosFieldError[];
   hint?: string;
   retryAfterSeconds?: number;
+  createdId?: number;
   body?: unknown;
   cause?: unknown;
 }
@@ -37,6 +38,8 @@ export class MercosError extends Error {
   readonly fieldErrors: MercosFieldError[];
   readonly hint: string | undefined;
   readonly retryAfterSeconds: number | undefined;
+  /** Set when a record was created and a later step failed. The record exists: don't create it again. */
+  readonly createdId: number | undefined;
   readonly body: unknown;
 
   constructor(kind: MercosErrorKind, message: string, details: MercosErrorDetails = {}) {
@@ -49,6 +52,7 @@ export class MercosError extends Error {
     this.fieldErrors = details.fieldErrors ?? [];
     this.hint = details.hint;
     this.retryAfterSeconds = details.retryAfterSeconds;
+    this.createdId = details.createdId;
     this.body = details.body;
   }
 }

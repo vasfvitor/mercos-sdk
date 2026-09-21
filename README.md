@@ -104,7 +104,8 @@ const mercos = createMercos({
 
 O evento tem `method`, `path` como foi enviado, `route` com cada trecho numérico como `{id}`,
 `attempt` a partir de 1, `status`, `durationMs` e `retryInSeconds` quando outra tentativa vem
-depois. O `status` é `undefined` numa falha de rede ou num timeout. O evento não tem corpo, query
+depois. O `status` é `undefined` numa falha de rede ou num timeout, e `error` diz qual dos dois
+foi. O evento não tem corpo, query
 nem header, então registrá-lo não vaza token nem dado de cliente. Um erro lançado pela função é
 ignorado.
 
@@ -193,9 +194,15 @@ funciona em produção: `mercos.pedidos.find(55, { since: "2026-09-20T00:00:00" 
 `undefined` quando nenhum registro com esse ID mudou depois de `since`. As requisições são as
 mesmas nos dois ambientes, então o sandbox testa o que roda em produção.
 
+`since` e `changedAfter` aceitam um texto ou um `Date`. O texto vai como está. O Mercos grava
+`ultima_alteracao` no horário do Brasil, então um `Date` é convertido para esse fuso. A função
+`mercosTimestamp(date)` faz a mesma conversão para uso seu.
+
 A resposta da criação de um pedido não traz o total, e o Mercos soma impostos que os itens
 enviados não mostram. `mercos.pedidos.createAndRead(pedido)` cria o pedido e o devolve como o
-Mercos gravou, achado pela listagem da última hora.
+Mercos gravou, achado pela listagem da última hora. Quando o pedido é criado e a leitura falha, o
+`MercosError` traz o ID do pedido em `createdId`. O pedido existe, então leia-o com `find` e não
+crie de novo.
 
 `statusCustom` são os status personalizados de pedido, os valores do filtro `status_custom`.
 `estoque.adjust` define o saldo do produto como `novo_saldo`, não soma nem subtrai. Com o controle
@@ -204,7 +211,9 @@ máximo 300 ajustes, o limite do Mercos por requisição, e um ajuste com erro c
 
 `produtos.create`, `produtos.update`, `pedidos.create` e `pedidos.update` também aceitam os corpos
 de grade que o Mercos documenta nas mesmas rotas. `ProdutoInput` e `PedidoInput` são uniões do
-corpo simples com os de grade.
+corpo simples com os de grade. Para um produto de grade, `produtos.create` também devolve
+`produtos_grade`, o ID e o código de cada filho. O Mercos recusa ajuste de estoque no produto
+pai, então são esses os IDs que o `estoque.adjust` aceita.
 
 Os tipos `paths` e `operations` cobrem as 169 operações documentadas.
 
@@ -268,6 +277,8 @@ Testado em 2026-09-19 contra `sandbox.mercos.com`, onde a documentação era amb
 - Na leitura, um valor ausente vem como `0` ou `""`, não como `null`: `tabela_preco_id: 0`,
   `transportadora_id: 0`, `observacoes: ""`. O SDK nunca reescreve os dados da resposta, então
   trate um `0` num campo de ID como ausência.
+- O Mercos grava `ultima_alteracao` no horário do Brasil. Em 2026-09-20, uma alteração feita
+  às 00:12 UTC voltou marcada como 21:12.
 - Quantidade fracionada, como 1,5, e item sem `tabela_preco_id` são aceitos.
 - Em 2026-09-20, a lista de pedidos e a leitura por ID devolveram os mesmos 47 campos. Cada
   esquema documentado deixa alguns de fora: a lista não tem `itens`, e a leitura por ID não tem os

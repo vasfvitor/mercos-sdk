@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { collect, type MercosAttempt, type PedidoInput } from "../src/index.ts";
+import { collect, type MercosAttempt, mercosTimestamp, type PedidoInput } from "../src/index.ts";
 import { fake, fixture, LIMITED, rejectsWith, THROTTLED } from "./helpers.ts";
 
 const record = (id: number, ultima_alteracao: string) => ({ id, ultima_alteracao });
@@ -21,6 +21,7 @@ test("onAttempt sees every attempt: the 429 with its wait, then the good one", a
         route: "/v2/pedidos/{id}",
         attempt: 1,
         status: 429,
+        error: undefined,
         retryInSeconds: 5.5,
       },
       {
@@ -29,6 +30,7 @@ test("onAttempt sees every attempt: the 429 with its wait, then the good one", a
         route: "/v2/pedidos/{id}",
         attempt: 2,
         status: 200,
+        error: undefined,
         retryInSeconds: undefined,
       },
     ],
@@ -46,10 +48,10 @@ test("onAttempt reports a network failure with no status, and the final error st
   await assert.rejects(mercos.tokenStatus(), rejectsWith("not_found"));
 
   assert.deepEqual(
-    events.map((event) => [event.attempt, event.status, event.retryInSeconds]),
+    events.map((event) => [event.attempt, event.status, event.error, event.retryInSeconds]),
     [
-      [1, undefined, 1],
-      [2, 404, undefined],
+      [1, undefined, "network", 1],
+      [2, 404, undefined, undefined],
     ],
   );
 });
@@ -136,6 +138,37 @@ test("createAndRead says that the order exists when the list doesn't have it", a
   const { mercos } = fake([{ status: 201, headers: { MeusPedidosID: "77" } }, { body: [] }]);
   await assert.rejects(
     mercos.pedidos.createAndRead(PEDIDO),
-    rejectsWith("unexpected_response", (error) => assert.match(error.message, /Order 77 was created/)),
+    rejectsWith("unexpected_response", (error) => {
+      assert.match(error.message, /Order 77 was created/);
+      assert.equal(error.createdId, 77);
+    }),
+  );
+});
+
+test("createAndRead keeps the order's ID when the read itself fails", async () => {
+  const { mercos } = fake([
+    { status: 201, headers: { MeusPedidosID: "77" } },
+    { status: 500, body: {} },
+  ]);
+  await assert.rejects(
+    mercos.pedidos.createAndRead(PEDIDO),
+    rejectsWith("server", (error) => {
+      assert.equal(error.createdId, 77);
+      assert.ok(error.cause instanceof Error);
+    }),
+  );
+});
+
+test("a Date in `since` and in `changedAfter` goes out in Brazilian time, as Mercos writes it", async () => {
+  // 00:12 UTC on the 21st is 21:12 on the 20th in Brazil, which is what the sandbox stamped.
+  const instant = new Date("2026-09-21T00:12:36Z");
+  assert.equal(mercosTimestamp(instant), "2026-09-20T21:12:36");
+
+  const { mercos, calls } = fake([{ body: [] }, { body: [] }]);
+  await mercos.produtos.find(1, { since: instant });
+  await collect(mercos.clientes.list({ changedAfter: instant }));
+  assert.deepEqual(
+    calls.map((call) => call.url.searchParams.get("alterado_apos")),
+    ["2026-09-20T21:12:36", "2026-09-20T21:12:36"],
   );
 });

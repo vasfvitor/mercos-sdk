@@ -14,7 +14,6 @@ import type {
   ClientesResource,
   CondicoesPagamentoResource,
   FormasPagamentoResource,
-  ProdutosResource,
   ProdutosTabelaPrecoResource,
   StatusCustomResource,
   TabelasPrecoResource,
@@ -24,6 +23,7 @@ import type {
 import { type EstoqueResource, estoque } from "./resources/estoque.ts";
 import { PATHS } from "./resources/paths.ts";
 import { type PedidosResource, pedidos } from "./resources/pedidos.ts";
+import { type ProdutosResource, produtos } from "./resources/produtos.ts";
 
 export type MercosEnvironment = "sandbox" | "production";
 
@@ -114,7 +114,7 @@ export function createMercos(options: MercosOptions): Mercos {
   const client: Mercos = {
     pedidos: pedidos(http),
     clientes: crud(http, PATHS.clientes),
-    produtos: crud(http, PATHS.produtos),
+    produtos: produtos(http),
     tabelasPreco: readOnly(http, PATHS.tabelasPreco),
     produtosTabelaPreco: readOnly(http, PATHS.produtosTabelaPreco),
     condicoesPagamento: readOnly(http, PATHS.condicoesPagamento),
