@@ -335,9 +335,10 @@ MERCOS_APPLICATION_TOKEN=... MERCOS_COMPANY_TOKEN=... pnpm test:live
 
 ## Releasing
 
-1. Write the changes under a `## 0.4.2 - Unreleased` heading in `CHANGELOG.md`, and commit.
-2. Run `pnpm release 0.4.2`. It sets the version, dates the heading, runs `pnpm verify`, commits,
-   tags, and pushes the branch and the tag together. Add `--dry-run` to see the steps only.
+1. Write the changes under a `## Unreleased` heading in `CHANGELOG.md`, and commit.
+2. Run `pnpm release patch`, or `minor`, or `major`, or an exact version. It sets the version,
+   turns the heading into the version and the date, runs `pnpm verify`, commits, tags, and pushes
+   the branch and the tag together. Add `--dry-run` to see the steps only.
 3. Approve the version on npmjs.com, in the package's staging queue. With two versions in the
    queue, approve them in version order: `latest` follows the last approval.
 

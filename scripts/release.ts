@@ -1,10 +1,10 @@
-// Cuts a release: `pnpm release 0.4.2`. Sets the version, dates the changelog entry, verifies,
-// commits, tags, and pushes. The tag starts .github/workflows/release.yml, which stages the version
+// Cuts a release: `pnpm release patch`, `minor`, `major`, or an exact version. Sets the version,
+// names and dates the `Unreleased` changelog entry, verifies, commits, tags, and pushes. The tag starts .github/workflows/release.yml, which stages the version
 // on npm. The one step left is the approval on npmjs.com.
 import { execFileSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 
-const version = process.argv[2] ?? "";
+const wanted = process.argv[2] ?? "";
 const dryRun = process.argv.includes("--dry-run");
 
 function fail(message: string): never {
@@ -21,9 +21,17 @@ function run(command: string, args: string[]): void {
   if (!dryRun) execFileSync(command, args, { stdio: "inherit" });
 }
 
-if (!/^\d+\.\d+\.\d+$/.test(version)) fail("usage: pnpm release <major.minor.patch> [--dry-run]");
-
 const manifest = JSON.parse(readFileSync("package.json", "utf8")) as { version: string };
+const [major = 0, minor = 0, patch = 0] = manifest.version.split(".").map(Number);
+// The same three words as `npm version`.
+const bumps: Record<string, string> = {
+  major: `${major + 1}.0.0`,
+  minor: `${major}.${minor + 1}.0`,
+  patch: `${major}.${minor}.${patch + 1}`,
+};
+const version = bumps[wanted] ?? wanted;
+if (!/^\d+\.\d+\.\d+$/.test(version)) fail("usage: pnpm release <patch | minor | major | X.Y.Z> [--dry-run]");
+
 const newer = version.localeCompare(manifest.version, undefined, { numeric: true }) > 0;
 if (!newer) fail(`${version} isn't newer than ${manifest.version}, the version in package.json.`);
 
@@ -33,8 +41,9 @@ if (git("status", "--porcelain", "--untracked-files=no") !== "") fail("commit or
 if (git("tag", "--list", `v${version}`) !== "") fail(`the tag v${version} already exists.`);
 
 const changelog = readFileSync("CHANGELOG.md", "utf8");
-const open = `## ${version} - Unreleased`;
-if (!changelog.includes(`${open}\n`)) fail(`CHANGELOG.md has no "${open}" heading.`);
+// The open entry has no number, as in Keep a Changelog: the size of the bump is decided here.
+const open = "## Unreleased";
+if (!changelog.includes(`${open}\n`)) fail(`CHANGELOG.md has no "${open}" heading, so there is nothing to release.`);
 // The date where the maintainer is, not in UTC: a release late in the evening keeps its day.
 const today = new Intl.DateTimeFormat("en-CA", { year: "numeric", month: "2-digit", day: "2-digit" }).format(
   new Date(),
